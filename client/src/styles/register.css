@@ -11,6 +11,11 @@
     outline: none;
 }
 
+div.center.form{
+    margin-top:50px;
+}
+
+
 /* input[type="submit"]{
     width: 100%;
     height: 50px;
