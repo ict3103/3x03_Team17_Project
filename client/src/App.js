@@ -2,7 +2,6 @@ import './App.css';
 import {React} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Route} from 'react-router-dom';
-import { CartProvider} from "react-use-cart";
 import './components/boilerplates/Main';
 import Main from './components/boilerplates/Main';
 import Login from './components/boilerplates/Login';
@@ -13,7 +12,6 @@ import AddItem from './components/boilerplates/AddItem';
 import EditItem from './components/boilerplates/EditItem';
 import CollectionLogin from './components/boilerplates/CollectionLogin';
 import ShoppingCart from './components/boilerplates/ShoppingCart';
-import { Page,Cart } from './components/boilerplates/ShoppingCart';
 
 
 
