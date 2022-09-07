@@ -1,0 +1,34 @@
+#dashHeader{
+    text-align: center;
+    padding-top: 10px;
+    font-size: 25px;
+    height:69px;
+}
+
+
+
+.list-group-item{
+    font-size: 16px;
+}
+
+.list-group-item:hover{
+    font-size: 19px;
+}
+
+/* .card{
+    height:200px;
+} */
+
+.navbar.navbar-expand-lg{
+    max-width:100%;
+    height:58px;
+}
+
+#page-content-wrapper{
+    height:100%;
+    width:100%;
+}
+
+#logoutButton{
+    width: fit-content;
+}
