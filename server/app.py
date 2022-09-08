@@ -2,7 +2,7 @@
 # An object of Flask class is our WSGI application.
 from threading import activeCount
 from credentials import constants
-from flask import Flask,render_template, request,redirect,url_for
+from flask import Flask,render_template, request,redirect,url_for, session
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
@@ -26,6 +26,10 @@ mysql = MySQL(app)
 def get_current_time():
     return {'time': 123}
 
+
+#-------------------------------------------------------------------------------------------
+# Homepage fetching of data 
+#-------------------------------------------------------------------------------------------
 
 @app.route('/collection')
 def get_collection():
@@ -145,6 +149,11 @@ def user_login():
 			result = sha512_crypt.verify(input_password,gethashedpassword_fromdb)
 
 			if result == True: 
+				#sessions code starts here 
+				session['loggedin'] = True
+				session['id'] = account['email']
+				session['name'] = account['name']
+
 				return redirect('/adminDashboard')
 			else: 
 				return 'Incorrect username/password. Please Try Again.'
