@@ -68,11 +68,6 @@ def user_login():
 	except: 
 		#do smth
 		pass
-
-
-
-
-	
 	return 
 
 
