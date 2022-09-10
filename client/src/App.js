@@ -12,6 +12,7 @@ import AddItem from './components/boilerplates/AddItem';
 import EditItem from './components/boilerplates/EditItem';
 import CollectionLogin from './components/boilerplates/CollectionLogin';
 import ShoppingCart from './components/boilerplates/ShoppingCart';
+import Payment from './components/boilerplates/Payment';
 
 
 
@@ -49,6 +50,9 @@ function App() {
       <Route path="/register">
       <Main></Main>
         <Register></Register>
+      </Route>
+      <Route path="/payment">
+        <Payment></Payment>
       </Route>
     </div>
   );
