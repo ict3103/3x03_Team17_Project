@@ -1,10 +1,15 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
 from credentials import constants
-from flask import Flask,render_template, request,redirect,url_for
+from flask import Flask,render_template, request,redirect,url_for, jsonify
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
+import stripe
+import json
+
+# This is your test secret API key.
+stripe.api_key = 'sk_test_51LfJR6CpB9vLLqcRHdRvFWdP1j2bExMLnqN4AoV0h9uaua8HC0gbeaiGlN4P7RAUXKZekyyi2pq2rg3wBhljQbMs00jEjHCSEo'
 
 
 # Flask constructor takes the name of
@@ -69,6 +74,29 @@ def user_login():
 		#do smth
 		pass
 	return 
+def calculate_order_amount(items):
+    # Replace this constant with a calculation of the order's amount
+    # Calculate the order total on the server to prevent
+    # people from directly manipulating the amount on the client
+    return 1400
+@app.route('/create-payment-intent', methods=['POST'])
+def create_payment():
+    try:
+        data = json.loads(request.data)
+        # Create a PaymentIntent with the order amount and currency
+        intent = stripe.PaymentIntent.create(
+            amount=calculate_order_amount(data['items']),
+            currency='sgd',
+            automatic_payment_methods={
+                'enabled': True,
+            },
+        )
+        return jsonify({
+            'clientSecret': intent['client_secret']
+        })
+    except Exception as e:
+        return jsonify(error=str(e)), 403
+
 
 
 # main driver function
