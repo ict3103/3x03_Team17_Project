@@ -12,6 +12,11 @@ import AddItem from './components/boilerplates/AddItem';
 import EditItem from './components/boilerplates/EditItem';
 import CollectionLogin from './components/boilerplates/CollectionLogin';
 import ShoppingCart from './components/boilerplates/ShoppingCart';
+import VerificationPage from './components/boilerplates/VerificationPage';
+import VerifiedPage from './components/boilerplates/VerifiedPage';
+import ResetPasswordPage from './components/boilerplates/ResetPasswordPage';
+import ResetSuccess from './components/boilerplates/ResetSuccessPage';
+
 
 
 
@@ -39,16 +44,31 @@ function App() {
       <Route path="/collectionLogin">
         <CollectionLogin ></CollectionLogin>   
       </Route>
+      <Route path="/verification">
+        <Main></Main>
+        <VerificationPage></VerificationPage>
+      </Route>
+      <Route path="/verifiedPage">
+        <VerifiedPage></VerifiedPage>
+      </Route>
       <Route exact path="/">
         <Main></Main>
       </Route>
       <Route path="/login">
-      <Main></Main>
+        <Main></Main>
         <Login></Login>
       </Route>
       <Route path="/register">
-      <Main></Main>
+        <Main></Main>
         <Register></Register>
+      </Route>
+      <Route path="/resetPassword/:token">
+        <Main></Main>
+        <ResetPasswordPage ></ResetPasswordPage>
+      </Route>
+      <Route path="/resetPasswordSuccess">
+        <Main></Main>
+        <ResetSuccess ></ResetSuccess>
       </Route>
     </div>
   );
