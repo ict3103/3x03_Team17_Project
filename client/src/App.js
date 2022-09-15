@@ -1,7 +1,5 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Route} from 'react-router-dom';
 import './components/boilerplates/Main';
@@ -19,14 +17,8 @@ import VerificationPage from './components/boilerplates/VerificationPage';
 import VerifiedPage from './components/boilerplates/VerifiedPage';
 import ResetPasswordPage from './components/boilerplates/ResetPasswordPage';
 import ResetSuccess from './components/boilerplates/ResetSuccessPage';
-import Payment from './components/boilerplates/Payment';
-import CheckoutForm from "./components/boilerplates/CheckoutForm";
+import Payment from './components/boilerplates/Payment'
 
-
-// Make sure to call loadStripe outside of a component’s render to avoid
-// recreating the Stripe object on every render.
-// This is your test publishable API key.
-const stripePromise = loadStripe("pk_test_51LfJR6CpB9vLLqcRnXQzXe50A06kntHbOSGnqXjH9peDgkHA50IzCByrzVAgVPqW7h4w55zQwq5i59FPFGwW9CRz00HkchsoUs");
 
 
 function App() {
@@ -93,15 +85,9 @@ function App() {
       <Route path="/resetPasswordSuccess">
         <Main></Main>
         <ResetSuccess ></ResetSuccess>
+      </Route>
       <Route path="/payment">
         <Payment></Payment>
-      </Route>
-      <Route path="/create-payment-intent">
-      {clientSecret && (
-        <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm />
-        </Elements>
-      )}
       </Route>
     </div>
   );
