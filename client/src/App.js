@@ -14,8 +14,14 @@ import AddItem from './components/boilerplates/AddItem';
 import EditItem from './components/boilerplates/EditItem';
 import CollectionLogin from './components/boilerplates/CollectionLogin';
 import ShoppingCart from './components/boilerplates/ShoppingCart';
+
+import VerificationPage from './components/boilerplates/VerificationPage';
+import VerifiedPage from './components/boilerplates/VerifiedPage';
+import ResetPasswordPage from './components/boilerplates/ResetPasswordPage';
+import ResetSuccess from './components/boilerplates/ResetSuccessPage';
 import Payment from './components/boilerplates/Payment';
 import CheckoutForm from "./components/boilerplates/CheckoutForm";
+
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -62,17 +68,31 @@ function App() {
       <Route path="/collectionLogin">
         <CollectionLogin ></CollectionLogin>   
       </Route>
+      <Route path="/verification">
+        <Main></Main>
+        <VerificationPage></VerificationPage>
+      </Route>
+      <Route path="/verifiedPage">
+        <VerifiedPage></VerifiedPage>
+      </Route>
       <Route exact path="/">
         <Main></Main>
       </Route>
       <Route path="/login">
-      <Main></Main>
+        <Main></Main>
         <Login></Login>
       </Route>
       <Route path="/register">
-      <Main></Main>
+        <Main></Main>
         <Register></Register>
       </Route>
+      <Route path="/resetPassword/:token">
+        <Main></Main>
+        <ResetPasswordPage ></ResetPasswordPage>
+      </Route>
+      <Route path="/resetPasswordSuccess">
+        <Main></Main>
+        <ResetSuccess ></ResetSuccess>
       <Route path="/payment">
         <Payment></Payment>
       </Route>

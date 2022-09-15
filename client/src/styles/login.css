@@ -5,6 +5,23 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
+#forgotIcon{
+  width:50px;
+  margin-top:20px;
+  margin-left:auto;
+  margin-right:auto;
+  display:block
+}
+
+
+divbuttonGroup{
+ width:fit-content;
+}
+
+Button{
+  width:fit-content;
+}
 body{
   margin: 0;
   padding: 0;
@@ -19,6 +36,8 @@ body{
 div.center.form{
   background-color: rgba(212, 205, 205, 0.9);
 }
+
+
 
 li,a{
   font-size:18px;
