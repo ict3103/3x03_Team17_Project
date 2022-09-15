@@ -123,7 +123,7 @@ def register_user():
 			else: 
 				hashed_password = sha512_crypt.hash(input_password)
 				token = s.dumps(input_email, salt='email-confirm')
-				msg = Message('Confirmation email',sender="noreply@demo.com",recipients = ['820848ebf58907@mailtrap.io'])
+				msg = Message('Confirmation email',sender="noreply@demo.com",recipients = [f'{os.getenv("MAIL_USERNAME")}@mailtrap.io'])
 				link = url_for('confirm_email',token=token,_external=True)
 				msg.body = 'your link is {}'.format(link)
 				mail.send(msg)
