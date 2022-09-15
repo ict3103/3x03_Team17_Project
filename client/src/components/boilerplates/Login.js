@@ -13,6 +13,7 @@ function Login(){
     
     window.localStorage.setItem("login",false);
     return (
+
     (forgotPwd===false)?
         <div class="center form">
             <h1>Login</h1>

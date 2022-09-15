@@ -65,7 +65,7 @@ function CollectionLogin(){
                 <div class="row">
                     <div class="col" style={{"align-items":"center","display":"flex","flex-direction":"column"}}>
                         <button id="productButton"  type="button" onClick={()=>{
-                            window.location.href=`/cart?laptopname=${val[0]}`;}} value={val[0]} class="btn btn-primary" >Purchase</button>
+                            window.location.href='/create-payment-intent';}} value={val[0]} class="btn btn-primary" >Purchase</button>
                     </div>
                 </div>
         
