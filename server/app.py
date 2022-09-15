@@ -53,6 +53,7 @@ def get_collection():
 	mysql.connection.commit()
 	#Closing the cursor
 	cursor.close()
+	print(collection)
 	return {'collection':collection}
 
 #-------------------------------------------------------------------------------------------

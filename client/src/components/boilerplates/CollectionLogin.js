@@ -57,24 +57,18 @@ function CollectionLogin(){
                 {collectionData.map((val)=>{
                     return <div class="column" >
                         <div class="card" style={{"width": "18rem;"}}>
-                        <img src={require(`../../${val[1]}`)} style={{"height": "160px","width":"254px"}}  class="card-img-top" alt=".." />
+                        <img src={require(`../../${val[2]}`)} style={{"height": "160px","width":"254px"}}  class="card-img-top" alt=".." />
                         <div class="card-body">
-                            <h5 class="card-title"> {val[0]} </h5>
-                            <p id="laptopPrice">${val[2]}</p>
+                            <h5 class="card-title"> {val[1]} </h5>
+                            <p id="laptopPrice">${val[3]}</p>
                         </div>
                 <div class="row">
                     <div class="col" style={{"align-items":"center","display":"flex","flex-direction":"column"}}>
                         <button id="productButton"  type="button" onClick={()=>{
-                            window.location.href='/create-payment-intent';}} value={val[0]} class="btn btn-primary" >Purchase</button>
+                            window.location.href='/payment';}} value={val[0]} class="btn btn-primary" >Purchase</button>
                     </div>
                 </div>
-        
-                
-                
-                
-                
         </div>
-        
     </div>
     
      })
