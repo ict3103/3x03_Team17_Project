@@ -1,15 +1,14 @@
 import { useState} from "react";
 import '../../styles/register.css'
 import Form from 'react-bootstrap/Form';
-import PersonIcon from '@mui/icons-material/Person';
 
 
 
 
 function Register(){
-    window.localStorage.setItem("login",false);
+  window.localStorage.setItem("login",false);
 
-    const [validated, setValidated] = useState(false);
+  const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -28,7 +27,7 @@ function Register(){
         <Form action="/register" method="POST" noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>Name</Form.Label>
-            <Form.Control type="name"/>
+            <Form.Control type="text" id = "username" name = "username"/>
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             <Form.Control.Feedback type="invalid">Name is required</Form.Control.Feedback>
           </Form.Group>

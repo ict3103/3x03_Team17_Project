@@ -1,7 +1,6 @@
-import {Link} from 'react-router-dom'
 import Form from 'react-bootstrap/Form';
 import '../../styles/payment.css'
-import Spinner from 'react-bootstrap/Spinner';
+
 
 function Payment(){
 
