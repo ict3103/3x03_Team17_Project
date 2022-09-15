@@ -22,20 +22,6 @@ import Payment from './components/boilerplates/Payment'
 
 
 function App() {
-  const [clientSecret, setClientSecret] = useState("");
-  const options = {
-    clientSecret,
-  };
-  useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    fetch("/create-payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, []);
 
   return (
     <div>
