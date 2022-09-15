@@ -1,12 +1,14 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
-from credentials import constants
-from flask import Flask,render_template, request,redirect,url_for, jsonify
+from threading import activeCount
+from flask import Flask,render_template, request,redirect,url_for, session, jsonify
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 import stripe
 import json
+from passlib.hash import sha512_crypt
+import MySQLdb.cursors, html, re 
 
 # This is your test secret API key.
 stripe.api_key = 'sk_test_51LfJR6CpB9vLLqcRHdRvFWdP1j2bExMLnqN4AoV0h9uaua8HC0gbeaiGlN4P7RAUXKZekyyi2pq2rg3wBhljQbMs00jEjHCSEo'
@@ -21,13 +23,17 @@ app.config['MYSQL_HOST'] = constants.HOST
 app.config['MYSQL_USER'] = constants.USER
 app.config['MYSQL_PASSWORD'] = constants.PASSWORD
 app.config['MYSQL_DB'] = constants.DATABASE
-
 mysql = MySQL(app)
 
 
 @app.route('/time')
 def get_current_time():
     return {'time': 123}
+
+
+#-------------------------------------------------------------------------------------------
+# Homepage fetching of data 
+#-------------------------------------------------------------------------------------------
 
 @app.route('/collection')
 def get_collection():
@@ -42,38 +48,124 @@ def get_collection():
 	cursor.close()
 	return {'collection':collection}
 
+#-------------------------------------------------------------------------------------------
+# Default Initial Sanitization 
+#-------------------------------------------------------------------------------------------
+
+def sanitization(input_string):
+    process_round0 =  html.escape(input_string)
+    process_round1 = process_round0.replace("&lt;","")   #<
+    process_round2 = process_round1.replace("&gt;","")   #>
+    process_round3 = process_round2.replace("&amp;","")  #&
+    process_round4 = process_round3.replace("&quot;","") #"
+    process_round5 = process_round4.replace("&apos;","") #'
+    final_processed = process_round5.replace("/","")     #/  
+    return final_processed
+
+#-------------------------------------------------------------------------------------------
+# Register 
+#-------------------------------------------------------------------------------------------
+
 @app.route('/register',methods=['POST'])
 def register_user():
+	validation_success = 0
+	validation_failure = 0 
+
 	if request.method == 'POST':
-		# print(request.form['name'])
-		# print(request.form['email'])
-		pw_hash = bcrypt.generate_password_hash(request.form['password'])
-		sql = "INSERT INTO UserInfo (name, email,password) VALUES(%s, %s, %s)"
-		data = (request.form['name'], request.form['email'], pw_hash)
-		conn = mysql.connection
-		cursor = conn.cursor()
-		cursor.execute(sql, data)
-		mysql.connection.commit()
-		cursor.close()
-		return redirect('/')
+		
+		#initial sanitization 
+		input_name = sanitization(request.form['name'])
+		input_email = sanitization(request.form['email'])
+		input_password = sanitization(request.form['password'])
+
+		# name input validation 
+		username_pattern = re.compile("^(?![-._])(?!.*[_.-]{2})[\w.-]{6,30}(?<![-._])$")
+		if username_pattern.match(input_name): 
+			validation_success += 1 
+		else: 
+            #"Max of 30 characters, Uppercase & lowercase, 0-9 and special characters"
+			validation_failure += 1
+
+		# email input validation
+		email_pattern = re.compile("^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$")
+		if email_pattern.match(input_email): 
+			validation_success += 1
+		else: 
+			validation_failure += 1 
+
+		# password input validation
+		password_pattern = re.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$")
+		if password_pattern.match(input_password): 
+			validation_success += 1
+		else: 
+            #"Minimum 8 and maximum 20 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character"
+			validation_failure += 1 
+
+		#once all server validation is ok; proceed 
+		if validation_failure == 0: 
+		
+			#Creating a connection cursor
+			cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+            #Creating a parameterized query & Executing SQL Statements
+			cursor.execute("SELECT * FROM UserInfo WHERE email = %s", (input_email,))
+			account = cursor.fetchone()
+
+			if account: 
+				return 'Registered Email Address'
+			else: 
+				hashed_password = sha512_crypt.hash(input_password)
+				sql = "INSERT INTO UserInfo (name, email, password) VALUES(%s, %s, %s)"
+				data = (input_name,input_email,hashed_password)
+
+				conn = mysql.connection
+				cursor = conn.cursor()
+				cursor.execute(sql, data)
+
+				mysql.connection.commit()
+				cursor.close()
+				return redirect('/')
 	else:
 		return 'Error while adding user'
 
+#-------------------------------------------------------------------------------------------
+# login 
+#-------------------------------------------------------------------------------------------
+
 @app.route('/login',methods=['POST'])
 def user_login():
-	# conn = mysql.connection
-	# cursor = conn.cursor()
-	# cursor.execute("SELECT name,password FROM UserInfo WHERE name=%s",request.form['name'])
-	# data = cursor.fetchall()
-	# print(data)
-	return redirect('/adminDashboard')
-	try:
-		#do smth
-		pass
-	except: 
-		#do smth
-		pass
-	return 
+	if request.method == 'POST':
+
+		input_email = sanitization(request.form['inputName'])
+		input_password = request.form['inputPwd']
+
+		#Creating a connection cursor
+		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+		#Creating a parameterized query & Executing SQL Statements
+		cursor.execute("SELECT * from UserInfo WHERE email = %s",(input_email,))
+		account = cursor.fetchone() 
+
+		if account is not None: 
+			gethashedpassword_fromdb = account.get("password")
+
+			#passlib starts here
+			result = sha512_crypt.verify(input_password,gethashedpassword_fromdb)
+
+			if result == True: 
+				#sessions code starts here 
+				session['loggedin'] = True
+				session['id'] = account['email']
+				session['name'] = account['name']
+
+				return redirect('/adminDashboard')
+			else: 
+				return 'Incorrect username/password. Please Try Again.'
+		
+		mysql.connection.commit()
+		cursor.close()
+	return redirect ("/")
+  
 def calculate_order_amount(items):
     # Replace this constant with a calculation of the order's amount
     # Calculate the order total on the server to prevent
@@ -97,7 +189,9 @@ def create_payment():
     except Exception as e:
         return jsonify(error=str(e)), 403
 
-
+#-------------------------------------------------------------------------------------------
+# main driver  
+#-------------------------------------------------------------------------------------------
 
 # main driver function
 if __name__ == '__main__':
