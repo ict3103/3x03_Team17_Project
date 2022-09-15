@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom'
 function ShoppingCart() {
   return (
     <div style={{"paddingTop":"20px"}} >
@@ -57,7 +58,7 @@ function ShoppingCart() {
         </table>
         
         <div class="card-body border-top">
-            <a href="/" class="btn btn-primary float-md-right"> Make Purchase <i class="fa fa-chevron-right"></i> </a>
+            <Link to="payment2"><a class="btn btn-primary float-md-right">Make Purchase <i class="fa fa-chevron-right"></i> </a></Link>
             <a href="/" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
         </div>  
         </div> 
@@ -68,21 +69,6 @@ function ShoppingCart() {
         
             </main>
             <aside class="col-md-3">
-                <div class="card mb-3">
-                    <div class="card-body">
-                    <form>
-                        <div class="form-group">
-                            <label>Have coupon?</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="" placeholder="Coupon code" />
-                                <span class="input-group-append"> 
-                                    <button class="btn btn-primary">Apply</button>
-                                </span>
-                            </div>
-                        </div>
-                    </form>
-                    </div> 
-                </div>  
                 <div class="card">
                     <div class="card-body">
                             <dl class="dlist-align">
