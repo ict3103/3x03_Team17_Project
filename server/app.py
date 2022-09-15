@@ -81,7 +81,7 @@ def register_user():
 
 	if request.method == 'POST':
 		#initial sanitization 
-		input_name = sanitization(request.form['name'])
+		input_name = sanitization(request.form['username'])
 		input_email = sanitization(request.form['email'])
 		input_password = sanitization(request.form['password'])
 
@@ -109,7 +109,7 @@ def register_user():
 			validation_failure += 1 
 
 		#once all server validation is ok; proceed 
-		if validation_failure == 0: 
+		if validation_failure >= 0: 
 		
 			#Creating a connection cursor
 			cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -117,12 +117,17 @@ def register_user():
             #Creating a parameterized query & Executing SQL Statements
 			cursor.execute("SELECT * FROM UserInfo WHERE email = %s", (input_email,))
 			account = cursor.fetchone()
-
+			print(account)
 			if account: 
 				return 'Registered Email Address'
 			else: 
 				hashed_password = sha512_crypt.hash(input_password)
-				sql = "INSERT INTO UserInfo (name, email, password) VALUES(%s, %s, %s)"
+				token = s.dumps(input_email, salt='email-confirm')
+				msg = Message('Confirmation email',sender="noreply@demo.com",recipients = ['820848ebf58907@mailtrap.io'])
+				link = url_for('confirm_email',token=token,_external=True)
+				msg.body = 'your link is {}'.format(link)
+				mail.send(msg)
+				sql = "INSERT INTO UserInfo (username, email, password) VALUES(%s, %s, %s)"
 				data = (input_name,input_email,hashed_password)
 
 				conn = mysql.connection
@@ -131,9 +136,9 @@ def register_user():
 
 				mysql.connection.commit()
 				cursor.close()
-				return redirect('/')
-	else:
-		return 'Error while adding user'
+				return redirect('http://localhost:3000/verification')
+		else:
+			return 'Error while adding user'
 	
 
 #-------------------------------------------------------------------------------------------
