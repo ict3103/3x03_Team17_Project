@@ -1,5 +1,5 @@
 HOST = 'localhost'
 USER = 'root'
-PASSWORD = 'nomekop1oo'
+PASSWORD = ''
 DATABASE = 'ICT3x03'
 PORT = 3303
