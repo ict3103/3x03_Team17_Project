@@ -20,27 +20,27 @@ function Collection(){
    
     return(<div >
      {window.localStorage.getItem('login')==="false" ?
-      <nav class="navbar navbar-expand-lg navbar-dark" style={{"background-color": "#060707"}}>
-      <div class="container-fluid"> <FaReact className="App-logo" />
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+      <nav className="navbar navbar-expand-lg navbar-dark" style={{backgroundColor: "#060707"}}>
+      <div className="container-fluid"> <FaReact className="App-logo" />
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span className="navbar-toggler-icon"></span>
         </button>
-           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <Link class="nav-link" aria-current="page" to="/">Home</Link>
+           <div className="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                <li className="nav-item">
+                  <Link className="nav-link" aria-current="page" to="/">Home</Link>
                 </li>
-                <li class="nav-item">
-                  <Link class="nav-link" to="/collection">Shop</Link>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/collection">Shop</Link>
                 </li>
               </ul>
-              <form class="d-flex">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                      <li class="nav-item">
-                        <Link class="nav-link" aria-current="page" to="register">Register</Link>
+              <form className="d-flex">
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                      <li className="nav-item">
+                        <Link className="nav-link" aria-current="page" to="register">Register</Link>
                       </li>
-                      <li class="nav-item">
-                          <Link class="btn btn-dark" to="login" style={{"border-radius": "30px;","background-color": "transparent"}}role="button">Login</Link>
+                      <li className="nav-item">
+                          <Link className="btn btn-dark" to="login" style={{borderRadius: "30px;","backgroundColor": "transparent"}}role="button">Login</Link>
                       </li>       
                     </ul>
               </form>
@@ -51,19 +51,19 @@ function Collection(){
         }
 
         
-    <div class="row" id="div1">
+    <div className="row" id="div1">
       
     {collectionData.map((val)=>{
-        return <div class="column">
-        <div class="card" style={{"width": "18rem;"}}>
-                <img src={require(`../../${val[2]}`)} style={{"height": "160px","width":"254px"}}  class="card-img-top" alt=".." />
-                <div class="card-body">
-                    <h5 class="card-title"> {val[1]} </h5>
+        return <div className="column">
+        <div className="card" style={{width: "18rem;"}}>
+                <img src={require(`../../${val[2]}`)} style={{height: "160px","width":"254px"}}  className="card-img-top" alt=".." />
+                <div className="card-body">
+                    <h5 className="card-title"> {val[1]} </h5>
                     <p id="laptopPrice">${val[3]}</p>
                 </div>
-                <div class="row">
-                    <div class="col" style={{"align-items":"center","display":"flex","flex-direction":"column"}}>
-                        <button id="productButton"  type="button" onClick={handleCartButton} value={val[0]} class="btn btn-primary" >Purchase</button>
+                <div className="row">
+                    <div className="col" style={{alignItems:"center",display:"flex","flexDirection":"column"}}>
+                        <button id="productButton"  type="button" onClick={handleCartButton} value={val[0]} className="btn btn-primary" >Purchase</button>
                     </div>
                 </div>
         </div>
@@ -74,9 +74,9 @@ function Collection(){
 
     <div id="backButton1">
         {window.localStorage.getItem('login')==="true"?
-        <Link to="/adminDashboard" class="btn btn-secondary btn-lg">Back</Link>
+        <Link to="/adminDashboard" className="btn btn-secondary btn-lg">Back</Link>
       : 
-      <Link to="/" class="btn btn-secondary btn-lg">Back</Link>  
+      <Link to="/" className="btn btn-secondary btn-lg">Back</Link>  
       }
         
     </div>
