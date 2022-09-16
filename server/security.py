@@ -18,8 +18,6 @@ def hashpassword(password):
     return sha512_crypt.hash(password)
 
 def verify_password(input_password,gethashedpassword_fromdb):
-    print(input_password)
-    print(gethashedpassword_fromdb)
     return sha512_crypt.verify(input_password,gethashedpassword_fromdb)
 
 def username_pattern():
