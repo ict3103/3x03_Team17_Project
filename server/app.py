@@ -13,7 +13,6 @@ import sendmail
 import os
 
 app = Flask(__name__)
-cors = CORS(app)
 app.config['MYSQL_HOST'] = os.getenv("HOST")
 app.config['MYSQL_USER'] = os.getenv("DB_USER")
 app.config['MYSQL_PASSWORD'] = os.getenv("DB_PASSWORD")
