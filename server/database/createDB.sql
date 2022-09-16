@@ -18,7 +18,7 @@ CREATE TABLE `UserInfo` (
   `userId` INT NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL UNIQUE,
-  `password` varchar(300) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `verification_status` BOOLEAN DEFAULT false,
   PRIMARY KEY (`userId`)
 );
