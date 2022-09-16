@@ -80,9 +80,7 @@ def user_login():
 		input_email = security.sanitization(request.form['email'])
 		input_password = request.form['inputPwd']
 		account = api.db_query_fetchone(api.get_account(input_email))
-		print(account)
-		print(account)
-		if account is not None: 
+		if account[2] is not None: 
 			gethashedpassword_fromdb = account[3]
 			#passlib starts here
 			result = security.verify_password(input_password,gethashedpassword_fromdb)
