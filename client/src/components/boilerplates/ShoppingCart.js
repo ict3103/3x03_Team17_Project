@@ -1,40 +1,40 @@
 import {Link} from 'react-router-dom'
 function ShoppingCart() {
   return (
-    <div style={{"paddingTop":"20px"}} >
-        <section class="section-pagetop bg">
-        <div class="container">
-            <h2 class="title-page">Shopping cart</h2>
+    <div style={{paddingTop:"20px"}} >
+        <section className="section-pagetop bg">
+        <div className="container">
+            <h2 className="title-page">Shopping cart</h2>
         </div> 
         </section>
 
-        <section class="section-content padding-y">
-        <div class="container">
-        <div class="row">
-            <main class="col-md-9">
-        <div class="card">
+        <section className="section-content padding-y">
+        <div className="container">
+        <div className="row">
+            <main className="col-md-9">
+        <div className="card">
         
-        <table class="table table-borderless table-shopping-cart">
-        <thead class="text-muted">
-        <tr class="small text-uppercase">
+        <table className="table table-borderless table-shopping-cart">
+        <thead className="text-muted">
+        <tr className="small text-uppercase">
         <th scope="col">Product</th>
         <th scope="col" width="120">Quantity</th>
         <th scope="col" width="120">Price</th>
-        <th scope="col" class="text-right" width="200"> </th>
+        <th scope="col" className="text-right" width="200"> </th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>
-                <figure class="itemside">
-                    {/* <div class="aside"><img style={{"width":"70px"}} src={require("../../images/laptop_images/laptop2.jpg")} class="img-sm" /></div> */}
-                    {/* <figcaption class="info">
-                        <a href="#" class="title text-dark">name of laptop</a>
+                <figure className="itemside">
+                    {/* <div className="aside"><img style={{width:"70px"}} src={require("../../images/laptop_images/laptop2.jpg")} className="img-sm" /></div> */}
+                    {/* <figcaption className="info">
+                        <a href="#" className="title text-dark">name of laptop</a>
                     </figcaption> */}
                 </figure>
             </td>
             <td> 
-                <select class="form-control">
+                <select className="form-control">
                     <option>1</option>
                     <option>2</option>  
                     <option>3</option>  
@@ -42,14 +42,14 @@ function ShoppingCart() {
                 </select> 
             </td>
             <td> 
-                <div class="price-wrap"> 
-                    <var class="price">$1156.00</var> 
-                    <small class="text-muted"> $315.20 each </small> 
+                <div className="price-wrap"> 
+                    <var className="price">$1156.00</var> 
+                    <small className="text-muted"> $315.20 each </small> 
                 </div> 
             </td>
-            <td class="text-right"> 
-            <a data-original-title="Save to Wishlist" title="" href="/" class="btn btn-light mr-2" data-toggle="tooltip"> <i class="fa fa-heart"></i></a> 
-            <a href="/" class="btn btn-light"> Remove</a>
+            <td className="text-right"> 
+            <a data-original-title="Save to Wishlist" title="" href="/" className="btn btn-light mr-2" data-toggle="tooltip"> <i className="fa fa-heart"></i></a> 
+            <a href="/" className="btn btn-light"> Remove</a>
             </td>
         </tr>
    
@@ -57,34 +57,34 @@ function ShoppingCart() {
         </tbody>
         </table>
         
-        <div class="card-body border-top">
-            <Link to="payment2"><a class="btn btn-primary float-md-right">Make Purchase <i class="fa fa-chevron-right"></i> </a></Link>
-            <a href="/" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
+        <div className="card-body border-top">
+            <Link to="payment2"><a className="btn btn-primary float-md-right">Make Purchase <i className="fa fa-chevron-right"></i> </a></Link>
+            <a href="/" className="btn btn-light"> <i className="fa fa-chevron-left"></i> Continue shopping </a>
         </div>  
         </div> 
         
-        <div class="alert alert-success mt-3">
-            <p class="icontext"><i class="icon text-success fa fa-truck"></i> Free Delivery within 1-2 weeks</p>
+        <div className="alert alert-success mt-3">
+            <p className="icontext"><i className="icon text-success fa fa-truck"></i> Free Delivery within 1-2 weeks</p>
         </div>
         
             </main>
-            <aside class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                            <dl class="dlist-align">
+            <aside className="col-md-3">
+                <div className="card">
+                    <div className="card-body">
+                            <dl className="dlist-align">
                             <dt>Total price:</dt>
-                            <dd class="text-right">USD 568</dd>
+                            <dd className="text-right">USD 568</dd>
                             </dl>
-                            <dl class="dlist-align">
+                            <dl className="dlist-align">
                             <dt>Discount:</dt>
-                            <dd class="text-right">USD 658</dd>
+                            <dd className="text-right">USD 658</dd>
                             </dl>
-                            <dl class="dlist-align">
+                            <dl className="dlist-align">
                             <dt>Total:</dt>
-                            <dd class="text-right  h5"><strong>$1,650</strong></dd>
+                            <dd className="text-right  h5"><strong>$1,650</strong></dd>
                             </dl>
                             <hr />
-                            <p class="text-center mb-3">
+                            <p className="text-center mb-3">
                                 <img src="assets/images/misc/payments.png" alt='' height="26" />
                             </p>
                             
@@ -96,8 +96,8 @@ function ShoppingCart() {
         </div> 
         </section>
        
-        <section class="section-name bg padding-y">
-        <div class="container">
+        <section className="section-name bg padding-y">
+        <div className="container">
         <h6>Payment and refund policy</h6>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -115,9 +115,9 @@ function ShoppingCart() {
         </div>
         </section>
       
-        <footer class="section-footer border-top padding-y">
-            <div class="container">
-                <p class="float-md-right"> 
+        <footer className="section-footer border-top padding-y">
+            <div className="container">
+                <p className="float-md-right"> 
                     &copy; Copyright 2020 All rights reserved
                 </p>
                 <p>
