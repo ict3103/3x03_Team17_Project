@@ -19,9 +19,9 @@ function Login(){
             <h1>Login</h1>
             <form action="login" method="post" >
                 <div class="txt_field">
-                <input type="text" name="inputName" id="inputName" required/>
+                <input type="email" name="email" id="email" required/>
                 <span></span>
-                <label for="inputName">Email</label>
+                <label for="email">Email</label>
                 </div>
                 <div class="txt_field">
                 <input type="password" name="inputPwd" id="inputPwd" required/>

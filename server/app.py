@@ -33,7 +33,7 @@ mail = Mail(app)
 #-------------------------------------------------------------------------------------------
 @app.route('/collection')
 def get_collection():
-	collection = api.db_query_fetchall(api.get_laptop())
+	collection = api.db_query_fetchall(api.get_all_laptop())
 	return {'collection':collection}
 
 #-------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ def register_user():
 			else: 
 				hashed_password = security.hashpassword(input_password)
 				sendmail.sendmail(input_email,"confirm_email")
-				api.db_query(api.insert_user(input_name,input_email,hashed_password))
+				api.db_query(api.insert_new_user(input_name,input_email,hashed_password))
 				return redirect('http://localhost:3000/verification')
 
 @app.route('/confirm_email/<token>')
@@ -77,11 +77,11 @@ def confirm_email(token):
 @app.route('/login',methods=['POST'])
 def user_login():
 	if request.method == 'POST':
-		input_email = security.sanitization(request.form['inputName'])
+		input_email = security.sanitization(request.form['email'])
 		input_password = request.form['inputPwd']
 		account = api.db_query_fetchone(api.get_account(input_email))
 		print(account)
-		print(account[3])
+		print(account)
 		if account is not None: 
 			gethashedpassword_fromdb = account[3]
 			#passlib starts here
@@ -94,7 +94,7 @@ def user_login():
 				return redirect('/adminDashboard')
 			else: 
 				return 'Incorrect username/password. Please Try Again.'
-	return redirect ("/")
+		return 'Incorrect username/password. Please Try Again.'
 
 #-------------------------------------------------------------------------------------------
 # forgot password verification 
