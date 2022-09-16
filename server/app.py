@@ -81,7 +81,7 @@ def user_login():
 		input_password = request.form['inputPwd']
 		account = api.db_query_fetchone(api.get_account(input_email))
 		print(account)
-		print(account[3])
+		print(account)
 		if account is not None: 
 			gethashedpassword_fromdb = account[3]
 			#passlib starts here
@@ -94,7 +94,7 @@ def user_login():
 				return redirect('/adminDashboard')
 			else: 
 				return 'Incorrect username/password. Please Try Again.'
-	return redirect ("/")
+		return 'Incorrect username/password. Please Try Again.'
 
 #-------------------------------------------------------------------------------------------
 # forgot password verification 
