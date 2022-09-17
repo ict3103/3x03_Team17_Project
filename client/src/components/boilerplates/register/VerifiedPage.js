@@ -2,7 +2,7 @@
 import Container from 'react-bootstrap/Container';
 import {Card,Row} from 'react-bootstrap';
 import {Link} from 'react-router-dom'
-import '../../styles/main.css'
+import '../../../styles/main.css'
 import { FaReact} from 'react-icons/fa';
 
 
@@ -11,7 +11,7 @@ function VerifiedPage(){
     return (
       <div >
         <video autoPlay loop muted className="back-video">
-        <source src={require("../../images/laptop_video.mp4")} type="video/mp4"/>
+        <source src={require("../../../images/laptop_video.mp4")} type="video/mp4"/>
       </video>
     
       <nav className="navbar navbar-expand-lg navbar-dark" style={{backgroundColor: "#060707"}}>
@@ -46,7 +46,7 @@ function VerifiedPage(){
     <Container fluid>
         <Row>
         <Card className="align-middle" style={{ 'width': '40rem', 'margin': '0 auto','float':'none','margin-top':'100px','backgroundColor':'rgba(212, 205, 205, 0.97'}}>
-        <img src={require('../../images/email_icon.png')} style={{'width':'150px','margin': '0 auto','marginTop':'60px'}} alt='failed'></img>
+        <img src={require('../../../images/email_icon.png')} style={{'width':'150px','margin': '0 auto','marginTop':'60px'}} alt='failed'></img>
             <Card.Body>
                 <Card.Text>
                 <h3>Account verified</h3>

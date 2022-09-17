@@ -15,32 +15,32 @@ function Login(){
     return (
 
     (forgotPwd===false)?
-        <div className="center form">
+        <div class="center form">
             <h1>Login</h1>
             <form action="login" method="post" >
-                <div className="txt_field">
+                <div class="txt_field">
                 <input type="email" name="email" id="email" required/>
                 <span></span>
-                <label htmlFor="email">Email</label>
+                <label for="email">Email</label>
                 </div>
-                <div className="txt_field">
+                <div class="txt_field">
                 <input type="password" name="inputPwd" id="inputPwd" required/>
                 <span></span>
-                <label htmlFor="inputPwd">Password</label>
+                <label for="inputPwd">Password</label>
                 </div>
-                <div className="pass" onClick={changeState} >Forgot Password?</div>
-                <input type="submit" style={{borderRadius: "30px;"}}  value="Login"/>
-                <div className="signup_link">
+                <div class="pass" onClick={changeState} >Forgot Password?</div>
+                <input type="submit" style={{"border-radius": "30px;"}}  value="Login"/>
+                <div class="signup_link">
                 Not a member? <Link to="register">Signup</Link></div>
                 </form>
             </div>
             :
         //--------forgot password form ---------
-        <div className="center form" style={{'height':'400px'}}>
+        <div class="center form" style={{'height':'400px'}}>
             <img src={require("../../images/forgot_password.png")} id='forgotIcon' alt=''></img>
             <h1>Reset password</h1>
             <form action="forgotPassword" method="post">
-                <div className="txt_field">
+                <div class="txt_field">
                     <input type="email" name="email" id="email" placeholder="enter your email" required/>
                     <span></span>
                 </div>

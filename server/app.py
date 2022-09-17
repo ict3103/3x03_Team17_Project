@@ -1,11 +1,11 @@
 # Importing flask module in the project is mandatory
-# An object of Flask className is our WSGI application.
+# An object of Flask class is our WSGI application.
 from threading import activeCount
 from flask import Flask, request,redirect,session
-from flask_cors import CORS
+from flask_cors import CORS,cross_origin
 from dotenv import load_dotenv
 from flask_mysqldb import MySQL
-from flask_mail import Mail
+from flask_mail import Mail,Message
 load_dotenv()
 import api
 import security
@@ -131,7 +131,7 @@ def reset_success(token):
 
 # main driver function
 if __name__ == '__main__':
-	# run() method of Flask className runs the application
+	# run() method of Flask class runs the application
 	# on the local development server.
 	# app.run(host=constants.HOST, port=constants.PORT)
 	app.run(debug=True)
