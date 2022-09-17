@@ -9,7 +9,7 @@ function VerificationPage(){
     return (
     <Container fluid>
         <Row>
-        <Card className="align-middle" style={{ 'width': '40rem', 'margin': '0 auto','float':'none','margin-top':'100px','backgroundColor':'rgba(212, 205, 205, 0.97'}}>
+        <Card class="align-middle" style={{ 'width': '40rem', 'margin': '0 auto','float':'none','margin-top':'100px','background-color':'rgba(212, 205, 205, 0.97'}}>
             <img src={require('../../images/email_icon.png')} style={{'width':'150px','margin': '0 auto'}} alt='failed'></img>
             <Card.Body>
                 <Card.Text>
