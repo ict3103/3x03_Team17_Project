@@ -80,23 +80,21 @@ def user_login():
 		input_email = security.sanitization(request.form['email'])
 		input_password = request.form['inputPwd']
 		account = api.db_query_fetchone(api.get_account(input_email))
-		# print(account)
-		#account[2] = email , account[3] = password, account[4] = verification_status
-		if account[2] is not None: 
-			if account[4] == 1: #if email is verified, status = 1
-				gethashedpassword_fromdb = account[3]
-				result = security.verify_password(input_password,gethashedpassword_fromdb)
-				if result == True: 
-					#sessions code starts here 
-					session['loggedin'] = True
-					session['id'] = account['email']
-					session['name'] = account['name']
-					return redirect('/Payment')
-				else: 
-					return 'Incorrect username/password. Please Try Again.'
-			else:
-				return redirect('http://localhost:3000/verification')
-		return 'Incorrect username/password. Please Try Again.'
+		print(account)
+		print(account[3])
+		if account is not None: 
+			gethashedpassword_fromdb = account[3]
+			#passlib starts here
+			result = security.verify_password(input_password,gethashedpassword_fromdb)
+			if result == True: 
+				#sessions code starts here 
+				session['loggedin'] = True
+				#session['id'] = tuple(map(str, account['email'].split(', ')))
+				#session['name'] = account['name']
+				return redirect('/adminDashboard')
+			else: 
+				return 'Incorrect username/password. Please Try Again.'
+	return redirect ("/")
 
 #-------------------------------------------------------------------------------------------
 # forgot password verification 
@@ -138,6 +136,7 @@ if __name__ == '__main__':
 	# run() method of Flask class runs the application
 	# on the local development server.
 	# app.run(host=constants.HOST, port=constants.PORT)
+	app.config['SECRET_KEY'] = 'G$upli2St8RZxMtNeJU90'
 	app.run(debug=True)
 
 	
