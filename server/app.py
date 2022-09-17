@@ -33,7 +33,7 @@ mail = Mail(app)
 #-------------------------------------------------------------------------------------------
 @app.route('/collection')
 def get_collection():
-	collection = api.db_query_fetchall(api.get_laptop())
+	collection = api.db_query_fetchall(api.get_all_laptop())
 	return {'collection':collection}
 
 @app.route('/add_cartItem', methods = ['POST'])
@@ -66,7 +66,7 @@ def register_user():
 			else: 
 				hashed_password = security.hashpassword(input_password)
 				sendmail.sendmail(input_email,"confirm_email")
-				api.db_query(api.insert_user(input_name,input_email,hashed_password))
+				api.db_query(api.insert_new_user(input_name,input_email,hashed_password))
 				return redirect('http://localhost:3000/verification')
 
 @app.route('/confirm_email/<token>')
@@ -84,11 +84,9 @@ def confirm_email(token):
 @app.route('/login',methods=['POST'])
 def user_login():
 	if request.method == 'POST':
-		input_email = security.sanitization(request.form['inputName'])
+		input_email = security.sanitization(request.form['email'])
 		input_password = request.form['inputPwd']
 		account = api.db_query_fetchone(api.get_account(input_email))
-		#print(account)
-		#print(account[3])
 		if account is not None: 
 			gethashedpassword_fromdb = account[3]
 			#passlib starts here
@@ -96,12 +94,12 @@ def user_login():
 			if result == True: 
 				#sessions code starts here 
 				session['loggedin'] = True
-				session['id'] = account['email']
-				session['name'] = account['name']
-				return redirect('/adminDashboard')
+				#session['id'] = tuple(map(str, account['email'].split(', ')))
+				#session['name'] = account['name']
+				return redirect('/collectionlogin')
 			else: 
 				return 'Incorrect username/password. Please Try Again.'
-	return redirect ("/")
+		return 'Incorrect username/password. Please Try Again.'
 
 #-------------------------------------------------------------------------------------------
 # forgot password verification 
@@ -152,6 +150,7 @@ if __name__ == '__main__':
 	# run() method of Flask class runs the application
 	# on the local development server.
 	# app.run(host=constants.HOST, port=constants.PORT)
+	app.config['SECRET_KEY'] = 'G$upli2St8RZxMtNeJU90'
 	app.run(debug=True)
 
 	

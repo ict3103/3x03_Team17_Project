@@ -1,5 +1,5 @@
 import { useState} from "react";
-import '../../styles/register.css'
+import '../../../styles/register.css'
 import Form from 'react-bootstrap/Form';
 
 

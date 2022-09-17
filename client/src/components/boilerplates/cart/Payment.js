@@ -1,5 +1,5 @@
 import Form from 'react-bootstrap/Form';
-import '../../styles/payment.css'
+import '../../../styles/payment.css'
 
 
 function Payment(){

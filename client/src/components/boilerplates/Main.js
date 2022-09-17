@@ -12,7 +12,7 @@ function Main() {
       <source src={require("../../images/laptop_video.mp4")} type="video/mp4"/>
     </video>
   
-    <nav class="navbar navbar-expand-lg navbar-dark" style={{"background-color": "#060707"}}>
+    <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">    
       <FaReact className="App-logo" />
 

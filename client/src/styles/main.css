@@ -15,6 +15,11 @@ video{
     margin-right: 200px;
 }
 
+nav{
+    background-color: rgba(0, 0, 0);
+    height:70px;
+}
+
 #exploreButton1{
     text-decoration: none;
     display:inline-block;

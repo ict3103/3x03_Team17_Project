@@ -24,7 +24,7 @@ def db_query(sql):
 	mysql.connection.commit()
 	cursor.close()
 
-#retrival of all data
+#fetch all
 def db_query_fetchall(sql):
 	cursor = mysql.connection.cursor()
 	cursor.execute(sql)
@@ -33,7 +33,7 @@ def db_query_fetchall(sql):
 	cursor.close()
 	return data
 
-#retrival of one data only
+#fetch one
 def db_query_fetchone(sql):
 	cursor = mysql.connection.cursor()
 	cursor.execute(sql)
@@ -42,8 +42,11 @@ def db_query_fetchone(sql):
 	cursor.close()
 	return data
 
+#-------------------------------------------------------------------------------------------
+# MYSQL query statements
+#-------------------------------------------------------------------------------------------
 
-def get_laptop():
+def get_all_laptop():
     return "SELECT * FROM LaptopInfo"
 
 def get_cartItemsInfo(userId):
@@ -52,7 +55,7 @@ def get_cartItemsInfo(userId):
 def get_account(email):
     return f"SELECT * FROM UserInfo WHERE email = '{email}'"
 
-def insert_user(input_name,input_email,hashed_password):
+def insert_new_user(input_name,input_email,hashed_password):
     return f"INSERT INTO UserInfo (username, email, password) VALUES('{input_name}', '{input_email}', '{hashed_password}')"
 
 def insert_cartItem(userId, laptopId, quantity):
