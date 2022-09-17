@@ -23,18 +23,18 @@ function ResetPasswordPage(){
     console.log(path1)
     return(
         
-        <div className="center form" style={{'height':'500px'}}>
+        <div class="center form" style={{'height':'500px'}}>
             <h1>Reset Password</h1>
             <form action={path1} method="post"  >
-                <div className="txt_field">
+                <div class="txt_field">
                 <input type="password" name="newPwd" id="newPwd" required/>
-                <label htmlFor="newPwd">New password</label>
+                <label for="newPwd">New password</label>
                 </div>
-                <div className="txt_field">
+                <div class="txt_field">
                 <input type="password" name="newPwd2" id="newPwd2" required/>
-                <label htmlFor="newPwd2">Confirm new password</label>
+                <label for="newPwd2">Confirm new password</label>
                 </div>
-                <input type="submit" style={{borderRadius: "30px;"}}  value="ResetPassword"/>
+                <input type="submit" style={{"border-radius": "30px;"}}  value="ResetPassword"/>
             </form>
         </div>
     )
