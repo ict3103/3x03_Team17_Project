@@ -13,6 +13,7 @@ import VerifiedPage from './components/boilerplates/register/VerifiedPage';
 import ResetPasswordPage from './components/boilerplates/resetPassword/ResetPasswordPage';
 import ResetSuccess from './components/boilerplates/resetPassword/ResetSuccessPage';
 import Payment from './components/boilerplates/cart/Payment'
+import CollectionLogin from './components/boilerplates/CollectionLogin';
 
 
 
@@ -54,6 +55,9 @@ function App() {
       <Route path="/resetPasswordSuccess">
         <Main></Main>
         <ResetSuccess ></ResetSuccess>
+      </Route>
+      <Route path="/collectionlogin">
+        <CollectionLogin ></CollectionLogin>   
       </Route>
 
        {/* <Route path="/addItem">

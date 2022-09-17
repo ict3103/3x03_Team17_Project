@@ -54,15 +54,15 @@ function Collection(){
     <div class="row" id="div1">
       
     {collectionData.map((val)=>{
-        return <div class="column">
-        <div class="card" style={{"width": "18rem;"}}>
+        return <div className="column">
+        <div className="card" style={{"width": "18rem;"}}>
                 <img src={require(`../../${val[2]}`)} style={{"height": "160px","width":"254px"}}  class="card-img-top" alt=".." />
-                <div class="card-body">
-                    <h5 class="card-title"> {val[1]} </h5>
+                <div className="card-body">
+                    <h5 className="card-title"> {val[1]} </h5>
                     <p id="laptopPrice">${val[3]}</p>
                 </div>
                 <div class="row">
-                    <div class="col" style={{"align-items":"center","display":"flex","flex-direction":"column"}}>
+                    <div className="col" style={{"align-items":"center","display":"flex","flex-direction":"column"}}>
                         <button id="productButton"  type="button" onClick={handleCartButton} value={val[0]} class="btn btn-primary" >Purchase</button>
                     </div>
                 </div>

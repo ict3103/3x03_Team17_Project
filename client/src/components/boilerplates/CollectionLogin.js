@@ -16,21 +16,15 @@ function CollectionLogin(){
     window.location.href="/"; 
     };
     function handleCartButton(){
-        // window.localStorage.getItem('login')==="true" ? 
-        // window.location.href="/cart":window.location.href="/login"
+        window.localStorage.getItem('login')==="true" ? 
+        window.location.href="/cart":window.location.href="/login"
     }
     
     
     return (<div>
      {/* sidebar*/}
       <div className="d-flex" id="wrapper">
-    <div className="border-end bg-white" style={{width:"250px"}} id="sidebar-wrapper">
-        <div className="sidebar-heading border-bottom bg-light" id="dashHeader">Administration</div>
-        <div className="list-group list-group-flush" id="dashItem">
-            <Link className="list-group-item list-group-item-action list-group-item-light p-3" to="collectionLogin">Purchase Laptop</Link>
-            {/* <Link className="list-group-item list-group-item-action list-group-item-light p-3" to="addItem">Add item</Link> */}
-        </div>
-    </div>
+    
     {/* navbar */}
             <div id="page-content-wrapper">
                 <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom" style={{height:"70px"}}>
@@ -43,9 +37,9 @@ function CollectionLogin(){
                             <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
                             
                             <li><button id="cartButton" onClick={handleCartButton} className="btn btn-outline-dark rounded-circle" 
-                            ><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-cart-fill" viewBox="0 0 16 16">
-                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                            </svg></button></li>
+                            ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                          </svg></button></li>
                             <li><Link id="logoutButton2" onClick={logout} type="button"  style={{borderRadius:"40px"}} className="btn btn-secondary">Log out</Link></li>   
                             </ul>
                         </div>
@@ -53,7 +47,7 @@ function CollectionLogin(){
                     
                 </nav>
                 
-                <div className="flex">
+                <div className="flex" style={{marginLeft:"30px"}}>
                 {collectionData.map((val)=>{
                     return <div className="column" >
                         <div className="card" style={{width: "18rem;"}}>
@@ -65,7 +59,7 @@ function CollectionLogin(){
                 <div className="row">
                     <div className="col" style={{alignItems:"center",display:"flex","flexDirection":"column"}}>
                         <button id="productButton"  type="button" onClick={()=>{
-                            window.location.href='/payment';}} value={val[0]} className="btn btn-primary" >Purchase</button>
+                            window.location.href='#/';}} value={val[0]} className="btn btn-primary" >add to chart</button>
                     </div>
                 </div>
         </div>
