@@ -58,7 +58,7 @@ function ShoppingCart() {
         </table>
         
         <div className="card-body border-top">
-            <Link to="payment2"><a className="btn btn-primary float-md-right">Make Purchase <i className="fa fa-chevron-right"></i> </a></Link>
+            <Link to="payment"><a className="btn btn-primary float-md-right">Make Purchase <i className="fa fa-chevron-right"></i> </a></Link>
             <a href="/" className="btn btn-light"> <i className="fa fa-chevron-left"></i> Continue shopping </a>
         </div>  
         </div> 

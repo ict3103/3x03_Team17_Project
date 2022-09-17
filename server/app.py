@@ -89,7 +89,7 @@ def user_login():
 				session['loggedin'] = True
 				#session['id'] = tuple(map(str, account['email'].split(', ')))
 				#session['name'] = account['name']
-				return redirect('/adminDashboard')
+				return redirect('/collectionlogin')
 			else: 
 				return 'Incorrect username/password. Please Try Again.'
 		return 'Incorrect username/password. Please Try Again.'
