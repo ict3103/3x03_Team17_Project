@@ -18,6 +18,7 @@ function CollectionLogin(){
     function handleCartButton(){
         // window.localStorage.getItem('login')==="true" ? 
         // window.location.href="/cart":window.location.href="/login"
+        window.location.href="/cart"
     }
     
     
@@ -64,8 +65,9 @@ function CollectionLogin(){
                         </div>
                 <div class="row">
                     <div class="col" style={{"align-items":"center","display":"flex","flex-direction":"column"}}>
-                        <button id="productButton"  type="button" onClick={()=>{
-                            window.location.href='/payment';}} value={val[0]} class="btn btn-primary" >Purchase</button>
+                        <form action="/add_cartItem" method="POST">
+                        <button id="productButton"  type="submit" name="productId" value={val[0]} class="btn btn-primary" >Add to cart</button>
+                            </form>
                     </div>
                 </div>
         </div>
