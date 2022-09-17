@@ -1,7 +1,7 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
 from threading import activeCount
-from flask import Flask, request,redirect,session
+from flask import Flask, request,redirect,session,url_for
 from flask_cors import CORS,cross_origin
 from dotenv import load_dotenv
 from flask_mysqldb import MySQL
@@ -35,6 +35,13 @@ mail = Mail(app)
 def get_collection():
 	collection = api.db_query_fetchall(api.get_all_laptop())
 	return {'collection':collection}
+
+@app.route('/add_cartItem', methods = ['POST'])
+def add_cartItem():
+	if request.method == 'POST':
+		laptopId = request.form['productId']
+		api.db_query(api.insert_cartItem(1,laptopId,1))
+		return redirect('/cart')
 
 #-------------------------------------------------------------------------------------------
 # Register route
@@ -124,6 +131,15 @@ def reset_success(token):
 			return redirect(f'http://localhost:3000/resetPasswordSuccess')
 		else:
 			return "password length too short"
+
+#-------------------------------------------------------------------------------------------
+# cart route (retrive all cart items info)
+#-------------------------------------------------------------------------------------------
+@app.route('/cart')
+def get_cartItems():
+	collection = api.db_query_fetchall(api.get_cartItemsInfo(1))
+	return {'collection':collection}
+
 
 #-------------------------------------------------------------------------------------------
 # main driver  

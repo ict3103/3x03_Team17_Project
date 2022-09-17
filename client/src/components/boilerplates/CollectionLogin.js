@@ -56,10 +56,11 @@ function CollectionLogin(){
                             <h5 className="card-title"> {val[1]} </h5>
                             <p id="laptopPrice">${val[3]}</p>
                         </div>
-                <div className="row">
-                    <div className="col" style={{alignItems:"center",display:"flex","flexDirection":"column"}}>
-                        <button id="productButton"  type="button" onClick={()=>{
-                            window.location.href='#/';}} value={val[0]} className="btn btn-primary" >add to chart</button>
+                <div class="row">
+                    <div class="col" style={{"align-items":"center","display":"flex","flex-direction":"column"}}>
+                        <form action="/add_cartItem" method="POST">
+                        <button id="productButton"  type="submit" name="productId" value={val[0]} class="btn btn-primary" >Add to cart</button>
+                            </form>
                     </div>
                 </div>
         </div>

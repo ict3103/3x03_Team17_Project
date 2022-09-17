@@ -1,5 +1,15 @@
-import {Link} from 'react-router-dom'
+import '../../styles/cart.css'
+import { useState,useEffect } from 'react';
+import axios from 'axios';
+
+
 function ShoppingCart() {
+    const [collectionData,setCollectionData] = useState([])
+    useEffect(()=>{
+        axios.get("http://127.0.0.1:5000/cart").then((response)=>{
+            setCollectionData(response.data.collection)
+        })
+    },[]);
   return (
     <div style={{paddingTop:"20px"}} >
         <section className="section-pagetop bg">
