@@ -3,3 +3,4 @@ server/__pycache__/
 server/env
 .DS_Store
 dist
+server/.env
