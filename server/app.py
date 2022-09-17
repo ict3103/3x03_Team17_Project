@@ -87,9 +87,9 @@ def user_login():
 			if result == True: 
 				#sessions code starts here 
 				session['loggedin'] = True
-				session['id'] = account['email']
-				session['name'] = account['name']
-				return redirect('/Payment')
+				#session['id'] = tuple(map(str, account['email'].split(', ')))
+				#session['name'] = account['name']
+				return redirect('/adminDashboard')
 			else: 
 				return 'Incorrect username/password. Please Try Again.'
 		return 'Incorrect username/password. Please Try Again.'
@@ -134,6 +134,7 @@ if __name__ == '__main__':
 	# run() method of Flask class runs the application
 	# on the local development server.
 	# app.run(host=constants.HOST, port=constants.PORT)
+	app.config['SECRET_KEY'] = 'G$upli2St8RZxMtNeJU90'
 	app.run(debug=True)
 
 	
