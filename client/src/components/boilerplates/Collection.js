@@ -20,7 +20,7 @@ function Collection(){
    
     return(<div >
      {window.localStorage.getItem('login')==="false" ?
-      <nav class="navbar navbar-expand-lg navbar-dark" style={{"background-color": "#060707"}}>
+      <nav class="navbar navbar-expand-lg navbar-dark" style={{"background-color": "rgba(0, 0, 0)"}}>
       <div class="container-fluid"> <FaReact className="App-logo" />
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
