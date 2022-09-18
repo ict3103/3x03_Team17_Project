@@ -4,3 +4,4 @@ server/env
 .DS_Store
 dist
 server/*.pyc
+*.pyc

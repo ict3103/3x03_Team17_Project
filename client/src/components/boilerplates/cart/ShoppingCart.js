@@ -1,4 +1,4 @@
-import '../../styles/cart.css'
+import '../../../styles/cart.css'
 import { useState,useEffect } from 'react';
 import axios from 'axios';
 
@@ -28,7 +28,7 @@ function ShoppingCart() {
             {collectionData.map((val)=>{
                 return <tr>
                     <td>
-                        <img src={require(`../../${val[1]}`)} style={{"height": "80px","width":"120px"}}/>
+                        <img src={require(`../../${val[1]}`)} alt='' style={{"height": "80px","width":"120px"}}/>
                     </td>
                     <td> 
                         <select class="form-control">
