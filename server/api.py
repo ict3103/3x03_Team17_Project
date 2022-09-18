@@ -49,11 +49,17 @@ def db_query_fetchone(sql):
 def get_all_laptop():
     return "SELECT * FROM LaptopInfo"
 
+def get_cartItemsInfo(userId):
+	return f"SELECT l.laptopName, l.imageUrl, l.price, c.quantity FROM laptopinfo as l left join cartitems as c on c.laptopId = l.laptopId where c.laptopId IN (SELECT laptopId From cartItems WHERE cartId = '{userId}')"
+
 def get_account(email):
     return f"SELECT * FROM UserInfo WHERE email = '{email}'"
 
 def insert_new_user(input_name,input_email,hashed_password):
     return f"INSERT INTO UserInfo (username, email, password) VALUES('{input_name}', '{input_email}', '{hashed_password}')"
+
+def insert_cartItem(userId, laptopId, quantity):
+	return f"INSERT INTO cartItems (cartId, laptopId, quantity) VALUES('{userId}', '{laptopId}', '{quantity}')"
 
 def update_verification_status(email):
     return f'UPDATE UserInfo SET verification_status = 1 WHERE email = "{email}"'
