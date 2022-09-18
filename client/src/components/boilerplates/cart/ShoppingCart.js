@@ -9,7 +9,7 @@ function ShoppingCart() {
         axios.get("http://127.0.0.1:5000/cart").then((response)=>{
             setCollectionData(response.data.collection)
         })
-    },[]);
+    },[collectionData]);
   return (
         <div class="container">
             <h2 class="title-page">Shopping cart</h2>
@@ -28,7 +28,7 @@ function ShoppingCart() {
             {collectionData.map((val)=>{
                 return <tr>
                     <td>
-                        <img src={require(`../../${val[1]}`)} alt='' style={{"height": "80px","width":"120px"}}/>
+                        <img src={require(`../../../${val[1]}`)} alt='' style={{"height": "80px","width":"120px"}}/>
                     </td>
                     <td> 
                         <select class="form-control">
