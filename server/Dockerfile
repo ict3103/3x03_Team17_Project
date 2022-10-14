@@ -12,7 +12,6 @@ RUN pip3 install -r requirements.txt
 
 # copy every content from the local file to the image
 COPY . /app
-COPY .env /app
 
 EXPOSE 5000
 
