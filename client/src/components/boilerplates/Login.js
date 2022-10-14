@@ -2,13 +2,20 @@ import '../../styles/login.css'
 import {Link} from 'react-router-dom'
 import {React , useState} from 'react';
 import { Button } from 'react-bootstrap';
-
+import ReCAPTCHA from 'react-google-recaptcha'
 
 
 function Login(){
     const [forgotPwd,setforgotPwd] = useState(false)
     const changeState = ()=>{
         setforgotPwd(true)
+    }
+
+    const [CaptchaCheck, setCaptchaCheck] = useState(false);
+
+    const onChange = (value) => {
+        console.log('Captcha value:', value);
+        setCaptchaCheck(true);
     }
     
     window.localStorage.setItem("login",false);
@@ -29,7 +36,8 @@ function Login(){
                 <label for="inputPwd">Password</label>
                 </div>
                 <div class="pass" onClick={changeState} >Forgot Password?</div>
-                <input type="submit" style={{"border-radius": "30px;"}}  value="Login"/>
+                <ReCAPTCHA sitekey="6Ldrj30iAAAAADyAiEnHJkcZOv4E2UsyYK2ZQpvC" onChange={onChange}/>
+                <input type="submit" disabled={!CaptchaCheck} style={{"border-radius": "30px;"}}  value="Login"/>
                 <div class="signup_link">
                 Not a member? <Link to="register">Signup</Link></div>
                 </form>
@@ -44,8 +52,9 @@ function Login(){
                     <input type="email" name="email" id="email" placeholder="enter your email" required/>
                     <span></span>
                 </div>
+                <ReCAPTCHA sitekey="6Ldrj30iAAAAADyAiEnHJkcZOv4E2UsyYK2ZQpvC" onChange={onChange}/>
                 <div> 
-                    <Button type='submit' variant="dark" style={{'width':'fit-content','margin-left':'50px'}}>Reset password</Button>
+                    <Button type='submit' disabled={!CaptchaCheck} variant="dark" style={{'width':'fit-content','margin-left':'50px'}}>Reset password</Button>
                     <Link to="/"><Button variant="dark" style={{'width':'fit-content'}}>Back</Button></Link>
                 </div>
             </form>
