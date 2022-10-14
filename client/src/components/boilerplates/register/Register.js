@@ -1,14 +1,19 @@
-import { useState} from "react";
+import { useState} from "react"
 import '../../../styles/register.css'
-import Form from 'react-bootstrap/Form';
-
-
+import Form from 'react-bootstrap/Form'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 
 function Register(){
   window.localStorage.setItem("login",false);
 
   const [validated, setValidated] = useState(false);
+  const [CaptchaCheck, setCaptchaCheck] = useState(false);
+
+  const onChange = (value) => {
+    console.log('Captcha value:', value);
+    setCaptchaCheck(true);
+  }
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -45,7 +50,8 @@ function Register(){
           <Form.Group className="mb-3">
           <Form.Check required label="Agree to terms and conditions" feedback="You must agree before submitting." feedbackType="invalid"/>
           </Form.Group>
-          <input type="submit" value="Register"/>
+          <ReCAPTCHA sitekey="6Ldrj30iAAAAADyAiEnHJkcZOv4E2UsyYK2ZQpvC" onChange={onChange}/>
+          <input type="submit" disabled={!CaptchaCheck} value="Register"/>
     </Form>
       </div>
       
