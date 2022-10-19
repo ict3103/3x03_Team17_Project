@@ -1,7 +1,7 @@
 import '../../../styles/cart.css'
 import { useState,useEffect } from 'react';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 
 function ShoppingCart() {
     const [collectionData,setCollectionData] = useState([])
@@ -59,7 +59,7 @@ function ShoppingCart() {
             <row>
                 <h2 className='total-price-tag'>Total:</h2>
                 <h3>{totalAmount}</h3>
-                <button>Pay</button>
+                <Link to='/payment'><button>Pay</button></Link>
             </row>
             </div>
         </div>

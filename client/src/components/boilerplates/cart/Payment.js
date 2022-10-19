@@ -62,9 +62,8 @@ export default class App extends React.Component {
 
     return (
       <div key="Payment">
-        <div className="App-payment">
-          <h1>React Credit Cards</h1>
-          <h4>Beautiful credit cards for your payment forms</h4>
+        <div className="payment-form">
+        <h3>Enter your card details below</h3>
           <Card
             number={number}
             name={name}
@@ -85,7 +84,7 @@ export default class App extends React.Component {
                 onChange={this.handleInputChange}
                 onFocus={this.handleInputFocus}
               />
-              <small>E.g.: 49..., 51..., 36..., 37...</small>
+              {/* <small>E.g.: 49..., 51..., 36..., 37...</small> */}
             </div>
             <div className="form-group">
               <input
@@ -125,9 +124,7 @@ export default class App extends React.Component {
               </div>
             </div>
             <input type="hidden" name="issuer" value={issuer} />
-            <div className="form-actions">
-              <button className="btn btn-primary btn-block">PAY</button>
-            </div>
+            <input className="payment-submit" type="submit" value="Pay"/>
           </form>
       
       </div>

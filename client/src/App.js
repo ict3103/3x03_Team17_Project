@@ -12,7 +12,8 @@ import VerificationPage from './components/boilerplates/register/VerificationPag
 import VerifiedPage from './components/boilerplates/register/VerifiedPage';
 import ResetPasswordPage from './components/boilerplates/resetPassword/ResetPasswordPage';
 import ResetSuccess from './components/boilerplates/resetPassword/ResetSuccessPage';
-import Payment from './components/boilerplates/cart/Payment'
+import Payment from './components/boilerplates/cart/Payment';
+import PaymentComplete from './components/boilerplates/cart/PaymentComplete';
 import CollectionLogin from './components/boilerplates/CollectionLogin';
 
 
@@ -40,6 +41,9 @@ function App() {
       </Route>
       <Route path="/payment">
         <Payment></Payment>
+      </Route>
+      <Route path="/paymentComplete">
+        <PaymentComplete></PaymentComplete>
       </Route>
       <Route path="/verification">
         <Main></Main>
