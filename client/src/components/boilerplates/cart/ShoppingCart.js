@@ -10,8 +10,10 @@ function ShoppingCart() {
             setCollectionData(response.data.collection)
         })
     },[collectionData]);
+    const totalAmount = 0;
   return (
         <div class="container">
+
             <h2 class="title-page">Shopping cart</h2>
             <div class="row">
             <div class="card col-md-12">
@@ -39,9 +41,9 @@ function ShoppingCart() {
                         </select> 
                     </td>
                     <td> 
-                        <div class="price-wrap"> 
-                            <var class="price">${val[2]*val[3]}</var> 
-                            <small class="text-muted"> ${val[2]} each * {val[3]}</small> 
+                        <div class="price-wrap">
+                            <var class="price">${val[2]*val[3]}</var>
+                            <small class="text-muted"> ${val[2]} each x {val[3]}</small> 
                         </div> 
                     </td>
                     <td class="text-right"> 
@@ -49,9 +51,16 @@ function ShoppingCart() {
                     <a href="/" class="btn btn-light"> Remove</a>
                     </td>
                 </tr>
-            })}
+            })
+            }
             </tbody>
             </table>
+            <hr></hr>
+            <row>
+                <h2 className='total-price-tag'>Total:</h2>
+                <h3>{totalAmount}</h3>
+                <button>Pay</button>
+            </row>
             </div>
         </div>
         </div>

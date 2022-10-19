@@ -1,3 +1,9 @@
 .card{
     height: fit-content;
 }
+.title-page{
+    text-align: center;
+}
+.total-price-tag{
+    text-align: left;
+}
