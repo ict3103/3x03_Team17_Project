@@ -13,9 +13,9 @@ import sendmail
 import os
 
 app = Flask(__name__)
-app.config['MYSQL_HOST'] = 'db-mysql-sgp-team17-do-user-12352224-0.b.db.ondigitalocean.com'
-app.config['MYSQL_USER'] = 'doadmin'
-app.config['MYSQL_PASSWORD'] = 'AVNS_5Im_rLQvqHsMWjmggER'
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'nomekop1oo'
 app.config['MYSQL_DB'] = 'ICT3x03'
 app.config['MYSQL_PORT'] = 25060
 mysql = MySQL(app)
