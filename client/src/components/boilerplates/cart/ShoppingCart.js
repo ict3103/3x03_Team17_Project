@@ -9,8 +9,8 @@ function ShoppingCart() {
         axios.get("http://127.0.0.1:5000/cart").then((response)=>{
             setCollectionData(response.data.collection)
         })
-    },[collectionData]);
-    const totalAmount = 0;
+    },[]);
+    let totalAmount = 0;
   return (
         <div class="container">
 
@@ -20,14 +20,15 @@ function ShoppingCart() {
             <table class="table table-borderless table-shopping-cart">
             <thead class="text-muted">
             <tr class="small text-uppercase">
-            <th scope="col" width="120">Product</th>
-            <th scope="col" width="20">Quantity</th>
-            <th scope="col" width="120">Price</th>
-            <th scope="col" class="text-right" width="200"> </th>
+            <th scope="col" width="220">Product</th>
+            <th scope="col" width="50">Quantity</th>
+            <th scope="col" width="10">Price</th>
+            <th scope="col" class="text-right" width="120"> </th>
             </tr>
             </thead>
             <tbody>
             {collectionData.map((val)=>{
+                {totalAmount += val[2]*val[3]}
                 return <tr>
                     <td>
                         <img src={require(`../../../${val[1]}`)} alt='' style={{"height": "80px","width":"120px"}}/>
@@ -42,8 +43,10 @@ function ShoppingCart() {
                     </td>
                     <td> 
                         <div class="price-wrap">
-                            <var class="price">${val[2]*val[3]}</var>
-                            <small class="text-muted"> ${val[2]} each x {val[3]}</small> 
+                            <table>
+                                    <tr><var class="price">${val[2]*val[3]}</var></tr>
+                                    <tr><small class="text-muted"> ${val[2]} each x {val[3]}</small></tr>
+                            </table>
                         </div> 
                     </td>
                     <td class="text-right"> 
@@ -58,8 +61,8 @@ function ShoppingCart() {
             <hr></hr>
             <row>
                 <h2 className='total-price-tag'>Total:</h2>
-                <h3>{totalAmount}</h3>
-                <Link to='/payment'><button>Pay</button></Link>
+                <h3>${totalAmount}</h3>
+                <Link to='/payment'><button class='btn btn-primary' id='cart-payment-btn'>Pay</button></Link>
             </row>
             </div>
         </div>

@@ -7,3 +7,12 @@
 .total-price-tag{
     text-align: left;
 }
+.price-wrap{
+    text-align: center;
+    padding-left: 170px;
+}
+#cart-payment-btn{
+    margin-left: 80%;
+    background-color: black;
+    width: 10%;
+}

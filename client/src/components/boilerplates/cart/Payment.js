@@ -104,7 +104,7 @@ export default class App extends React.Component {
                   name="expiry"
                   className="form-control"
                   placeholder="Valid Thru"
-                  pattern="\d\d/\d\d"
+                  pattern="(0[1-9]|1[0-2])\/[0-9]{2}"
                   required
                   onChange={this.handleInputChange}
                   onFocus={this.handleInputFocus}
