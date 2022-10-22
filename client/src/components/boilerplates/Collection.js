@@ -12,12 +12,9 @@ function Collection(){
         })
     },[])
 
-    const handleCartButton = (e) => {
-        // window.localStorage.getItem('login')==="true" ? 
-        // window.location.href="/cart":window.location.href="/login"
-        window.localStorage.setItem("ProductDetails", e.target.value)
-        window.location.href = "/productdetails"
-        console.log(e.target.value); //will give you the value continue
+    function handleCartButton(){
+      window.localStorage.getItem('login')==="true" ? 
+      window.location.href="/cart":window.location.href="/login"
     }
   
    
@@ -65,8 +62,8 @@ function Collection(){
                     <p id="laptopPrice">${val[3]}</p>
                 </div>
                 <div class="row">
-                    <div className="col" style={{ "align-items": "center", "display": "flex", "flex-direction": "column" }}>
-                        <button id="productButton" type="button" onClick={handleCartButton} value={val[0]} class="btn btn-primary" >Description</button>
+                    <div className="col" style={{"align-items":"center","display":"flex","flex-direction":"column"}}>
+                        <button id="productButton"  type="button" onClick={handleCartButton} value={val[0]} class="btn btn-primary" >Purchase</button>
                     </div>
                 </div>
         </div>

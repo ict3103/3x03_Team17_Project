@@ -1,7 +1,7 @@
 import '../../styles/collection.css'
-import axios from 'axios'
+import axios from 'axios';
 import { useState,useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 
 function CollectionLogin(){

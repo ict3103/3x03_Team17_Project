@@ -15,7 +15,3 @@
     padding-bottom: 10px;
     border-bottom: 1px solid rgb(36, 33, 33);
 }
-
-.register-form input:disabled{
-    background-color: gray;
-}
