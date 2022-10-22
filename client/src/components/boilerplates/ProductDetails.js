@@ -3,22 +3,21 @@ import { useEffect, useState } from 'react';
 import '../../styles/collection.css'
 import { Link } from 'react-router-dom';
 import { FaReact } from 'react-icons/fa';
+import { useHistory } from "react-router-dom";
 
-function Collection(){
+function ProductDetails(){
     const [collectionData,setCollectionData] = useState([])
     useEffect(()=>{
         axios.get("http://127.0.0.1:5000/collection").then((response)=>{
             setCollectionData(response.data.collection)
         })
     },[])
-
+    const history = useHistory()
     const handleCartButton = (e) => {
-        // window.localStorage.getItem('login')==="true" ? 
-        // window.location.href="/cart":window.location.href="/login"
-        window.localStorage.setItem("ProductDetails", e.target.value)
-        window.location.href = "/productdetails"
-        console.log(e.target.value); //will give you the value continue
-    }
+        window.localStorage.setItem("ProductDetails",e.target.value)
+        window.localStorage.getItem('login')==="true" ? 
+        window.location.href="/cart":window.location.href="/login"
+      }
   
    
     return(<div >
@@ -53,33 +52,37 @@ function Collection(){
     :<div/>
         }
 
-        
-    <div class="row" id="div1">
+
       
-    {collectionData.map((val)=>{
-        return <div className="column">
-        <div className="card" style={{"width": "18rem;"}}>
+    {collectionData.filter(laptopId => laptopId[0] ==window.localStorage.getItem("ProductDetails")).map((val)=>{
+        return  <div style={{"text-align":"center"}}>
+                <br></br>
+                <h2 > {val[1]} </h2>
+                <br></br>
                 <img src={require(`../../${val[2]}`)} style={{"height": "160px","width":"254px"}}  class="card-img-top" alt=".." />
-                <div className="card-body">
-                    <h5 className="card-title"> {val[1]} </h5>
-                    <p id="laptopPrice">${val[3]}</p>
-                </div>
-                <div class="row">
-                    <div className="col" style={{ "align-items": "center", "display": "flex", "flex-direction": "column" }}>
-                        <button id="productButton" type="button" onClick={handleCartButton} value={val[0]} class="btn btn-primary" >Description</button>
+                <br></br>
+                <br></br>
+                <p id="laptopPrice">Price: ${val[3]}</p>
+                <p id="laptopPrice">Description:</p>
+                <p style={{"width":"70%","margin":"0 auto"}}>{val[4]}</p>
+                <br></br>
+                <div >
+                    <div style={{ "text-align": "center","position": "relative","padding-right":"45%","padding-left":"45%"}}>
+                        <button style={{"padding": "0px"}} id="productButton"  type="button" onClick={handleCartButton} value={val[0]} class="btn btn-primary btn-lg" >Purchase</button>
                     </div>
                 </div>
-        </div>
-    </div>
+                <br></br>
+                </div>
+    
      })
     }
-    </div>
+
 
     <div id="backButton1">
         {window.localStorage.getItem('login')==="true"?
         <Link to="/adminDashboard" class="btn btn-secondary btn-lg">Back</Link>
       : 
-      <Link to="/" class="btn btn-secondary btn-lg">Back</Link>  
+      <Link to="/collection" class="btn btn-secondary btn-lg">Back</Link>  
       }
         
     </div>
@@ -94,4 +97,4 @@ function Collection(){
   
 
 
-export default Collection;
+export default ProductDetails;
