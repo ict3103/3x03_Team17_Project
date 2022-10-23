@@ -16,6 +16,7 @@ app.config['MYSQL_HOST'] = os.getenv("HOST")
 app.config['MYSQL_USER'] = os.getenv("DB_USER")
 app.config['MYSQL_PASSWORD'] = os.getenv("DB_PASSWORD")
 app.config['MYSQL_DB'] = os.getenv("DATABASE")
+app.config['MYSQL_PORT'] = int(os.getenv("PORT"))
 mysql = MySQL(app)
 
 #insert,update,delete queries (no data retrival)
@@ -63,7 +64,7 @@ def insert_cartItem(userId, laptopId, quantity):
 	return f"INSERT INTO cartItems (cartId, laptopId, quantity) VALUES('{userId}', '{laptopId}', '{quantity}')"
 
 def update_verification_status(email):
-    return f'UPDATE UserInfo SET verification_status = 1 WHERE email = "{email}"'
+    return f"UPDATE UserInfo SET verification_status = 1 WHERE email = '{email}'"
 
 def update_password(newPwd,email):
-    return f'UPDATE UserInfo SET password = "{newPwd}" WHERE email = "{email}"'
+    return f"UPDATE UserInfo SET password = '{newPwd}' WHERE email = '{email}'"
