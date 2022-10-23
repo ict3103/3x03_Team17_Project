@@ -100,6 +100,7 @@ def user_login():
 				session['loggedin'] = True
 				#session['id'] = tuple(map(str, account['email'].split(', ')))
 				#session['name'] = account['name']
+				sendmail.sendnotif(input_email,1)
 				return redirect('/collectionlogin')
 
 			else: 
@@ -137,7 +138,9 @@ def reset_success(token):
 		if(len(request.form['newPwd'])>=8 and len(request.form['newPwd'])<=20):
 			newPwd = security.hashpassword(newPwd)
 			api.db_query(api.update_password(newPwd,email))
+			sendmail.sendnotif(email,2)
 			return redirect(f'http://localhost:3000/resetPasswordSuccess')
+
 
 		else:
 			return "Password has to be between 8 to 20 characters long."

@@ -21,6 +21,48 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 mail = Mail(app)
 
+#-------------------------------------------------------------------------------------------
+# Sending Email + successful login & reset password  
+#-------------------------------------------------------------------------------------------
+ 
+def sendnotif(input_email,email_type):
+
+	if (email_type == 1): 
+		subject = 'YourFirstComputer - New sign-in '
+		body = """
+		Dear Customer, 
+
+		We noticed a new sign-in with your YourFirstComputer account: """ + input_email + """
+
+		Details: 
+		- Date & Time: """ + datetime.now().strftime('%#d %b %Y %H:%M') + """
+		"""
+	
+	if (email_type == 2): 
+		subject = 'YourFirstComputer - Successful password reset '
+		body = """
+		Dear Customer, 
+
+		You have successfully reset your YourFirstComputer account: """ + input_email + """
+
+		Details: 
+		- Date & Time: """ + datetime.now().strftime('%#d %b %Y %H:%M') + """
+		"""
+
+	em = EmailMessage()
+	em['From'] = app.config['emailsender']
+	em['To'] = input_email
+	em['Subject'] = subject
+	em.set_content(body)
+
+	context = ssl.create_default_context()
+	with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+		smtp.login(app.config['emailsender'], app.config['emailpass'])
+		smtp.sendmail(app.config['emailsender'], input_email, em.as_string())
+
+#-------------------------------------------------------------------------------------------
+# Sending Email + With Tokens 
+#-------------------------------------------------------------------------------------------
 
 def sendmail(input_email,route,email_type):
 	generate_user_token = generate_confirmation_token(input_email)
@@ -61,12 +103,14 @@ def sendmail(input_email,route,email_type):
 		smtp.login(app.config['emailsender'], app.config['emailpass'])
 		smtp.sendmail(app.config['emailsender'], input_email, em.as_string())
 
+#-------------------------------------------------------------------------------------------
+# Generating & Confirming Tokens 
+#-------------------------------------------------------------------------------------------
 
 # generate token based on email address obtained during registration process   
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(app.config['register_secretkey'])
     return serializer.dumps(email, salt=app.config['register_securitypasswordsalt'])
-
 
 # this token will vaild for 3 minutes only 
 def confirm_token(token):
