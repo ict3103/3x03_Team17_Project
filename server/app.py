@@ -13,25 +13,20 @@ import sendmail
 import os
 
 app = Flask(__name__)
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'nomekop1oo'
-app.config['MYSQL_DB'] = 'ICT3x03'
-app.config['MYSQL_PORT'] = 25060
+app.config['MYSQL_HOST'] = os.getenv("HOST")
+app.config['MYSQL_USER'] = os.getenv("DB_USER")
+app.config['MYSQL_PASSWORD'] = os.getenv("DB_PASSWORD")
+app.config['MYSQL_DB'] = os.getenv("DATABASE")
+app.config['MYSQL_PORT'] = int(os.getenv("PORT"))
 mysql = MySQL(app)
+
 cors = CORS(app)
-app.secret_key = os.getenv("SECRET_KEY")
-app.config['MAIL_SERVER']=os.getenv("MAIL_SERVER")
-app.config['MAIL_PORT'] = os.getenv("MAIL_PORT")
-app.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME")
-app.config['MAIL_PASSWORD'] = os.getenv("MAIL_PASSWORD")
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
 mail = Mail(app)
 
 #-------------------------------------------------------------------------------------------
 # collection route (retrive all laptop info)
 #-------------------------------------------------------------------------------------------
+
 @app.route('/collection')
 def get_collection():
 	collection = api.db_query_fetchall(api.get_all_laptop())
@@ -47,6 +42,7 @@ def add_cartItem():
 #-------------------------------------------------------------------------------------------
 # Register route
 #-------------------------------------------------------------------------------------------
+
 @app.route('/register',methods=['POST'])
 def register_user():
 	if request.method == 'POST':
@@ -55,15 +51,18 @@ def register_user():
 		input_email = security.sanitization(request.form['email'])
 		input_password = security.sanitization(request.form['password'])
 
-		# name,email,password input validation 
+		#name, email, password - input validation 
 		#password Minimum 8 and maximum 20 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character
 		if not(security.username_pattern().match(input_name) or security.email_pattern().match(input_email) or security.password_pattern().match(input_password)):
 			return 'Error while adding user'
+
 		else: #once all server validation is ok; proceed 
 			account = api.db_query_fetchone(api.get_account(input_email))
+
 			#if there there is such an account in db, user cannot register
 			if account: 
 				return 'Registered Email Address'
+
 			else: 
 				hashed_password = security.hashpassword(input_password)
 				sendmail.sendmail(input_email,"confirm_email")
@@ -73,15 +72,16 @@ def register_user():
 @app.route('/confirm_email/<token>')
 def confirm_email(token):
 	try:
-		email = sendmail.decrypt_token(token)
+		email = sendmail.confirm_token(token)
 		api.db_query(api.update_verification_status(email))
 		return redirect('http://localhost:3000/verifiedPage')
 	except:
-		return "the token is either invalid or expired"
+		return "Invalid/Expired token. Please Try Again."
 
 #-------------------------------------------------------------------------------------------
 # login route
 #-------------------------------------------------------------------------------------------
+
 @app.route('/login',methods=['POST'])
 def user_login():
 	if request.method == 'POST':
@@ -105,6 +105,7 @@ def user_login():
 #-------------------------------------------------------------------------------------------
 # forgot password verification 
 #-------------------------------------------------------------------------------------------
+
 @app.route('/forgotPassword',methods=['POST'])
 def forgotPassword():
 	if request.method == 'POST':
@@ -115,6 +116,7 @@ def forgotPassword():
 		else:
 			sendmail.sendmail(email,'reset_password')
 			return redirect('http://localhost:3000/verification')
+
 
 @app.route('/reset_password/<token>')
 def reset_password(token):
@@ -136,11 +138,11 @@ def reset_success(token):
 #-------------------------------------------------------------------------------------------
 # cart route (retrive all cart items info)
 #-------------------------------------------------------------------------------------------
+
 @app.route('/cart')
 def get_cartItems():
 	collection = api.db_query_fetchall(api.get_cartItemsInfo(1))
 	return {'collection':collection}
-
 
 #-------------------------------------------------------------------------------------------
 # main driver  
