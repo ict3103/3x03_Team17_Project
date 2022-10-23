@@ -22,21 +22,34 @@ app.config['MAIL_USE_SSL'] = False
 mail = Mail(app)
 
 
-def sendmail(input_email,route):
+def sendmail(input_email,route,email_type):
 	generate_user_token = generate_confirmation_token(input_email)
 	generate_link = url_for(route, token=generate_user_token, _external=True)
 
-	subject = 'YourFirstComputer - Verify Email Address - Requested on ' + datetime.now().strftime('%#d %b %Y %H:%M')
-	body = """
-	Dear Customer, 
+	if (email_type == 1): 
+		subject = 'YourFirstComputer - Verify Email Address - Requested on ' + datetime.now().strftime('%#d %b %Y %H:%M')
+		body = """
+		Dear Customer, 
 
-	Thank you for creating your account with YourFirstComputer. 
-	Here is your registration code: """ + generate_link + """
+		Thank you for creating your account with YourFirstComputer. 
+		Here is your registration code: """ + generate_link + """
 
-	Note: 
-	- Link will only be valid for 3 minutes.
-	"""
+		Note: 
+		- Link will only be valid for 3 minutes.
+		"""
 
+	if (email_type == 2): 
+		subject = 'YourFirstComputer - Reset Password - Requested on ' + datetime.now().strftime('%#d %b %Y %H:%M')
+		body = """
+		Dear Customer, 
+
+		You have request to reset your password for YourFirstComputer account. 
+		Here is your reset code: """ + generate_link + """
+
+		Note: 
+		- Link will only be valid for 3 minutes.
+		"""
+		
 	em = EmailMessage()
 	em['From'] = app.config['emailsender']
 	em['To'] = input_email
@@ -56,10 +69,6 @@ def generate_confirmation_token(email):
 
 
 # this token will vaild for 3 minutes only 
-def confirm_token(token, expiration=180):
-    serializer = URLSafeTimedSerializer(app.config['register_secretkey'])
-    try:
-        email = serializer.loads(token,salt=app.config['register_securitypasswordsalt'],max_age=expiration)
-    except:
-        return False
-    return email
+def confirm_token(token):
+	serializer = URLSafeTimedSerializer(app.config['register_secretkey'])
+	return serializer.loads(token, salt=app.config['register_securitypasswordsalt'],max_age=180)
