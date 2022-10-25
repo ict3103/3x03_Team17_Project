@@ -3,8 +3,19 @@ import { useState,useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+
 function ShoppingCart() {
+    const initialValue = [
+        { id: null, value: null }];
     const [collectionData,setCollectionData] = useState([])
+    const [dropdownValue, setdropdownValue] = useState(initialValue)
+    useEffect((e) => {
+        console.log("value: "+dropdownValue.value+" from id: "+dropdownValue.id);
+        axios.post("http://127.0.0.1:5000/update_cartItem", {"id":dropdownValue.id, "value":dropdownValue.value}).then((response)=>{
+
+        })
+    }, [dropdownValue]);
+
     useEffect(()=>{
         axios.get("http://127.0.0.1:5000/cart").then((response)=>{
             setCollectionData(response.data.collection)
@@ -34,7 +45,7 @@ function ShoppingCart() {
                         <img src={require(`../../../${val[1]}`)} alt='' style={{"height": "80px","width":"120px"}}/>
                     </td>
                     <td> 
-                        <select class="form-control">
+                        <select id={val[3]} onChange={e => setdropdownValue(e.target, e.target.value)} class="form-control">
                             <option>1</option>
                             <option>2</option>  
                             <option>3</option>  
@@ -44,14 +55,15 @@ function ShoppingCart() {
                     <td> 
                         <div class="price-wrap">
                             <table>
-                                    <tr><var class="price">${val[2]*val[3]}</var></tr>
-                                    <tr><small class="text-muted"> ${val[2]} each x {val[3]}</small></tr>
+                                    <tr><var class="price">${val[2]*val[4]}</var></tr>
+                                    <tr><small class="text-muted"> ${val[2]} each x {val[4]}</small></tr>
                             </table>
                         </div> 
                     </td>
                     <td class="text-right"> 
-                    <a data-original-title="Save to Wishlist" title="" href="/" class="btn btn-light mr-2" data-toggle="tooltip"> <i class="fa fa-heart"></i></a> 
-                    <a href="/" class="btn btn-light"> Remove</a>
+                    <form action="/delete_cartItem" method="POST">
+                    <button href="/" type="submit" name="cartItemId" value={val[3]} class="btn btn-light" id='cart-delete-btn'> Remove</button>
+                    </form> 
                     </td>
                 </tr>
             })

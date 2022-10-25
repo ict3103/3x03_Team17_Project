@@ -1,5 +1,7 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
+from asyncio.windows_events import ERROR_CONNECTION_ABORTED
+from msilib.schema import Error
 from threading import activeCount
 from flask import Flask, request,redirect,session,url_for
 from flask_cors import CORS,cross_origin
@@ -15,9 +17,9 @@ import os
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'nomekop1oo'
+app.config['MYSQL_PASSWORD'] = '12345678'
 app.config['MYSQL_DB'] = 'ICT3x03'
-app.config['MYSQL_PORT'] = 25060
+app.config['MYSQL_PORT'] = 3306
 mysql = MySQL(app)
 cors = CORS(app)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -37,12 +39,6 @@ def get_collection():
 	collection = api.db_query_fetchall(api.get_all_laptop())
 	return {'collection':collection}
 
-@app.route('/add_cartItem', methods = ['POST'])
-def add_cartItem():
-	if request.method == 'POST':
-		laptopId = request.form['productId']
-		api.db_query(api.insert_cartItem(1,laptopId,1))
-		return redirect('/cart')
 
 #-------------------------------------------------------------------------------------------
 # Register route
@@ -141,7 +137,37 @@ def get_cartItems():
 	collection = api.db_query_fetchall(api.get_cartItemsInfo(1))
 	return {'collection':collection}
 
+@app.route('/add_cartItem', methods = ['POST'])
+def add_cartItem():
+	if request.method == 'POST':
+		try:
+			laptopId = request.form['productId']
+			api.db_query(api.insert_cartItem(1,laptopId,1))
+			return redirect('/cart')
+		except Exception as e:
+			return "item already in cart"
 
+@app.route('/delete_cartItem', methods = ['POST'])
+def delete_cartItem():
+	if request.method == 'POST':
+		try:
+			cartItemId = request.form['cartItemId']
+			api.db_query(api.delete_cartItem(cartItemId))
+			return redirect('/cart')
+		except Exception as e:
+			return "error occur, pls try again"
+
+@app.route('/update_cartItem', methods = ['POST'])
+def update_cartItem():
+	if request.method == 'POST':
+		try:
+			new_quantity= request.json['value']
+			cartItemId = request.json['id']
+			#print(cartItemId)
+			api.db_query(api.update_cartItem_quantity(new_quantity,cartItemId))
+			return redirect('/collectionLogin')
+		except Exception as e:
+			return "error occur, pls try again"
 #-------------------------------------------------------------------------------------------
 # main driver  
 #-------------------------------------------------------------------------------------------
