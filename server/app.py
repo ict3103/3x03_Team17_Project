@@ -46,14 +46,12 @@ def add_cartItem():
 @app.route('/register',methods=['POST'])
 def register_user():
 	if request.method == 'POST':
-		#initial sanitization 
+
 		input_name = security.sanitization(request.form['username'])
 		input_email = security.sanitization(request.form['email'])
 		input_password = security.sanitization(request.form['password'])
 
-		#name, email, password - input validation 
-		#password Minimum 8 and maximum 20 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character
-		if not(security.username_pattern().match(input_name) or security.email_pattern().match(input_email) or security.password_pattern().match(input_password)):
+		if not(security.username_pattern().match(input_name) and security.email_pattern().match(input_email) and security.password_pattern().match(input_password)):
 			return 'Error while adding user'
 
 		else: #once all server validation is ok; proceed 
@@ -100,6 +98,7 @@ def user_login():
 				session['loggedin'] = True
 				#session['id'] = tuple(map(str, account['email'].split(', ')))
 				#session['name'] = account['name']
+				sendmail.sendnotif(input_email,1)
 				return redirect('/collectionlogin')
 
 			else: 
@@ -137,7 +136,9 @@ def reset_success(token):
 		if(len(request.form['newPwd'])>=8 and len(request.form['newPwd'])<=20):
 			newPwd = security.hashpassword(newPwd)
 			api.db_query(api.update_password(newPwd,email))
+			sendmail.sendnotif(email,2)
 			return redirect(f'http://localhost:3000/resetPasswordSuccess')
+
 
 		else:
 			return "Password has to be between 8 to 20 characters long."
