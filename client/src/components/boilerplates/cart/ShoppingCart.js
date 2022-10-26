@@ -41,7 +41,7 @@ function ShoppingCart() {
             </thead>
             <tbody>
             {collectionData.map((val)=>{
-                {totalAmount += val[2]*val[3]}
+                {totalAmount += val[2]*val[4]}
                 return <tr>
                     <td>
                         <img src={require(`../../../${val[1]}`)} alt='' style={{"height": "80px","width":"120px"}}/>
