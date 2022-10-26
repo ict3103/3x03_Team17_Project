@@ -12,7 +12,9 @@ function ShoppingCart() {
     useEffect((e) => {
         console.log("value: "+dropdownValue.value+" from id: "+dropdownValue.id);
         axios.post("http://127.0.0.1:5000/update_cartItem", {"id":dropdownValue.id, "value":dropdownValue.value}).then((response)=>{
-
+            if(response.data.result == 1){
+                window.location.reload()
+            }
         })
     }, [dropdownValue]);
 
@@ -31,10 +33,10 @@ function ShoppingCart() {
             <table class="table table-borderless table-shopping-cart">
             <thead class="text-muted">
             <tr class="small text-uppercase">
-            <th scope="col" width="220">Product</th>
-            <th scope="col" width="50">Quantity</th>
-            <th scope="col" width="10">Price</th>
-            <th scope="col" class="text-right" width="120"> </th>
+            <th scope="col-md-auto">Product</th>
+            <th scope="col-md-auto" width="50">Quantity</th>
+            <th scope="col-md-auto">Price</th>
+            <th scope="col-md-auto" class="text-right"> </th>
             </tr>
             </thead>
             <tbody>
@@ -45,7 +47,8 @@ function ShoppingCart() {
                         <img src={require(`../../../${val[1]}`)} alt='' style={{"height": "80px","width":"120px"}}/>
                     </td>
                     <td> 
-                        <select id={val[3]} onChange={e => setdropdownValue(e.target, e.target.value)} class="form-control">
+                        <select id={val[3]} onChange={e => setdropdownValue(e.target, e.target.value)} class="form-control quantity-dropdown">
+                            <option disabled selected hidden>{val[4]}</option>
                             <option>1</option>
                             <option>2</option>  
                             <option>3</option>  

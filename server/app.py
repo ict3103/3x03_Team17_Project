@@ -176,7 +176,8 @@ def update_cartItem():
 			cartItemId = request.json['id']
 			#print(cartItemId)
 			api.db_query(api.update_cartItem_quantity(new_quantity,cartItemId))
-			return redirect('/collectionLogin')
+			return {'result':1}
+			##return redirect('/collectionLogin')
 		except Exception as e:
 			return "error occur, pls try again"
 #-------------------------------------------------------------------------------------------
