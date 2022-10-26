@@ -23,7 +23,7 @@ function Login(){
         setForgotPwdCaptchaCheck(true);
     }
     
-    window.localStorage.setItem("login",false);
+    // window.localStorage.setItem("login",false);
     return (
 
     (forgotPwd===false)?
