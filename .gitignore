@@ -4,3 +4,8 @@ server/env
 dist
 server/*.pyc
 *.pyc
+server/.DS_Store
+*.pyc
+*.pyc
+server/__pycache__/security.cpython-310.pyc
+server/__pycache__/sendmail.cpython-310.pyc

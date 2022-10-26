@@ -26,7 +26,6 @@ mail = Mail(app)
 #-------------------------------------------------------------------------------------------
  
 def sendnotif(input_email,email_type):
-
 	if (email_type == 1): 
 		subject = 'YourFirstComputer - New sign-in '
 		body = """
