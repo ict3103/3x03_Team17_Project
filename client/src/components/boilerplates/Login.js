@@ -4,14 +4,35 @@ import {React , useState, useEffect} from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha'
+import { setAuthToken } from './setAuthenToken';
+import {useHistory,Router,Switch} from 'react-router-dom';
 
 
 function Login(){
     const [forgotPwd,setforgotPwd] = useState(false)
-    // const [email,setEmail] = useState([{email:null}])
-    // const [password,setPassword] = useState([{password:null}])
-    const [email,setEmail] = useState(null)
-    const [password,setPassword] = useState(null)
+    const [inputEmail,setEmail] = useState(null)
+    const [inputPassword,setPassword] = useState(null)
+    const sendForm  = (e) =>{
+        e.preventDefault();
+        axios.post("http://127.0.0.1:5000/login",{inputEmail,inputPassword}).then(response=>{
+                console.log(response.data.jwt_token)
+                console.log(response.data)
+                if(response.data.jwt_token){
+                    const token = response.data.jwt_token
+                    window.localStorage.setItem('token',response.data.jwt_token)
+                    setAuthToken(token);
+                }
+                useHistory.push("/collectionLogin")
+                // if(response.data.redirect="/collectionLogin"){
+                //     window.location = "/collectionLogin"
+                // }else{
+                //     window.location ="/"
+                // }
+        }).catch((err)=>{
+            console.warn("error",err.response)
+        })
+        
+    }
 
     const changeState = ()=>{
         setforgotPwd(true)
@@ -52,9 +73,7 @@ function Login(){
                 </div>
                 <div class="pass" onClick={changeState} >Forgot Password?</div>
                 {/* <ReCAPTCHA sitekey="6Ldrj30iAAAAADyAiEnHJkcZOv4E2UsyYK2ZQpvC" onChange={LoginCaptchaOnChange}/> */}
-                <input type="submit" disabled={!LoginCaptchaCheck} style={{"border-radius": "30px;"}} onClick={axios.post("http://127.0.0.1:5000/login",{"email":email,"password":password}).then((response)=>{
-                console.log(response.data)
-        })}  value="Login"/>
+                <input type="submit"  style={{"border-radius": "30px;"}} onClick={sendForm}  value="Login"/>
                 <div class="signup_link">
                 Not a member? <Link to="register">Signup</Link></div>
                 </form>

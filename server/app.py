@@ -128,11 +128,10 @@ def confirm_email(token):
 
 @app.route('/login',methods=['POST'])
 def user_login():
-	print(request.json)
 	if request.method == 'POST':
-		input_email = security.sanitization(request.form['email'])
-		input_password = request.form['inputPwd']
-
+		input_email = security.sanitization(request.json['inputEmail'])
+		input_password = request.json['inputPassword']
+		
 		account = api.db_query_fetchone(api.get_account(input_email))
 
 		if account is not None: 
@@ -153,10 +152,9 @@ def user_login():
 					}, 
 					app.config['SECRET_KEY'])
 				print(jwt_token)
-				return {"jwt_token":jwt_token}
-
+				return {"jwt_token":jwt_token,"redirect":"/collectionLogin"}
 			else: 
-				return 'Incorrect username/password. Please Try Again.'
+				return {"redirect":"/","error_message":'Incorrect username/password. Please Try Again.'}
 
 		return 'Incorrect username/password. Please Try Again.'
 
