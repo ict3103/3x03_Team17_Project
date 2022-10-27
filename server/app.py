@@ -17,7 +17,7 @@ app.config['MYSQL_HOST'] = '159.223.91.38'
 app.config['MYSQL_USER'] = 'yujing'
 app.config['MYSQL_PASSWORD'] = 'AVNS_tsp5nuC_MhlRP0_cIVV'
 app.config['MYSQL_DB'] = 'ICT3x03'
-app.config['MYSQL_PORT'] = '25060'
+app.config['MYSQL_PORT'] = 25060
 mysql = MySQL(app)
 
 cors = CORS(app)
