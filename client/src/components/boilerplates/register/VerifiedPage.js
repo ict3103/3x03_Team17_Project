@@ -7,7 +7,7 @@ import { FaReact} from 'react-icons/fa';
 
 
 function VerifiedPage(){
-    window.localStorage.setItem("login",false);
+    // window.localStorage.setItem("login",false);
     return (
       <div >
         <video autoPlay loop muted className="back-video">

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 function AddItem(){
-  window.localStorage.setItem("login",true);
+  // window.localStorage.setItem("login",true);
   function logout(){
     window.location.href="/"; 
     }

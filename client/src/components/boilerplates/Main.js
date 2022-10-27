@@ -3,7 +3,7 @@ import '../../styles/main.css'
 import { FaReact } from 'react-icons/fa';
 
 function Main() {
-  window.localStorage.setItem("login",false);
+  // window.localStorage.setItem("login",false);
   
   return (
 

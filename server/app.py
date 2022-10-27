@@ -46,10 +46,13 @@ def register_user():
 		input_name = security.sanitization(request.form['username'])
 		input_email = security.sanitization(request.form['email'])
 		input_password = security.sanitization(request.form['password'])
+		input_confirm_password = security.sanitization(request.form['checkpassword'])
 
 		if not(security.username_pattern().match(input_name) and security.email_pattern().match(input_email) and security.password_pattern().match(input_password)):
 			return 'Error while adding user'
-
+		#case when password does not match
+		if input_password != input_confirm_password:
+			return 'Password not match'
 		else: #once all server validation is ok; proceed 
 			account = api.db_query_fetchone(api.get_account(input_email))
 
