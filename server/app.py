@@ -128,6 +128,7 @@ def confirm_email(token):
 
 @app.route('/login',methods=['POST'])
 def user_login():
+	print(request.json)
 	if request.method == 'POST':
 		input_email = security.sanitization(request.form['email'])
 		input_password = request.form['inputPwd']
@@ -145,26 +146,14 @@ def user_login():
 				#session['name'] = account['name']
 
 				#encode session credentials with JWT (include user id and session expiration timing)
-				token = jwt.encode(
+				jwt_token = jwt.encode(
 					{
 					"uid":account[0], #0-user id, 1-username, 2-email
 					"expiration" : str(datetime.utcnow()+timedelta(minutes=50))
 					}, 
 					app.config['SECRET_KEY'])
-				print(token)
-
-	# 			token_info = {
-    #     'access_token': '...',
-    #     'refresh_token': '...',
-    #     'token_type': '...',
-    #     'expires_in': '...' 
-    # }
-				# test = jsonify({"jwt_token":jwt_token})
-				# print(test)
-				# sendmail.sendnotif(input_email,1)
-				return token
-				# return redirect('/collectionlogin'	,302,jsonify({"jwt_token":token.decode('UTF-8')}))
-				# return redirect('/collectionlogin',302,jsonResponseFactory(token_info))
+				print(jwt_token)
+				return {"jwt_token":jwt_token}
 
 			else: 
 				return 'Incorrect username/password. Please Try Again.'
