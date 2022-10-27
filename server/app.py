@@ -47,18 +47,21 @@ def add_cartItem():
 def register_user():
 	if request.method == 'POST':
 
-		input_name = security.sanitization(request.form['username'])
+		input_username = security.sanitization(request.form['username'])
 		input_email = security.sanitization(request.form['email'])
-		input_password = security.sanitization(request.form['password'])
-		input_confirm_password = security.sanitization(request.form['checkpassword'])
+		input_password = request.form['password']
+		input_confirm_password = request.form['checkpassword']
 
-		if not(security.username_pattern().match(input_name) and security.email_pattern().match(input_email) and security.password_pattern().match(input_password)):
+		if not(security.username_pattern().match(input_username) and security.email_pattern().match(input_email) and security.password_pattern().match(input_password) and security.password_pattern().match(input_confirm_password)) :
 			return 'Error while adding user'
+
 		#case when password does not match
 		if input_password != input_confirm_password:
 			return 'Password not match'
+
 		else: #once all server validation is ok; proceed 
 			account = api.db_query_fetchone(api.get_account(input_email))
+			print("Value of account: " + str(account))
 
 			#if there there is such an account in db, user cannot register
 			if account: 
@@ -68,7 +71,7 @@ def register_user():
 				hashed_password = security.hashpassword(input_password)
 				email_type = 1 
 				sendmail.sendmail(input_email, "confirm_email", 1)
-				api.db_query(api.insert_new_user(input_name,input_email,hashed_password))
+				api.db_query(api.insert_new_user(input_username,input_email,hashed_password))
 				return redirect('http://localhost:3000/verification')
 
 @app.route('/confirm_email/<token>')
