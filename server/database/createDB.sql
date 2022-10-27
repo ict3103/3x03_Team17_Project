@@ -32,9 +32,14 @@ CREATE TABLE `Cart` (
 );
 
 CREATE TABLE `CartItems`(
+  `cartItemId` INT NOT NULL AUTO_INCREMENT,
   `cartId` INT NOT NULL,
   `laptopId` INT NOT NULL,
   `quantity` INT NOT NULL,
+  PRIMARY KEY (`cartItemId`),
   FOREIGN KEY(`cartId`) REFERENCES Cart(cartId),
   FOREIGN KEY(`laptopId`) REFERENCES LaptopInfo(laptopId)
 );
+
+ALTER TABLE CartItems
+  ADD CONSTRAINT CartItems UNIQUE(cartId, laptopId);
