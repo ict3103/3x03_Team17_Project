@@ -12,10 +12,10 @@ load_dotenv()
 
 
 app = Flask(__name__)
-app.config['emailsender'] = os.getenv("email_sender")
-app.config['emailpass'] = os.getenv("email_password")
-app.config['register_secretkey'] = os.getenv("register_secretkey")
-app.config['register_securitypasswordsalt'] = os.getenv("register_securitypasswordsalt")
+app.config['emailsender'] = 'ict3x03team17@gmail.com'
+app.config['emailpass'] = 'dcrrnilphtpotspi'
+app.config['register_secretkey'] = 'T17-regkeysecret@'
+app.config['register_securitypasswordsalt'] = 'salt4T17-regkeysecret'
 
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False

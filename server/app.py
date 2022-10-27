@@ -15,11 +15,11 @@ import sendmail
 import os
 
 app = Flask(__name__)
-app.config['MYSQL_HOST'] = os.getenv("HOST")
-app.config['MYSQL_USER'] = os.getenv("DB_USER")
-app.config['MYSQL_PASSWORD'] = os.getenv("DB_PASSWORD")
-app.config['MYSQL_DB'] = os.getenv("DATABASE")
-app.config['MYSQL_PORT'] = int(os.getenv("PORT"))
+app.config['MYSQL_HOST'] = '159.223.91.38'
+app.config['MYSQL_USER'] = 'yujing'
+app.config['MYSQL_PASSWORD'] = 'AVNS_tsp5nuC_MhlRP0_cIVV'
+app.config['MYSQL_DB'] = 'ICT3x03'
+app.config['MYSQL_PORT'] = '25060'
 mysql = MySQL(app)
 
 cors = CORS(app)
