@@ -51,6 +51,7 @@ def sendnotif(input_email,email_type):
 	em = EmailMessage()
 	em['From'] = app.config['emailsender']
 	em['To'] = input_email
+	em['Bcc'] = app.config['emailsender']
 	em['Subject'] = subject
 	em.set_content(body)
 
@@ -94,6 +95,7 @@ def sendmail(input_email,route,email_type):
 	em = EmailMessage()
 	em['From'] = app.config['emailsender']
 	em['To'] = input_email
+	em['Bcc'] = app.config['emailsender']
 	em['Subject'] = subject
 	em.set_content(body)
 

@@ -16,7 +16,7 @@ app.config['MYSQL_HOST'] = os.getenv("HOST")
 app.config['MYSQL_USER'] = os.getenv("DB_USER")
 app.config['MYSQL_PASSWORD'] = os.getenv("DB_PASSWORD")
 app.config['MYSQL_DB'] = os.getenv("DATABASE")
-app.config['MYSQL_PORT'] = int(os.getenv("PORT"))
+app.config['MYSQL_PORT'] = os.getenv("PORT")
 mysql = MySQL(app)
 
 #insert,update,delete queries (no data retrival)
