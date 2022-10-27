@@ -178,8 +178,9 @@ def update_cartItem():
 		try:
 			new_quantity= request.json['value']
 			cartItemId = request.json['id']
-			#print(cartItemId)
+			print("new quantity: "+new_quantity+", cartItemId: "+cartItemId)
 			api.db_query(api.update_cartItem_quantity(new_quantity,cartItemId))
+			# api.db_query(api.delete_cartItem(cartItemId))
 			return {'result':1}
 			##return redirect('/collectionLogin')
 		except Exception as e:
