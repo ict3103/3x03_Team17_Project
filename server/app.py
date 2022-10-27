@@ -2,20 +2,21 @@
 # An object of Flask class is our WSGI application.
 from operator import imod
 from threading import activeCount
-from flask import Flask, request,redirect,session,url_for
+from flask import Flask, request,redirect,session,url_for,jsonify,Response,json
 from flask_cors import CORS,cross_origin
 from dotenv import load_dotenv
 from flask_mysqldb import MySQL
 from flask_mail import Mail,Message
-
 #argon2 hashing algorithm - pip install argon2-cffi
 from passlib.hash import argon2 
-
 #rate limitation protection - pip install Flask-Limiter
 from flask import Flask 
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
+import jwt
+from functools import wraps
+from datetime import datetime, timedelta
 load_dotenv()
 import api
 import security
@@ -34,15 +35,40 @@ mysql = MySQL(app)
 cors = CORS(app)
 mail = Mail(app)
 
+def jsonResponseFactory(data):
+    '''Return a callable in top of Response'''
+    def callable(response=None, *args, **kwargs):
+        '''Return a response with JSON data from factory context'''
+        return Response(json.dumps(data), *args, **kwargs)
+    return callable
+
+# decorator for verifying the JWT
+def token_required(func):
+    @wraps(func)
+    def decorated(*args,**kwargs):
+		#get the token from the query string
+        token = request.args.get('token')
+        if not token :
+            return jsonify({'message':'Token is missing!'}),403
+        try:
+            # decoding the payload to fetch the stored details
+            payload = jwt.decode(token,app.config['SECRET_KEY'])
+			#if decode token is wrong / tampered (does not match with secret key)
+        except:
+            return jsonify({'message':'Invalid token!'}),403
+    return decorated
+
 #-------------------------------------------------------------------------------------------
 # collection route (retrive all laptop info)
 #-------------------------------------------------------------------------------------------
 
 @app.route('/collection')
 @limiter.exempt
+@token_required
 def get_collection():
-	collection = api.db_query_fetchall(api.get_all_laptop())
-	return {'collection':collection}
+	return "you can only view this with token"
+	# collection = api.db_query_fetchall(api.get_all_laptop())
+	# return {'collection':collection}
 
 #-------------------------------------------------------------------------------------------
 # Register route
@@ -115,9 +141,30 @@ def user_login():
 			if result == True: 
 				#sessions code starts here 
 				session['loggedin'] = True
+				#session['id'] = tuple(map(str, account['email'].split(', ')))
+				#session['name'] = account['name']
 
-				sendmail.sendnotif(input_email,1)
-				return redirect('/collectionlogin')
+				#encode session credentials with JWT (include user id and session expiration timing)
+				token = jwt.encode(
+					{
+					"uid":account[0], #0-user id, 1-username, 2-email
+					"expiration" : str(datetime.utcnow()+timedelta(minutes=50))
+					}, 
+					app.config['SECRET_KEY'])
+				print(token)
+
+	# 			token_info = {
+    #     'access_token': '...',
+    #     'refresh_token': '...',
+    #     'token_type': '...',
+    #     'expires_in': '...' 
+    # }
+				# test = jsonify({"jwt_token":jwt_token})
+				# print(test)
+				# sendmail.sendnotif(input_email,1)
+				return token
+				# return redirect('/collectionlogin'	,302,jsonify({"jwt_token":token.decode('UTF-8')}))
+				# return redirect('/collectionlogin',302,jsonResponseFactory(token_info))
 
 			else: 
 				return 'Incorrect username/password. Please Try Again.'
@@ -169,6 +216,7 @@ def reset_success(token):
 
 @app.route('/cart')
 @limiter.exempt
+@token_required
 def get_cartItems():
 	collection = api.db_query_fetchall(api.get_cartItemsInfo(1))
 	return {'collection':collection}

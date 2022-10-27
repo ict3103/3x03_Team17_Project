@@ -12,6 +12,12 @@ function CollectionLogin(){
             setCollectionData(response.data.collection)
         })
     },[]);
+
+    useEffect(()=>{
+        axios.get("http://127.0.0.1:5000/collection").then((response)=>{
+            setCollectionData(response.data.collection)
+        })
+    },[]);
     function logout(){
     window.location.href="/"; 
     };

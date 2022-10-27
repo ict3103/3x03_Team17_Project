@@ -23,7 +23,7 @@ import { useHistory } from "react-router-dom";
 
 function App() {
     const history = useHistory()
-    const timeout = 3000000
+    const timeout = 300033
     const [remaining, setRemaining] = useState(timeout)
     const [elapsed, setElapsed] = useState(0)
     const [lastActive, setLastActive] = useState(+new Date())
