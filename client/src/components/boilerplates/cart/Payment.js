@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "react-credit-cards-2";
 import '../../../styles/payment.css';
 import {
@@ -7,8 +7,11 @@ import {
   formatExpirationDate
 } from "./utils";
 import "react-credit-cards-2/es/styles-compiled.css";
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 export default class App extends React.Component {
+
   state = {
     number: "",
     name: "",
@@ -55,6 +58,7 @@ export default class App extends React.Component {
 
     this.setState({ formData });
     this.form.reset();
+    window.location.href="/paymentComplete"
   };
 
   render() {
@@ -72,7 +76,7 @@ export default class App extends React.Component {
             focused={focused}
             callback={this.handleCallback}
           />
-          <form ref={c => (this.form = c)} onSubmit={this.handleSubmit}>
+          <form ref={c => (this.form = c)} href="/paymentComplete" onSubmit={this.handleSubmit}>
             <div className="form-group">
               <input
                 type="tel"

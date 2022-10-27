@@ -9,3 +9,4 @@ server/.DS_Store
 *.pyc
 server/__pycache__/security.cpython-310.pyc
 server/__pycache__/sendmail.cpython-310.pyc
+.DS_Store

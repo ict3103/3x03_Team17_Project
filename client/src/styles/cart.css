@@ -9,10 +9,16 @@
 }
 .price-wrap{
     text-align: center;
-    padding-left: 170px;
+    display: inline-block;
+}
+.quantity-dropdown{
+    text-align: center;
 }
 #cart-payment-btn{
     margin-left: 80%;
     background-color: black;
     width: 10%;
+}
+#cart-delete-btn{
+    width: 60%;
 }
