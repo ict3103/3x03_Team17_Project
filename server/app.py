@@ -1,12 +1,21 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
+from operator import imod
 from threading import activeCount
 from flask import Flask, request,redirect,session,url_for
 from flask_cors import CORS,cross_origin
 from dotenv import load_dotenv
 from flask_mysqldb import MySQL
 from flask_mail import Mail,Message
-from passlib.hash import argon2 #pip install argon2-cffi
+
+#argon2 hahsing algorithm - pip install argon2-cffi
+from passlib.hash import argon2 
+
+#rate limitation protection - pip install Flask-Limiter
+from flask import Flask 
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
 load_dotenv()
 import api
 import security
@@ -19,8 +28,9 @@ app.config['MYSQL_USER'] = 'yujing'
 app.config['MYSQL_PASSWORD'] = 'AVNS_tsp5nuC_MhlRP0_cIVV'
 app.config['MYSQL_DB'] = 'ICT3x03'
 app.config['MYSQL_PORT'] = 25060
-mysql = MySQL(app)
+limiter = Limiter(app,key_func=get_remote_address,default_limits=["100 per day", "50 per hour"]) 
 
+mysql = MySQL(app)
 cors = CORS(app)
 mail = Mail(app)
 
@@ -29,16 +39,17 @@ mail = Mail(app)
 #-------------------------------------------------------------------------------------------
 
 @app.route('/collection')
+@limiter.exempt
 def get_collection():
 	collection = api.db_query_fetchall(api.get_all_laptop())
 	return {'collection':collection}
-
 
 #-------------------------------------------------------------------------------------------
 # Register route
 #-------------------------------------------------------------------------------------------
 
 @app.route('/register',methods=['POST'])
+@limiter.limit("20 per day")
 def register_user():
 	if request.method == 'POST':
 
@@ -76,6 +87,7 @@ def register_user():
 				return redirect('http://localhost:3000/verification')
 
 @app.route('/confirm_email/<token>')
+@limiter.limit("20 per day")
 def confirm_email(token):
 	try:
 		email = sendmail.confirm_token(token)
@@ -117,6 +129,7 @@ def user_login():
 #-------------------------------------------------------------------------------------------
 
 @app.route('/forgotPassword',methods=['POST'])
+@limiter.limit("20 per day")
 def forgotPassword():
 	if request.method == 'POST':
 		email = request.form['email']
@@ -128,11 +141,13 @@ def forgotPassword():
 
 # This will return the reset password page with the new password 
 @app.route('/reset_password/<token>')
+@limiter.limit("20 per day")
 def reset_password(token):
 	return redirect(f'http://localhost:3000/resetPassword/{token}')
 
 
 @app.route('/resetSuccess/<token>',methods=['POST'])
+@limiter.limit("20 per day")
 def reset_success(token):
 	newPwd = request.form['newPwd']
 	try:email = sendmail.confirm_token(token)
@@ -145,7 +160,6 @@ def reset_success(token):
 			sendmail.sendnotif(email,2)
 			return redirect(f'http://localhost:3000/resetPasswordSuccess')
 
-
 		else:
 			return "Password has to be between 8 to 20 characters long."
 
@@ -154,11 +168,13 @@ def reset_success(token):
 #-------------------------------------------------------------------------------------------
 
 @app.route('/cart')
+@limiter.exempt
 def get_cartItems():
 	collection = api.db_query_fetchall(api.get_cartItemsInfo(1))
 	return {'collection':collection}
 
 @app.route('/add_cartItem', methods = ['POST'])
+@limiter.exempt
 def add_cartItem():
 	if request.method == 'POST':
 		try:
@@ -169,6 +185,7 @@ def add_cartItem():
 			return "item already in cart"
 
 @app.route('/delete_cartItem', methods = ['POST'])
+@limiter.exempt
 def delete_cartItem():
 	if request.method == 'POST':
 		try:
@@ -179,6 +196,7 @@ def delete_cartItem():
 			return "error occur, pls try again"
 
 @app.route('/update_cartItem', methods = ['POST'])
+@limiter.exempt
 def update_cartItem():
 	if request.method == 'POST':
 		try:
