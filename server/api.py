@@ -52,7 +52,7 @@ def get_all_laptop():
     return "SELECT * FROM LaptopInfo"
 
 def get_cartItemsInfo(userId):
-	return f"SELECT l.laptopName, l.imageUrl, l.price, c.cartItemId, c.quantity, c.cartId FROM laptopinfo as l join cartitems as c on c.laptopId = l.laptopId where c.cartId = '{userId}'"
+	return f"SELECT l.laptopName, l.imageUrl, l.price, c.cartItemId, c.quantity, c.cartId FROM LaptopInfo as l join CartItems as c on c.laptopId = l.laptopId where c.cartId = '{userId}'"
 
 def get_account(email):
     return f"SELECT * FROM UserInfo WHERE email = '{email}'"
@@ -61,7 +61,7 @@ def insert_new_user(input_name,input_email,hashed_password):
     return f"INSERT INTO UserInfo (username, email, password) VALUES('{input_name}', '{input_email}', '{hashed_password}')"
 
 def insert_cartItem(userId, laptopId, quantity):
-	return f"INSERT INTO cartItems (cartId, laptopId, quantity) VALUES('{userId}', '{laptopId}', '{quantity}')"
+	return f"INSERT INTO CartItems (cartId, laptopId, quantity) VALUES('{userId}', '{laptopId}', '{quantity}')"
 
 def update_verification_status(email):
     return f"UPDATE UserInfo SET verification_status = 1 WHERE email = '{email}'"
@@ -69,8 +69,8 @@ def update_verification_status(email):
 def update_password(newPwd,email):
     return f'UPDATE UserInfo SET password = "{newPwd}" WHERE email = "{email}"'
 
-def update_cartItem_quantity(newQuantity, cartItemId):
-	return f'UPDATE cartItems SET quantity = "{newQuantity}" WHERE cartItemId = "{cartItemId}"'
+def update_cartItem_quantity(newQuantity,cartItemId):
+	return f"UPDATE CartItems SET quantity = '{newQuantity}' WHERE cartItemId = '{cartItemId}'"
 
 def delete_cartItem(cartItemId):
-	return f"DELETE from cartItems where cartItemId = '{cartItemId}'"
+	return f"DELETE from CartItems where cartItemId = '{cartItemId}'"
