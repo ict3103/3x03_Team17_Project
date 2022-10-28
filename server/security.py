@@ -1,5 +1,5 @@
 import html, re 
-from passlib.hash import sha512_crypt
+from passlib.hash import argon2
 
 #-------------------------------------------------------------------------------------------
 # Default Initial Sanitization 
@@ -20,14 +20,14 @@ def sanitization(input_string):
 #-------------------------------------------------------------------------------------------
 
 def hashpassword(password):
-    return sha512_crypt.hash(password)
+    return argon2.using(rounds=5).hash(password)
 
 #-------------------------------------------------------------------------------------------
 # User Input Sanitization 
 #-------------------------------------------------------------------------------------------
 
 def verify_password(input_password,gethashedpassword_fromdb):
-    return sha512_crypt.verify(input_password,gethashedpassword_fromdb)
+    return argon2.verify(input_password,gethashedpassword_fromdb)
 
 def username_pattern():
     return re.compile("^[a-z]*[ a-z]{8,20}$")

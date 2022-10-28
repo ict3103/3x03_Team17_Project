@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from flask_mysqldb import MySQL
 from flask_mail import Mail,Message
 
-#argon2 hahsing algorithm - pip install argon2-cffi
+#argon2 hashing algorithm - pip install argon2-cffi
 from passlib.hash import argon2 
 
 #rate limitation protection - pip install Flask-Limiter
@@ -74,7 +74,7 @@ def register_user():
 
 			else:
 				#new hashing function using argon2id 
-				hashed_password = argon2.using(rounds=5).hash(input_password)  
+				hashed_password = security.hashpassword(input_password) 
 				email_type = 1 
 				sendmail.sendmail(input_email, "confirm_email", 1)
 				api.db_query(api.insert_new_user(input_username,input_email,hashed_password))
@@ -110,7 +110,7 @@ def user_login():
 
 		if account is not None: 
 			gethashedpassword_fromdb = account[3]
-			result = argon2.verify(input_password,gethashedpassword_fromdb)
+			result = security.verify_password(input_password,gethashedpassword_fromdb)
 
 			if result == True: 
 				#sessions code starts here 
