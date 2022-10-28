@@ -4,8 +4,7 @@ import {React , useState, useEffect} from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha'
-import { setAuthToken } from './setAuthenToken';
-import {useHistory,Router,Switch} from 'react-router-dom';
+import { setAuthenToken } from './Token';
 
 
 function Login(){
@@ -15,24 +14,26 @@ function Login(){
     const sendForm  = (e) =>{
         e.preventDefault();
         axios.post("http://127.0.0.1:5000/login",{inputEmail,inputPassword}).then(response=>{
-                console.log(response.data.jwt_token)
-                console.log(response.data)
                 if(response.data.jwt_token){
+                    //get token from http response
                     const token = response.data.jwt_token
+                    //set JWT token to local
                     window.localStorage.setItem('token',response.data.jwt_token)
-                    setAuthToken(token);
+                    //set token to axios common header
+                    setAuthenToken(token);
                 }
-                useHistory.push("/collectionLogin")
-                // if(response.data.redirect="/collectionLogin"){
-                //     window.location = "/collectionLogin"
-                // }else{
-                //     window.location ="/"
-                // }
+                //direct user to the login page
+                if(response.data.redirect="/collectionLogin"){
+                    window.location = "/collectionLogin"
+                }
         }).catch((err)=>{
             console.warn("error",err.response)
         })
         
     }
+
+
+    
 
     const changeState = ()=>{
         setforgotPwd(true)

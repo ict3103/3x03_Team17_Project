@@ -19,7 +19,9 @@ function ShoppingCart() {
     }, [dropdownValue]);
 
     useEffect(()=>{
-        axios.get("http://127.0.0.1:5000/cart").then((response)=>{
+        axios.get("http://127.0.0.1:5000/cart", {headers: {
+            Authorization: window.localStorage.getItem('token')
+         }}).then((response)=>{
             setCollectionData(response.data.collection)
         })
     },[]);

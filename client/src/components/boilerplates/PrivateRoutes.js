@@ -4,13 +4,13 @@ import {
   } from 'react-router-dom';
   
   //for authorized users
-  function PrivateRoute({ children, isAuthenticated, ...rest }) {
+  function PrivateRoute({ children, IsValidJWT, ...rest }) {
     return (
       <Route
         {...rest}
         render={
           ({ location }) => (
-            isAuthenticated
+            IsValidJWT
               ? (
                 //redirect to the private routes if authenticated
                 children

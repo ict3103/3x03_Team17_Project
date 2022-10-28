@@ -66,9 +66,17 @@ def token_required(func):
 @limiter.exempt
 @token_required
 def get_collection():
-	return "you can only view this with token"
-	# collection = api.db_query_fetchall(api.get_all_laptop())
-	# return {'collection':collection}
+	# return "you can only view this with token"
+	collection = api.db_query_fetchall(api.get_all_laptop())
+	return {'collection':collection}
+
+@app.route('/add_cartItem', methods = ['POST'])
+@token_required
+def add_cartItem():
+	if request.method == 'POST':
+		laptopId = request.form['productId']
+		api.db_query(api.insert_cartItem(1,laptopId,1))
+		return redirect('/cart')
 
 #-------------------------------------------------------------------------------------------
 # Register route
@@ -137,7 +145,6 @@ def user_login():
 		if account is not None: 
 			gethashedpassword_fromdb = account[3]
 			result = security.verify_password(input_password,gethashedpassword_fromdb)
-
 			if result == True: 
 				#sessions code starts here 
 				session['loggedin'] = True
@@ -151,12 +158,9 @@ def user_login():
 					"expiration" : str(datetime.utcnow()+timedelta(minutes=50))
 					}, 
 					app.config['SECRET_KEY'])
-				print(jwt_token)
 				return {"jwt_token":jwt_token,"redirect":"/collectionLogin"}
 			else: 
 				return {"redirect":"/","error_message":'Incorrect username/password. Please Try Again.'}
-
-		return 'Incorrect username/password. Please Try Again.'
 
 #-------------------------------------------------------------------------------------------
 # forgot password verification 
@@ -205,7 +209,10 @@ def reset_success(token):
 @limiter.exempt
 @token_required
 def get_cartItems():
+	auth = request.authorization 
+
 	collection = api.db_query_fetchall(api.get_cartItemsInfo(1))
+	
 	return {'collection':collection}
 
 @app.route('/add_cartItem', methods = ['POST'])

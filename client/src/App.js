@@ -16,104 +16,54 @@ import Payment from './components/boilerplates/cart/Payment';
 import PaymentComplete from './components/boilerplates/cart/PaymentComplete';
 import CollectionLogin from './components/boilerplates/CollectionLogin';
 import ProductDetails from './components/boilerplates/ProductDetails';
-import ProtectedRoutes from './components/boilerplates/ProtectedRoutes';
 import PrivateRoute from './components/boilerplates/PrivateRoutes';
 import PublicRoute from './components/boilerplates/PublicRoutes';
+import { Route} from "react-router-dom"
+import {IsValidJWT} from './components/boilerplates/Token'
+import { setAuthenToken } from './components/boilerplates/Token';
 
 
-window.localStorage.setItem('true',true)
 function App() {
-    const isAuthenticated = window.localStorage.getItem('true')
+    //check jwt token
+    const token = localStorage.getItem("token");
+    if (token) {
+      setAuthenToken(token);
+    }
     return (
-        <div>
     <div>
-      {/* react router for defining routes */}
-      {/* <Router> */}
-      <Suspense fallback="loading">
-        {/* <Switch> */}
-      <PublicRoute
-            Exact path="/"
-          >
-        <Main />
-      </PublicRoute>
-      <PublicRoute
-            path="/register"
-          >
-        <Register />
-      </PublicRoute>
-      <PublicRoute
-           path="/collection"
-          >
-        <Collection />
-      </PublicRoute>
+      <div>
+
+      <Route Exact path="/" component={Main}></Route>
+
+      <PublicRoute path="/register" component={Register}></PublicRoute>
+
+      <PublicRoute path="/productdetails" IsValidJWT={!IsValidJWT} component={ProductDetails} ></PublicRoute>
+
+      <PublicRoute path="/collection" component={Collection}></PublicRoute>
       
-      <PublicRoute
-            path="/login"
-          >
-        <Login />
-      </PublicRoute>
-      <PrivateRoute
-            path="/cart"
-            isAuthenticated={!isAuthenticated}
-          >
-            <ShoppingCart />
-      </PrivateRoute>
-      <PrivateRoute
-            path="/collectionLogin"
-            isAuthenticated={!isAuthenticated}
-          >
-            <CollectionLogin />
-      </PrivateRoute>
-          <PrivateRoute
-            path="/payment"
-            isAuthenticated={!isAuthenticated}
-          >
-            <Payment />
-          </PrivateRoute>
-          <PrivateRoute
-            path="/paymentComplete"
-            isAuthenticated={!isAuthenticated}
-          >
-            <paymentComplete />
-          </PrivateRoute>
-          <PrivateRoute
-            path="/verification"
-            isAuthenticated={!isAuthenticated}
-          >
-            <VerificationPage />
-          </PrivateRoute>
-          <PrivateRoute
-            path="/verifiedPage"
-            isAuthenticated={!isAuthenticated}
-          >
-            <VerifiedPage />
-          </PrivateRoute>
-          <PrivateRoute
-            path="/resetPassword/:token"
-            isAuthenticated={!isAuthenticated}
-          >
-            <ResetPasswordPage />
-          </PrivateRoute>
-          <PrivateRoute
-            path="/resetPasswordSuccess"
-            isAuthenticated={!isAuthenticated}
-          >
-            <ResetSuccess />
-          </PrivateRoute>
-          <PrivateRoute
-            path="/productdetails"
-            isAuthenticated={!isAuthenticated}
-          >
-            <ProductDetails />
-          </PrivateRoute>
-      {/* </Switch> */}
-      </Suspense>
-      {/* </Router> */}
-            </div>
-            
-        </div>
-        
-       
+      <PublicRoute path="/login" component={Login}></PublicRoute>
+
+      <PrivateRoute path="/cart" IsValidJWT={!IsValidJWT} component={ShoppingCart} ></PrivateRoute>
+
+      <PrivateRoute path="/collectionLogin" IsValidJWT={!IsValidJWT} component={CollectionLogin}></PrivateRoute>
+
+      <PrivateRoute path="/payment" IsValidJWT={!IsValidJWT} component={Payment}></PrivateRoute>
+
+      <PrivateRoute path="/paymentComplete" IsValidJWT={!IsValidJWT} component={PaymentComplete}></PrivateRoute>
+
+      <PrivateRoute path="/verification" IsValidJWT={!IsValidJWT} component={VerificationPage}
+      ></PrivateRoute>
+
+      <PrivateRoute path="/verifiedPage" IsValidJWT={!IsValidJWT} component={VerifiedPage}
+      ></PrivateRoute>
+
+      <PrivateRoute path="/resetPassword/:token" IsValidJWT={!IsValidJWT} component={ResetPasswordPage}
+      ></PrivateRoute>
+
+      <PrivateRoute path="/resetPasswordSuccess" IsValidJWT={!IsValidJWT} component={ResetSuccess}
+      > </PrivateRoute>
+          </div>
+      </div>  
   );
 }
 
