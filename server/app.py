@@ -6,6 +6,7 @@ from flask_cors import CORS,cross_origin
 from dotenv import load_dotenv
 from flask_mysqldb import MySQL
 from flask_mail import Mail,Message
+from passlib.hash import argon2 #pip install argon2-cffi
 load_dotenv()
 import api
 import security
@@ -55,17 +56,23 @@ def register_user():
 
 		else: #once all server validation is ok; proceed 
 			account = api.db_query_fetchone(api.get_account(input_email))
-			print("Value of account: " + str(account))
 
 			#if there there is such an account in db, user cannot register
 			if account: 
 				return 'Registered Email Address'
 
-			else: 
-				hashed_password = security.hashpassword(input_password)
+			else:
+				#new hashing function using argon2id 
+				hashed_password = argon2.using(rounds=5).hash(input_password)  
 				email_type = 1 
 				sendmail.sendmail(input_email, "confirm_email", 1)
 				api.db_query(api.insert_new_user(input_username,input_email,hashed_password))
+
+				#create a link between userID and cartID 
+				get_userid = api.db_query_fetchone(api.get_account_id(input_email))
+				get_userid = get_userid[0] 
+				api.db_query(api.insert_cartid_userid(get_userid))
+
 				return redirect('http://localhost:3000/verification')
 
 @app.route('/confirm_email/<token>')
@@ -86,18 +93,17 @@ def user_login():
 	if request.method == 'POST':
 		input_email = security.sanitization(request.form['email'])
 		input_password = request.form['inputPwd']
-		
+
 		account = api.db_query_fetchone(api.get_account(input_email))
 
 		if account is not None: 
 			gethashedpassword_fromdb = account[3]
-			result = security.verify_password(input_password,gethashedpassword_fromdb)
+			result = argon2.verify(input_password,gethashedpassword_fromdb)
 
 			if result == True: 
 				#sessions code starts here 
 				session['loggedin'] = True
-				#session['id'] = tuple(map(str, account['email'].split(', ')))
-				#session['name'] = account['name']
+
 				sendmail.sendnotif(input_email,1)
 				return redirect('/collectionlogin')
 
