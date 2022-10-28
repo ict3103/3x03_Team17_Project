@@ -74,3 +74,9 @@ def update_cartItem_quantity(newQuantity,cartItemId):
 
 def delete_cartItem(cartItemId):
 	return f"DELETE from CartItems where cartItemId = '{cartItemId}'"
+
+def get_account_id(email):
+    return f"SELECT userId FROM ICT3x03.UserInfo WHERE email = '{email}'"
+
+def insert_cartid_userid (userId):
+	return f"INSERT INTO Cart (cartId, userId) VALUES('{userId}','{userId}')"

@@ -56,7 +56,6 @@ def register_user():
 
 		else: #once all server validation is ok; proceed 
 			account = api.db_query_fetchone(api.get_account(input_email))
-			print("Value of account: " + str(account))
 
 			#if there there is such an account in db, user cannot register
 			if account: 
@@ -68,6 +67,12 @@ def register_user():
 				email_type = 1 
 				sendmail.sendmail(input_email, "confirm_email", 1)
 				api.db_query(api.insert_new_user(input_username,input_email,hashed_password))
+
+				#create a link between userID and cartID 
+				get_userid = api.db_query_fetchone(api.get_account_id(input_email))
+				get_userid = get_userid[0] 
+				api.db_query(api.insert_cartid_userid(get_userid))
+
 				return redirect('http://localhost:3000/verification')
 
 @app.route('/confirm_email/<token>')
