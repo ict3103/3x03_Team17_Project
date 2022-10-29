@@ -2,30 +2,21 @@ import {
     Route,
     Redirect
   } from 'react-router-dom';
-  
+
+
+
   //for authorized users
-  function PrivateRoute({ children, IsValidJWT, ...rest }) {
+  const PrivateRoute = ({component: Component,IsValidJWT, ...rest}) => {
     return (
-      <Route
-        {...rest}
-        render={
-          ({ location }) => (
-            IsValidJWT
-              ? (
-                //redirect to the private routes if authenticated
-                children
-              ) : (
-                <Redirect
-                //redirect to login route if not authenticated
-                  to={{
-                    pathname: './Login',
-                    state: { from: location }
-                  }}
-                />
-              ))
-        }
-      />
+
+        // Show the component only when the user is logged in
+        // Otherwise, redirect the user to /signin page
+        <Route {...rest} render={props => (
+          IsValidJWT() ?
+                <Component {...props} />
+            : <Redirect to="/Login" />
+        )} />
     );
-  }
+};
   
   export default PrivateRoute;

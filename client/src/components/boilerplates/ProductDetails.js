@@ -19,41 +19,8 @@ function ProductDetails(){
         window.location.href="/cart":window.location.href="/login"
       }
   
-   
     return(<div >
-     {window.localStorage.getItem('login')==="false" ?
-      <nav class="navbar navbar-expand-lg navbar-dark" style={{"background-color": "rgba(0, 0, 0)"}}>
-      <div class="container-fluid"> <FaReact className="App-logo" />
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <Link class="nav-link" aria-current="page" to="/">Home</Link>
-                </li>
-                <li class="nav-item">
-                  <Link class="nav-link" to="/collection">Shop</Link>
-                </li>
-              </ul>
-              <form class="d-flex">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                      <li class="nav-item">
-                        <Link class="nav-link" aria-current="page" to="register">Register</Link>
-                      </li>
-                      <li class="nav-item">
-                          <Link class="btn btn-dark" to="login" style={{"border-radius": "30px;","background-color": "transparent"}}role="button">Login</Link>
-                      </li>       
-                    </ul>
-              </form>
-          </div>
-      </div>
-    </nav>
-    :<div/>
-        }
-
-
-      
+ 
     {collectionData.filter(laptopId => laptopId[0] ==window.localStorage.getItem("ProductDetails")).map((val)=>{
         return  <div style={{"text-align":"center"}}>
                 <br></br>

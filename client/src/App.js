@@ -32,35 +32,37 @@ function App() {
     return (
     <div>
       <div>
-
-      <Route Exact path="/" component={Main}></Route>
-
-      <PublicRoute path="/register" component={Register}></PublicRoute>
-
-      <PublicRoute path="/productdetails" IsValidJWT={!IsValidJWT} component={ProductDetails} ></PublicRoute>
-
-      <PublicRoute path="/collection" component={Collection}></PublicRoute>
       
-      <PublicRoute path="/login" component={Login}></PublicRoute>
+      <Route Exact path="/" component={Main}></Route>
+      
+      <PublicRoute Exact path="/collection" component={Collection}></PublicRoute>
 
-      <PrivateRoute path="/cart" IsValidJWT={!IsValidJWT} component={ShoppingCart} ></PrivateRoute>
+      <PublicRoute Exact path="/register" component={Register}></PublicRoute>
 
-      <PrivateRoute path="/collectionLogin" IsValidJWT={!IsValidJWT} component={CollectionLogin}></PrivateRoute>
+      <PublicRoute Exact path="/productdetails" IsValidJWT={!IsValidJWT} component={ProductDetails} ></PublicRoute>
 
-      <PrivateRoute path="/payment" IsValidJWT={!IsValidJWT} component={Payment}></PrivateRoute>
+    
+      
+      <PublicRoute Exact path="/login" component={Login}></PublicRoute>
 
-      <PrivateRoute path="/paymentComplete" IsValidJWT={!IsValidJWT} component={PaymentComplete}></PrivateRoute>
+      <PrivateRoute path="/cart" IsValidJWT={IsValidJWT} component={ShoppingCart} ></PrivateRoute>
 
-      <PrivateRoute path="/verification" IsValidJWT={!IsValidJWT} component={VerificationPage}
+      <PrivateRoute path="/collectionLogin" IsValidJWT={IsValidJWT} component={CollectionLogin}></PrivateRoute>
+
+      <PrivateRoute path="/payment" IsValidJWT={IsValidJWT} component={Payment}></PrivateRoute>
+
+      <PrivateRoute path="/paymentComplete" IsValidJWT={IsValidJWT} component={PaymentComplete}></PrivateRoute>
+
+      <PrivateRoute path="/verification" IsValidJWT={IsValidJWT} component={VerificationPage}
       ></PrivateRoute>
 
-      <PrivateRoute path="/verifiedPage" IsValidJWT={!IsValidJWT} component={VerifiedPage}
+      <PrivateRoute path="/verifiedPage" IsValidJWT={IsValidJWT} component={VerifiedPage}
       ></PrivateRoute>
 
-      <PrivateRoute path="/resetPassword/:token" IsValidJWT={!IsValidJWT} component={ResetPasswordPage}
+      <PrivateRoute path="/resetPassword/:token" IsValidJWT={IsValidJWT} component={ResetPasswordPage}
       ></PrivateRoute>
 
-      <PrivateRoute path="/resetPasswordSuccess" IsValidJWT={!IsValidJWT} component={ResetSuccess}
+      <PrivateRoute path="/resetPasswordSuccess" IsValidJWT={IsValidJWT} component={ResetSuccess}
       > </PrivateRoute>
           </div>
       </div>  

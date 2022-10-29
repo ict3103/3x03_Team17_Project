@@ -3,18 +3,36 @@ import { useEffect, useState } from 'react';
 import '../../styles/collection.css'
 import { Link } from 'react-router-dom';
 import { FaReact } from 'react-icons/fa';
+import { IsValidJWT } from './Token';
 
 function Collection(){
     const [collectionData,setCollectionData] = useState([])
+    //axios get request to get laptop collections
     useEffect(()=>{
         axios.get("http://127.0.0.1:5000/collection").then((response)=>{
             setCollectionData(response.data.collection)
         })
     },[])
 
+    const addToCart  = (e) =>{
+        e.preventDefault();
+        axios.post("http://127.0.0.1:5000/add_cartItem",{headers: {
+            Authorization: window.localStorage.getItem('token')
+         }}).then(response=>{
+                if(response.data.redirect="cart"){
+                    window.location = "/cart"
+                }else{
+                    return alert("Error:!!");
+                }
+        }).catch((err)=>{
+            return alert("Error: " + err);
+        })
+        
+    }
+
+    
+
     const handleCartButton = (e) => {
-        // window.localStorage.getItem('login')==="true" ? 
-        // window.location.href="/cart":window.location.href="/login"
         window.localStorage.setItem("ProductDetails", e.target.value)
         window.location.href = "/productdetails"
         console.log(e.target.value); //will give you the value continue
@@ -23,7 +41,8 @@ function Collection(){
    
     return(<div >
     <div class="row" id="div1">
-      
+    
+    {/* display all the items */}
     {collectionData.map((val)=>{
         return <div className="column">
         <div className="card" style={{"width": "18rem;"}}>
@@ -37,6 +56,13 @@ function Collection(){
                         <button id="productButton" type="button" onClick={handleCartButton} value={val[0]} class="btn btn-primary" >Description</button>
                     </div>
                 </div>
+                {IsValidJWT()?<div class="row">
+                    <div class="col" style={{"align-items":"center","display":"flex","flex-direction":"column"}}>
+                        <button id="productButton"  onClick={addToCart} name="productId" value={val[0]} class="btn btn-primary" >Add to cart</button>
+                    </div>
+                </div>:null}
+                    
+                
         </div>
     </div>
      })

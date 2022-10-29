@@ -23,11 +23,13 @@ function Login(){
                     setAuthenToken(token);
                 }
                 //direct user to the login page
-                if(response.data.redirect="/collectionLogin"){
-                    window.location = "/collectionLogin"
+                if(response.data.redirect="true"){
+                    window.location = "/collection"
+                }else{
+                    return alert("Error:!!");
                 }
         }).catch((err)=>{
-            console.warn("error",err.response)
+            return alert("Error: " + err);
         })
         
     }
