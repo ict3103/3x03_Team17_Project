@@ -14,17 +14,10 @@ function Login(){
     const sendForm  = (e) =>{
         e.preventDefault();
         axios.post("http://127.0.0.1:5000/login",{inputEmail,inputPassword}).then(response=>{
-                if(response.data.jwt_token){
-                    //get token from http response
-                    const token = response.data.jwt_token
-                    //set JWT token to local
-                    window.localStorage.setItem('token',response.data.jwt_token)
-                    //set token to axios common header
-                    setAuthenToken(token);
-                }
-                //direct user to the login page
-                if(response.data.redirect="true"){
-                    window.location = "/collection"
+                if(response.data){
+                    console.log("heeeee",response.data.response)
+                    console.log(response)
+                    // window.location = "/collection"
                 }else{
                     return alert("Error:!!");
                 }
@@ -62,8 +55,8 @@ function Login(){
 
     (forgotPwd===false)?
         <div class="center form">
-            <h1>Login</h1>
-            <form>
+            <h1 style={{"color":"black"}}>Login</h1>
+            <form >
                 <div class="txt_field">
                 <input type="email" name="email" id="email" onChange={e => setEmail(e.target.value)} required/>
                 <span></span>

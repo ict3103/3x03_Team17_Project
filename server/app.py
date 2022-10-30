@@ -17,12 +17,23 @@ from flask_limiter.util import get_remote_address
 import jwt
 from functools import wraps
 # from JWT import token_required
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 load_dotenv()
 import api
 import security
 import sendmail
 import os
+
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_refresh_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import get_jwt
+from flask_jwt_extended import set_access_cookies
+from flask_jwt_extended import set_refresh_cookies
+from flask_jwt_extended import unset_jwt_cookies
+
 
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = '159.223.91.38'
@@ -35,21 +46,35 @@ mysql = MySQL(app)
 cors = CORS(app)
 mail = Mail(app)
 
-def token_required(func):
-    @wraps(func)
-    def decorated(*args,**kwargs):
-        #get the token from the query string
-        token = request.headers
-        print("headdddder",token)
-        # if not token :
-        #     return jsonify({'message':'Token is missing!'})
-        # try:
-        #     # decoding the payload to fetch the stored details
-        #     payload = jwt.decode(token,app.config['SECRET_KEY'])
-        # #if decode token is wrong / tampered (does not match with secret key)
-        # except jwt.InvalidTokenError:
-        #     return jsonify({'message':'Invalid token!'})
-    return decorated
+# If cookie_secure = true,only allow JWTs to be sent over https. 
+# In production, this should always be set to True
+app.config["JWT_COOKIE_SECURE"] = False
+app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
+#jwt expiry
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
+
+# Disable CSRF protection for this example. In almost every case,
+# this is a bad idea. See examples/csrf_protection_with_cookies.py
+# for how safely store JWTs in cookies
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+#create jwt manager
+jwt = JWTManager(app)
+
+#fresh JWT token in case user still needs to access the website during login
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            set_access_cookies(response, access_token)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original response
+        return response
 
 #-------------------------------------------------------------------------------------------
 # collection route (retrive all laptop info)
@@ -57,19 +82,12 @@ def token_required(func):
 
 @app.route('/collection')
 @limiter.exempt
-@token_required
 def get_collection():
     # return "you can only view this with token"
     collection = api.db_query_fetchall(api.get_all_laptop())
     return {'collection':collection}
 
-@app.route('/add_cartItem', methods = ['POST'])
-@token_required
-def add_cartItem():
-    if request.method == 'POST':
-        laptopId = request.form['productId']
-        api.db_query(api.insert_cartItem(1,laptopId,1))
-        return {"redirect":'cart'}
+
 
 #-------------------------------------------------------------------------------------------
 # Register route
@@ -128,32 +146,38 @@ def confirm_email(token):
 #-------------------------------------------------------------------------------------------
 
 @app.route('/login',methods=['POST'])
+# @jwt_required(optional=True)
 def user_login():
     if request.method == 'POST':
         input_email = security.sanitization(request.json['inputEmail'])
         input_password = request.json['inputPassword']
-        
         account = api.db_query_fetchone(api.get_account(input_email))
-
         if account is not None: 
+            user_id = account[0]
+            print(user_id)
             gethashedpassword_fromdb = account[3]
             result = security.verify_password(input_password,gethashedpassword_fromdb)
             if result == True: 
-                #sessions code starts here 
-                session['loggedin'] = True
-                #session['id'] = tuple(map(str, account['email'].split(', ')))
-                #session['name'] = account['name']
-
                 #encode session credentials with JWT (include user id and session expiration timing)
-                jwt_token = jwt.encode(
-                    {
-                    "uid":account[0], #0-user id, 1-username, 2-email
-                    "expiration" : str(datetime.utcnow()+timedelta(minutes=50))
-                    }, 
-                    app.config['SECRET_KEY'])
-                return {"jwt_token":jwt_token,"redirect":"true"}
+                response = jsonify({"login": "true"})
+                # Create the tokens we will be sending back to the user
+                access_token = create_access_token(identity=user_id)
+                refresh_token = create_refresh_token(identity=user_id)
+                set_access_cookies(response, access_token)
+                set_refresh_cookies(response, refresh_token)
+                return response
             else: 
                 return {"redirect":'false'}
+        return {"err":"error"}
+
+# Because the JWTs are stored in an httponly cookie now, we cannot
+# log the user out by simply deleting the cookie in the frontend.
+# We need the backend to send us a response to delete the cookies in order to logout.
+# @app.route('/token/remove', methods=['POST'])
+# def logout():
+#     response = jsonify({'logout': True})
+#     unset_jwt_cookies(response)
+#     return response, 200
 
 #-------------------------------------------------------------------------------------------
 # forgot password verification 
@@ -199,23 +223,32 @@ def reset_success(token):
 #-------------------------------------------------------------------------------------------
 
 @app.route('/cart')
-@limiter.exempt
-@token_required
+@jwt_required()
 def get_cartItems():
-    collection = api.db_query_fetchall(api.get_cartItemsInfo(1))
-    
-    return {'collection':collection}
+    id = request.json(["id"])
+    print("hello")
+    print(id)
+    # collection = api.db_query_fetchall(api.get_cartItemsInfo(1))
+    # return {'collection':collection}
+    return {"hello":"hello"}
 
 @app.route('/add_cartItem', methods = ['POST'])
 @limiter.exempt
+@jwt_required()
 def add_cartItem():
     if request.method == 'POST':
         try:
-            laptopId = request.form['productId']
-            api.db_query(api.insert_cartItem(1,laptopId,1))
-            return redirect('/cart')
+            json = request.json
+            print(json)
+            token = json['token']
+            laptopId = json['laptopId']
+            userId = json['uid']
+            # print(laptopId)
+
+            api.db_query(api.insert_cartItem(userId,laptopId,1))
+            return {'redirect':'/cart'}
         except Exception as e:
-            return "item already in cart"
+            return {"error":"item already in cart"}
 
 @app.route('/delete_cartItem', methods = ['POST'])
 @limiter.exempt

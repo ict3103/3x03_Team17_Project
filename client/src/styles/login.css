@@ -72,7 +72,7 @@ div.center.form{
 .center h1{
   text-align: center;
   padding: 20px 0;
-  border-bottom: 1px solid rgb(36, 33, 33);
+  border-bottom: 1px solid rgb(31, 29, 29);
 }
 .center form{
   padding: 0 40px;
@@ -105,7 +105,7 @@ form .txt_field{
 .txt_field span::before{
   content: '';
   position: absolute;
-  top: 40px;
+  top:50px;
   left: 0;
   width: 0%;
   height: 2px;

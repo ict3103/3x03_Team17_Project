@@ -13,7 +13,7 @@ const setAuthenToken = token => {
 
 const IsValidJWT= () =>{
     let flag = false
-    localStorage.getItem("token")?flag=true:flag=false
+    localStorage.getItem("access_token")?flag=true:flag=false
     console.log(flag)
     return flag
 }

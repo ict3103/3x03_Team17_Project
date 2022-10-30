@@ -14,6 +14,7 @@ def token_required(func):
         try:
             # decoding the payload to fetch the stored details
             payload = jwt.decode(token,app.config['SECRET_KEY'])
+            print(payload)
 			#if decode token is wrong / tampered (does not match with secret key)
         except:
             return jsonify({'message':'Invalid token!'}),403

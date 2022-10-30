@@ -9,26 +9,34 @@ function ShoppingCart() {
         { id: null, value: null }];
     const [collectionData,setCollectionData] = useState([])
     const [dropdownValue, setdropdownValue] = useState(initialValue)
-    useEffect((e) => {
-        console.log("value: "+dropdownValue.value+" from id: "+dropdownValue.id);
-        axios.post("http://127.0.0.1:5000/update_cartItem", {"id":dropdownValue.id, "value":dropdownValue.value}).then((response)=>{
-            if(response.data.result == 1){
-                window.location.reload()
-            }
-        })
-    }, [dropdownValue]);
+    // useEffect((e) => {
+    //     console.log("value: "+dropdownValue.value+" from id: "+dropdownValue.id);
+    //     axios.post("http://127.0.0.1:5000/update_cartItem", {"id":dropdownValue.id, "value":dropdownValue.value}).then((response)=>{
+    //         if(response.data.result == 1){
+    //             window.location.reload()
+    //         }
+    //     })
+    // }, [dropdownValue]);
 
+    // useEffect(()=>{
+    //     axios.get("http://127.0.0.1:5000/cart", {headers: {
+    //         Authorization: window.localStorage.getItem('token')
+    //      }}).then((response)=>{
+    //         setCollectionData(response.data.collection)
+    //     })
+    // },[]);
     useEffect(()=>{
-        axios.get("http://127.0.0.1:5000/cart", {headers: {
-            Authorization: window.localStorage.getItem('token')
-         }}).then((response)=>{
+        axios.get("http://127.0.0.1:5000/cart").then((response)=>{
             setCollectionData(response.data.collection)
         })
     },[]);
     let totalAmount = 0;
+ 
+    
   return (
-        <div class="container">
-
+    
+        <div class="container" id="div1">
+       
             <h2 class="title-page">Shopping cart</h2>
             <div class="row">
             <div class="card col-md-12">
@@ -80,6 +88,10 @@ function ShoppingCart() {
                 <h2 className='total-price-tag'>Total:</h2>
                 <h3>${totalAmount}</h3>
                 <Link to='/payment'><button class='btn btn-primary' id='cart-payment-btn'>Pay</button></Link>
+            </row>
+            <row>
+                    
+            
             </row>
             </div>
         </div>
