@@ -19,13 +19,9 @@ function Collection(){
 
     const addToCart  = (e) =>{
         e.preventDefault();
-        const options = {
-            laptopId: e.target.value,
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            }
-          };
-        axios.post("http://127.0.0.1:5000/add_cartItem",options).then(response=>{
+        axios.post("http://127.0.0.1:5000/add_cartItem",{laptopId: e.target.value,headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          }}).then(response=>{
                 if(response.data){
                     // window.location = "/cart"
                     console.log("ok")

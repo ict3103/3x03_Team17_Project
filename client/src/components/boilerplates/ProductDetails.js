@@ -16,8 +16,9 @@ function ProductDetails(){
     const history = useHistory()
     const handleCartButton = (e) => {
         window.localStorage.setItem("ProductDetails",e.target.value)
-        window.localStorage.getItem('login')==="true" ? 
-        window.location.href="/cart":window.location.href="/login"
+        IsValidJWT() ? 
+        window.location.href="/cart":
+        window.location.href="/login"
       }
   
     return(<div id="div1" >
@@ -41,18 +42,10 @@ function ProductDetails(){
                     </div>
                     <br></br>
                   </div>
-    
      })
     }
-
-
     <div id="backButton1">
-        {IsValidJWT()?
-        <Link to="/adminDashboard" class="btn btn-secondary btn-lg">Back</Link>
-      : 
-      <Link to="/collection" class="btn btn-secondary btn-lg">Back</Link>  
-      }
-        
+        <Link to="/collection" class="btn btn-secondary btn-lg">Back</Link>
     </div>
     
     </div>

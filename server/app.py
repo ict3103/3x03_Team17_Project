@@ -51,8 +51,8 @@ mail = Mail(app)
 app.config["JWT_COOKIE_SECURE"] = False
 app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies", "json", "query_string"]
 #jwt expiry
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
-app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=2)
+# app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
 app.config['JWT_SECRET_KEY'] = 'super-secret'
 
 # Disable CSRF protection for this example. In almost every case,
@@ -63,19 +63,19 @@ app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 jwt = JWTManager(app)
 
 #fresh JWT token in case user still needs to access the website during login
-@app.after_request
-def refresh_expiring_jwts(response):
-    try:
-        exp_timestamp = get_jwt()["exp"]
-        now = datetime.now(timezone.utc)
-        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
-        if target_timestamp > exp_timestamp:
-            access_token = create_access_token(identity=get_jwt_identity())
-            set_access_cookies(response, access_token)
-        return response
-    except (RuntimeError, KeyError):
-        # Case where there is not a valid JWT. Just return the original response
-        return response
+# @app.after_request
+# def refresh_expiring_jwts(response):
+#     try:
+#         exp_timestamp = get_jwt()["exp"]
+#         now = datetime.now(timezone.utc)
+#         target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+#         if target_timestamp > exp_timestamp:
+#             access_token = create_access_token(identity=get_jwt_identity())
+#             set_access_cookies(response, access_token)
+#         return response
+#     except (RuntimeError, KeyError):
+#         # Case where there is not a valid JWT. Just return the original response
+#         return response
 
 #-------------------------------------------------------------------------------------------
 # collection route (retrive all laptop info)
@@ -161,6 +161,7 @@ def user_login():
             if result == True: 
                 # Create the tokens we will be sending back to the user
                 access_token = create_access_token(identity=user_id)
+                print(access_token)
                 # set_refresh_cookies(response, refresh_token)
                 return jsonify(access_token=access_token)
             else: 
@@ -252,24 +253,21 @@ def reset_success(token):
 #-------------------------------------------------------------------------------------------
 
 @app.route('/cart')
-@jwt_required(optional=True)
+@jwt_required()
 def get_cartItems():
-    # collection = api.db_query_fetchall(api.get_cartItemsInfo(1))
-    # return {'collection':collection}
-    return {"hello":"hello"}
+    current_user = get_jwt_identity()
+    collection = api.db_query_fetchall(api.get_cartItemsInfo(current_user))
+    return {'collection':collection}
 
 @app.route('/add_cartItem', methods = ['POST'])
-@jwt_required(optional=True)
+@jwt_required()
 def add_cartItem():
     if request.method == 'POST':
-        try:
         # Access the identity of the current user with get_jwt_identity
-            current_user = get_jwt_identity()
-            print(current_user)
-            # api.db_query(api.insert_cartItem(userId,laptopId,1))
-            return {'redirect':'/cart'}
-        except Exception as e:
-            return {"error":"item already in cart"}
+        laptopId = request.json['laptopId']
+        current_user = get_jwt_identity()
+        api.db_query(api.insert_cartItem(current_user,laptopId,1))
+        return {'redirect':'/cart'}
 
 @app.route('/delete_cartItem', methods = ['POST'])
 @limiter.exempt
