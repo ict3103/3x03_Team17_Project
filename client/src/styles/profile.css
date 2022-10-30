@@ -1,0 +1,29 @@
+.profile-form {
+  background-color: whitesmoke;
+  margin: 5% 35% 10%;
+  padding: 1%;
+  border-radius: 10px;
+}
+.profile-form label {
+  color: #393232;
+}
+
+.profile-form h1 {
+  color: #393232;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgb(36, 33, 33);
+}
+.email-form {
+  position: relative;
+}
+.toggle-email {
+  position: absolute;
+  right: 3%;
+  bottom: 5px;
+  cursor: pointer;
+}
+
+.w-full {
+  width: 100% !important;
+}
