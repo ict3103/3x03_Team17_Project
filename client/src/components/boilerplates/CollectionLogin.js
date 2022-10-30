@@ -22,8 +22,6 @@ function CollectionLogin(){
     window.location.href="/"; 
     };
     function handleCartButton(){
-        // window.localStorage.getItem('login')==="true" ? 
-        // window.location.href="/cart":window.location.href="/login"
         window.location.href="/cart"
     }
     

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 function EditItem(){
-  window.localStorage.setItem("login",true);
   const queryParams = new URLSearchParams(window.location.search)
   const term = queryParams.get("laptopname")
   const [laptopName,setLaptopName] = useState('')

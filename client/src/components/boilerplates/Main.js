@@ -1,18 +1,25 @@
 import {Link,useHistory} from 'react-router-dom'
 import '../../styles/main.css'
 import { FaReact } from 'react-icons/fa';
-import { IsValidJWT } from './Token';
+import { IsValidJWT,getCookie } from './Token';
 import { Button } from 'react-bootstrap';
+import axios from 'axios';
 
 
 
 function Main() {
   let history = useHistory();
-  const logout = ()=>{
-    window.localStorage.removeItem("access_token")
-    // window.location.href = '/'
+  const logout = (e)=>{
+    e.preventDefault();
+        axios.get("http://127.0.0.1:5000/logout",).then(response=>{
+          window.localStorage.removeItem('token')
+          window.location.reload(false);
+        }).catch((err)=>{
+            return alert("Error: " + err);
+        })
     history.push("/");
   }
+
 
   function handleCartButton(){
     window.location = "/cart"

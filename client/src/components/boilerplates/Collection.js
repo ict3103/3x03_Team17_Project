@@ -2,25 +2,13 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../styles/collection.css'
 import { Link } from 'react-router-dom';
-import { FaReact } from 'react-icons/fa';
-import { IsValidJWT } from './Token';
-import jwt_decode from "jwt-decode";
+import { IsValidJWT,getCookie } from './Token';
 
-var token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cGlyYXRpb24iOiIyMDIyLTEwLTI5IDEwOjI3OjU2LjQyMjUyNCJ9.dx8xr7mcaBO2E4P7wkvsdBmI4xRvxLyBqInSH48WDss"
-
-var {uid} = jwt_decode(token);
 
 // console.log(decoded);
 
 function Collection(){
-    // const [userId,setId] = useState(null)
-    // useEffect(() => {
-    //     const items = JSON.parse(localStorage.getItem('token'));
-    //     if (items) {
-    //         setId(items);
-    //     }
-    //   }, []);
-    
+    console.log(IsValidJWT())
     const [collectionData,setCollectionData] = useState([])
     //axios get request to get laptop collections
     useEffect(()=>{
@@ -31,11 +19,16 @@ function Collection(){
 
     const addToCart  = (e) =>{
         e.preventDefault();
-        const token = window.localStorage.getItem('token');
-        const laptopId = e.target.value;
-        axios.post("http://127.0.0.1:5000/add_cartItem",{token,laptopId,uid}).then(response=>{
-                if(response.data.redirect="/cart"){
-                    window.location = "/cart"
+        const options = {
+            laptopId: e.target.value,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
+          };
+        axios.post("http://127.0.0.1:5000/add_cartItem",options).then(response=>{
+                if(response.data){
+                    // window.location = "/cart"
+                    console.log("ok")
                 }else{
                     return alert("Error:!!");
                 }
@@ -44,9 +37,7 @@ function Collection(){
         })
     }
 
-    
-
-    const handleCartButton = (e) => {
+    const viewProductDetails = (e) => {
         window.localStorage.setItem("ProductDetails", e.target.value)
         window.location.href = "/productdetails"
         console.log(e.target.value); //will give you the value continue
@@ -68,7 +59,7 @@ function Collection(){
                 </div>
                 <div class="row">
                     <div className="col" style={{ "align-items": "center", "display": "flex", "flex-direction": "column" }}>
-                        <button id="productButton" type="button" onClick={handleCartButton} value={val[0]} class="btn btn-primary" >Description</button>
+                        <button id="productButton" type="button" onClick={viewProductDetails} value={val[0]} class="btn btn-primary" >Description</button>
                     </div>
                 </div>
 
@@ -86,7 +77,7 @@ function Collection(){
     </div>
 
     <div id="backButton1">
-        {window.localStorage.getItem('login')==="true"?
+        {IsValidJWT()?
         <Link to="/adminDashboard" class="btn btn-secondary btn-lg">Back</Link>
       : 
       <Link to="/" class="btn btn-secondary btn-lg">Back</Link>  

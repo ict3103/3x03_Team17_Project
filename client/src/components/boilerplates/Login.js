@@ -11,21 +11,39 @@ function Login(){
     const [forgotPwd,setforgotPwd] = useState(false)
     const [inputEmail,setEmail] = useState(null)
     const [inputPassword,setPassword] = useState(null)
+
+    //header implementation
     const sendForm  = (e) =>{
         e.preventDefault();
         axios.post("http://127.0.0.1:5000/login",{inputEmail,inputPassword}).then(response=>{
                 if(response.data){
-                    console.log("heeeee",response.data.response)
-                    console.log(response)
-                    // window.location = "/collection"
+                    console.log(response.data.access_token)
+                    window.localStorage.setItem('token',response.data.access_token)
+                    window.location = "/collection"
                 }else{
                     return alert("Error:!!");
                 }
         }).catch((err)=>{
             return alert("Error: " + err);
         })
-        
     }
+
+    // cookie implementation 
+    // const sendForm  = (e) =>{
+    //     e.preventDefault();
+    //     axios.post("http://127.0.0.1:5000/login",{inputEmail,inputPassword}).then(response=>{
+    //             if(response.data){
+    //                 console.log(response.data)
+    //                 window.localStorage.setItem('isValidUser',response.data.isValidUser)
+    //                 window.location = "/collection"
+    //                 console.log("login user, token is ",window.localStorage.getItem("isValidUser"))
+    //             }else{
+    //                 return alert("Error:!!");
+    //             }
+    //     }).catch((err)=>{
+    //         return alert("Error: " + err);
+    //     })
+    // }
 
 
     
@@ -48,9 +66,7 @@ function Login(){
 
     
 
-    
-    
-    window.localStorage.setItem("login",false);
+
     return (
 
     (forgotPwd===false)?

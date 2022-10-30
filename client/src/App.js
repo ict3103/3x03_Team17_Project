@@ -47,8 +47,6 @@ function App() {
 
       <PrivateRoute path="/cart" IsValidJWT={IsValidJWT} component={ShoppingCart} ></PrivateRoute>
 
-      <PrivateRoute path="/collectionLogin" IsValidJWT={IsValidJWT} component={CollectionLogin}></PrivateRoute>
-
       <PrivateRoute path="/payment" IsValidJWT={IsValidJWT} component={Payment}></PrivateRoute>
 
       <PrivateRoute path="/paymentComplete" IsValidJWT={IsValidJWT} component={PaymentComplete}></PrivateRoute>

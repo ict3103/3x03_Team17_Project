@@ -4,6 +4,7 @@ import '../../styles/collection.css'
 import { Link } from 'react-router-dom';
 import { FaReact } from 'react-icons/fa';
 import { useHistory } from "react-router-dom";
+import {IsValidJWT} from "./Token"
 
 function ProductDetails(){
     const [collectionData,setCollectionData] = useState([])
@@ -46,7 +47,7 @@ function ProductDetails(){
 
 
     <div id="backButton1">
-        {window.localStorage.getItem('login')==="true"?
+        {IsValidJWT()?
         <Link to="/adminDashboard" class="btn btn-secondary btn-lg">Back</Link>
       : 
       <Link to="/collection" class="btn btn-secondary btn-lg">Back</Link>  

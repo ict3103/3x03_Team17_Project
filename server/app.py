@@ -49,10 +49,11 @@ mail = Mail(app)
 # If cookie_secure = true,only allow JWTs to be sent over https. 
 # In production, this should always be set to True
 app.config["JWT_COOKIE_SECURE"] = False
-app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
+app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies", "json", "query_string"]
 #jwt expiry
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
+app.config['JWT_SECRET_KEY'] = 'super-secret'
 
 # Disable CSRF protection for this example. In almost every case,
 # this is a bad idea. See examples/csrf_protection_with_cookies.py
@@ -144,7 +145,7 @@ def confirm_email(token):
 #-------------------------------------------------------------------------------------------
 # login route
 #-------------------------------------------------------------------------------------------
-
+# login with header
 @app.route('/login',methods=['POST'])
 # @jwt_required(optional=True)
 def user_login():
@@ -152,32 +153,60 @@ def user_login():
         input_email = security.sanitization(request.json['inputEmail'])
         input_password = request.json['inputPassword']
         account = api.db_query_fetchone(api.get_account(input_email))
+        print(account)
         if account is not None: 
             user_id = account[0]
-            print(user_id)
             gethashedpassword_fromdb = account[3]
             result = security.verify_password(input_password,gethashedpassword_fromdb)
             if result == True: 
-                #encode session credentials with JWT (include user id and session expiration timing)
-                response = jsonify({"login": "true"})
                 # Create the tokens we will be sending back to the user
                 access_token = create_access_token(identity=user_id)
-                refresh_token = create_refresh_token(identity=user_id)
-                set_access_cookies(response, access_token)
-                set_refresh_cookies(response, refresh_token)
-                return response
+                # set_refresh_cookies(response, refresh_token)
+                return jsonify(access_token=access_token)
             else: 
                 return {"redirect":'false'}
         return {"err":"error"}
 
+# #login with cookie (not yet done)
+# @app.route('/login',methods=['POST'])
+# # @jwt_required(optional=True)
+# def user_login():
+#     if request.method == 'POST':
+#         input_email = security.sanitization(request.json['inputEmail'])
+#         input_password = request.json['inputPassword']
+#         account = api.db_query_fetchone(api.get_account(input_email))
+#         print(account)
+#         if account is not None: 
+#             user_id = account[0]
+#             gethashedpassword_fromdb = account[3]
+#             result = security.verify_password(input_password,gethashedpassword_fromdb)
+#             if result == True: 
+#                 #encode session credentials with JWT (include user id and session expiration timing)
+#                 resp = jsonify({"isValidUser": "true"})
+#                 resp.headers.add('Access-Control-Allow-Origin', '*')
+#                 resp.headers.add('Access-Control-Allow-Header', '*')
+#                 resp.headers.add('Access-Control-Allow-Credentials', '*')
+#                 # Create the tokens we will be sending back to the user
+#                 access_token = create_access_token(identity=user_id)
+#                 refresh_token = create_refresh_token(identity=user_id)
+#                 print(access_token)
+#                 # Set the JWT cookies in the response
+#                 set_access_cookies(resp, access_token)
+#                 set_refresh_cookies(resp, refresh_token)
+#                 return resp,200
+#             else: 
+#                 return {"redirect":'false'}
+#         return {"err":"error"}
+
 # Because the JWTs are stored in an httponly cookie now, we cannot
 # log the user out by simply deleting the cookie in the frontend.
 # We need the backend to send us a response to delete the cookies in order to logout.
-# @app.route('/token/remove', methods=['POST'])
-# def logout():
-#     response = jsonify({'logout': True})
-#     unset_jwt_cookies(response)
-#     return response, 200
+@app.route('/logout', methods=['GET'])
+@limiter.limit("2000 per day")
+def logout():
+    response = jsonify({'isValidUser': False})
+    unset_jwt_cookies(response)
+    return response, 200
 
 #-------------------------------------------------------------------------------------------
 # forgot password verification 
@@ -223,29 +252,21 @@ def reset_success(token):
 #-------------------------------------------------------------------------------------------
 
 @app.route('/cart')
-@jwt_required()
+@jwt_required(optional=True)
 def get_cartItems():
-    id = request.json(["id"])
-    print("hello")
-    print(id)
     # collection = api.db_query_fetchall(api.get_cartItemsInfo(1))
     # return {'collection':collection}
     return {"hello":"hello"}
 
 @app.route('/add_cartItem', methods = ['POST'])
-@limiter.exempt
-@jwt_required()
+@jwt_required(optional=True)
 def add_cartItem():
     if request.method == 'POST':
         try:
-            json = request.json
-            print(json)
-            token = json['token']
-            laptopId = json['laptopId']
-            userId = json['uid']
-            # print(laptopId)
-
-            api.db_query(api.insert_cartItem(userId,laptopId,1))
+        # Access the identity of the current user with get_jwt_identity
+            current_user = get_jwt_identity()
+            print(current_user)
+            # api.db_query(api.insert_cartItem(userId,laptopId,1))
             return {'redirect':'/cart'}
         except Exception as e:
             return {"error":"item already in cart"}

@@ -12,10 +12,13 @@ const setAuthenToken = token => {
 }
 
 const IsValidJWT= () =>{
-    let flag = false
-    localStorage.getItem("access_token")?flag=true:flag=false
-    console.log(flag)
-    return flag
+    return localStorage.getItem("token")
 }
 
-export {setAuthenToken,IsValidJWT}
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+export {setAuthenToken,IsValidJWT,getCookie}
