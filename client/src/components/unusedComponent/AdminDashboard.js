@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 function AdminDashboard(){
-    // window.localStorage.setItem("login",true);
     // function openCart(){
     //   window.location.href="/cart"; 
     //   }

@@ -12,12 +12,16 @@ function CollectionLogin(){
             setCollectionData(response.data.collection)
         })
     },[]);
+
+    useEffect(()=>{
+        axios.get("http://127.0.0.1:5000/collection").then((response)=>{
+            setCollectionData(response.data.collection)
+        })
+    },[]);
     function logout(){
     window.location.href="/"; 
     };
     function handleCartButton(){
-        // window.localStorage.getItem('login')==="true" ? 
-        // window.location.href="/cart":window.location.href="/login"
         window.location.href="/cart"
     }
     

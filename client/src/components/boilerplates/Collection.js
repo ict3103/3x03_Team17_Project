@@ -2,62 +2,51 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../styles/collection.css'
 import { Link } from 'react-router-dom';
-import { FaReact } from 'react-icons/fa';
+import { IsValidJWT,getCookie } from './Token';
+
+
+// console.log(decoded);
 
 function Collection(){
+    console.log(IsValidJWT())
     const [collectionData,setCollectionData] = useState([])
+    //axios get request to get laptop collections
     useEffect(()=>{
         axios.get("http://127.0.0.1:5000/collection").then((response)=>{
             setCollectionData(response.data.collection)
         })
     },[])
 
-    const handleCartButton = (e) => {
-        // window.localStorage.getItem('login')==="true" ? 
-        // window.location.href="/cart":window.location.href="/login"
+    const addToCart  = (e) =>{
+        e.preventDefault();
+        axios.post("http://127.0.0.1:5000/add_cartItem",{laptopId: e.target.value,headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          }}).then(response=>{
+                if(response.data){
+                    // window.location = "/cart"
+                    console.log("ok")
+                }else{
+                    return alert("Error:!!");
+                }
+        }).catch((err)=>{
+            return alert("Error: " + err);
+        })
+    }
+
+    const viewProductDetails = (e) => {
         window.localStorage.setItem("ProductDetails", e.target.value)
         window.location.href = "/productdetails"
         console.log(e.target.value); //will give you the value continue
     }
   
    
-    return(<div >
-     {window.localStorage.getItem('login')==="false" ?
-      <nav class="navbar navbar-expand-lg navbar-dark" style={{"background-color": "rgba(0, 0, 0)"}}>
-      <div class="container-fluid"> <FaReact className="App-logo" />
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <Link class="nav-link" aria-current="page" to="/">Home</Link>
-                </li>
-                <li class="nav-item">
-                  <Link class="nav-link" to="/collection">Shop</Link>
-                </li>
-              </ul>
-              <form class="d-flex">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                      <li class="nav-item">
-                        <Link class="nav-link" aria-current="page" to="register">Register</Link>
-                      </li>
-                      <li class="nav-item">
-                          <Link class="btn btn-dark" to="login" style={{"border-radius": "30px;","background-color": "transparent"}}role="button">Login</Link>
-                      </li>       
-                    </ul>
-              </form>
-          </div>
-      </div>
-    </nav>
-    :<div/>
-        }
-
-        
-    <div class="row" id="div1">
-      
+    return(<div id="div1" >
+    <div class="row" id="div2" >
+    
+    {/* display all the items */}
     {collectionData.map((val)=>{
         return <div className="column">
+            
         <div className="card" style={{"width": "18rem;"}}>
                 <img src={require(`../../${val[2]}`)} style={{"height": "160px","width":"254px"}}  class="card-img-top" alt=".." />
                 <div className="card-body">
@@ -66,9 +55,17 @@ function Collection(){
                 </div>
                 <div class="row">
                     <div className="col" style={{ "align-items": "center", "display": "flex", "flex-direction": "column" }}>
-                        <button id="productButton" type="button" onClick={handleCartButton} value={val[0]} class="btn btn-primary" >Description</button>
+                        <button id="productButton" type="button" onClick={viewProductDetails} value={val[0]} class="btn btn-primary" >Description</button>
                     </div>
                 </div>
+
+                {IsValidJWT()?<div class="row">
+                    <div class="col" style={{"align-items":"center","display":"flex","flex-direction":"column","margin-top":"5px"}}>
+                        <button id="productButton"  onClick={addToCart} name="productId" value={val[0]} class="btn btn-primary" >Add to cart</button>
+                    </div>
+                </div>:null}
+                    
+                
         </div>
     </div>
      })
@@ -76,7 +73,7 @@ function Collection(){
     </div>
 
     <div id="backButton1">
-        {window.localStorage.getItem('login')==="true"?
+        {IsValidJWT()?
         <Link to="/adminDashboard" class="btn btn-secondary btn-lg">Back</Link>
       : 
       <Link to="/" class="btn btn-secondary btn-lg">Back</Link>  

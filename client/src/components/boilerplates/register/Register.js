@@ -5,7 +5,6 @@ import ReCAPTCHA from 'react-google-recaptcha'
 
 
 function Register(){
-  // window.localStorage.setItem("login",false);
 
   const [validated, setValidated] = useState(false);
   const [CaptchaCheck, setCaptchaCheck] = useState(false);
