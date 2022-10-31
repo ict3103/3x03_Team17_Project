@@ -15,7 +15,18 @@ function ProductDetails(){
     const handleCartButton = (e) => {
         window.localStorage.setItem("ProductDetails",e.target.value)
         IsValidJWT() ? 
-        window.location.href="/cart":
+            axios.post("http://127.0.0.1:5000/add_cartItem",{laptopId: e.target.value,headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+              }}).then(response=>{
+                    if(response.data){
+                        window.location = "/cart"
+                    }else{
+                        return alert("Error:!!");
+                    }
+            }).catch((err)=>{
+                return alert("Error: " + err);
+            })
+        :
         window.location.href="/login"
       }
   
