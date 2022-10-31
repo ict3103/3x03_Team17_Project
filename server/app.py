@@ -190,7 +190,7 @@ def user_login():
 #                 return {"redirect":'false'}
 #         return {"err":"error"}
 
-# for cookie implementation ----> Because the JWTs are stored in an httponly cookie, 
+# Because the JWTs are stored in an httponly cookie, 
 # we cannot log the user out by simply deleting the cookie in the frontend.
 # We need the backend to send us a response to delete the cookies in order to logout.
 # @app.route('/logout', methods=['GET'])

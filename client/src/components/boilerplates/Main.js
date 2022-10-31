@@ -11,13 +11,8 @@ import { useState } from 'react';
 function Main() {
   let history = useHistory();
   const logout = (e)=>{
-    e.preventDefault();
-        axios.get("http://127.0.0.1:5000/logout",).then(response=>{
           window.localStorage.removeItem('token')
           window.location.reload(false);
-        }).catch((err)=>{
-            return alert("Error: " + err);
-        })
     history.push("/");
   }
 
