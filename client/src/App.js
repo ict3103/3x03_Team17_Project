@@ -39,7 +39,7 @@ function App() {
 
       <PublicRoute Exact path="/register" component={Register}></PublicRoute>
 
-      <PublicRoute Exact path="/productdetails" IsValidJWT={!IsValidJWT} component={ProductDetails} ></PublicRoute>
+      <PublicRoute Exact path="/productdetails" component={ProductDetails} ></PublicRoute>
 
     
       

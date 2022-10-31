@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../styles/collection.css'
 import { Link } from 'react-router-dom';
-import { IsValidJWT,getCookie } from './Token';
+import { IsValidJWT} from './Token';
 
 
 // console.log(decoded);

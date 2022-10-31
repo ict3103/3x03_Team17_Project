@@ -1,38 +1,29 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
-from operator import imod
-from threading import activeCount
-from flask import Flask, request,redirect,session,url_for,jsonify,Response,json
-from flask_cors import CORS,cross_origin
+from flask import Flask, request,redirect,jsonify
+from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_mysqldb import MySQL
-from flask_mail import Mail,Message
-#argon2 hashing algorithm - pip install argon2-cffi
-from passlib.hash import argon2 
-#rate limitation protection - pip install Flask-Limiter
+from flask_mail import Mail
 from flask import Flask 
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-
-import jwt
-from functools import wraps
-# from JWT import token_required
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta
 load_dotenv()
 import api
 import security
 import sendmail
-import os
 
 from flask_jwt_extended import create_access_token
-from flask_jwt_extended import create_refresh_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
-from flask_jwt_extended import get_jwt
-from flask_jwt_extended import set_access_cookies
-from flask_jwt_extended import set_refresh_cookies
-from flask_jwt_extended import unset_jwt_cookies
+# for cookies and fresh cookies
+# from flask_jwt_extended import get_jwt
+# from flask_jwt_extended import set_access_cookies
+# from flask_jwt_extended import set_refresh_cookies
+# from flask_jwt_extended import unset_jwt_cookies
+# from flask_jwt_extended import create_refresh_token
 
 
 app = Flask(__name__)
@@ -51,9 +42,9 @@ mail = Mail(app)
 app.config["JWT_COOKIE_SECURE"] = False
 app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies", "json", "query_string"]
 #jwt expiry
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=2)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=2)
 # app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
-app.config['JWT_SECRET_KEY'] = 'super-secret'
+app.config['JWT_SECRET_KEY'] = 'super-secret' #as of now
 
 # Disable CSRF protection for this example. In almost every case,
 # this is a bad idea. See examples/csrf_protection_with_cookies.py
@@ -84,7 +75,6 @@ jwt = JWTManager(app)
 @app.route('/collection')
 @limiter.exempt
 def get_collection():
-    # return "you can only view this with token"
     collection = api.db_query_fetchall(api.get_all_laptop())
     return {'collection':collection}
 
@@ -199,15 +189,15 @@ def user_login():
 #                 return {"redirect":'false'}
 #         return {"err":"error"}
 
-# Because the JWTs are stored in an httponly cookie now, we cannot
-# log the user out by simply deleting the cookie in the frontend.
+# for cookie implementation ----> Because the JWTs are stored in an httponly cookie, 
+# we cannot log the user out by simply deleting the cookie in the frontend.
 # We need the backend to send us a response to delete the cookies in order to logout.
-@app.route('/logout', methods=['GET'])
-@limiter.limit("2000 per day")
-def logout():
-    response = jsonify({'isValidUser': False})
-    unset_jwt_cookies(response)
-    return response, 200
+# @app.route('/logout', methods=['GET'])
+# @limiter.limit("2000 per day")
+# def logout():
+#     response = jsonify({'isValidUser': False})
+#     unset_jwt_cookies(response)
+#     return response, 200
 
 #-------------------------------------------------------------------------------------------
 # forgot password verification 

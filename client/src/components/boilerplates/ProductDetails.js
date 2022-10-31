@@ -2,8 +2,6 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../styles/collection.css'
 import { Link } from 'react-router-dom';
-import { FaReact } from 'react-icons/fa';
-import { useHistory } from "react-router-dom";
 import {IsValidJWT} from "./Token"
 
 function ProductDetails(){
@@ -13,7 +11,7 @@ function ProductDetails(){
             setCollectionData(response.data.collection)
         })
     },[])
-    const history = useHistory()
+
     const handleCartButton = (e) => {
         window.localStorage.setItem("ProductDetails",e.target.value)
         IsValidJWT() ? 

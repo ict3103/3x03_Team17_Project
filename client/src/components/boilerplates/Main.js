@@ -1,9 +1,10 @@
 import {Link,useHistory} from 'react-router-dom'
 import '../../styles/main.css'
 import { FaReact } from 'react-icons/fa';
-import { IsValidJWT,getCookie } from './Token';
+import { IsValidJWT} from './Token';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
+import { useState } from 'react';
 
 
 
@@ -19,6 +20,8 @@ function Main() {
         })
     history.push("/");
   }
+
+
 
 
   function handleCartButton(){
