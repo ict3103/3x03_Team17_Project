@@ -68,7 +68,7 @@ def update_verification_status(email):
 
 def update_password(newPwd,email):
     print(email)
-    return f'UPDATE UserInfo SET password = "{newPwd}" WHERE email = "{email}"'
+    return f"UPDATE UserInfo SET password = '{newPwd}' WHERE email = '{email}'"
 
 def update_cartItem_quantity(newQuantity,cartItemId):
     return f"UPDATE CartItems SET quantity = '{newQuantity}' WHERE cartItemId = '{cartItemId}'"
