@@ -11,9 +11,9 @@ import { useState } from 'react';
 function Main() {
   let history = useHistory();
   const logout = (e)=>{
-          window.localStorage.removeItem('token')
-          window.location.reload(false);
-    history.push("/");
+      window.localStorage.removeItem('token')
+      window.location.reload(false);
+      window.location = "/login"
   }
 
 
