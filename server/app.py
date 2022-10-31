@@ -17,10 +17,8 @@ import security
 import sendmail
 import geocoder, time 
 
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+
 # for cookies and fresh cookies
 # from flask_jwt_extended import get_jwt
 # from flask_jwt_extended import set_access_cookies
@@ -156,7 +154,6 @@ def user_login():
     if request.method == 'POST':
         input_email = security.sanitization(request.json['inputEmail'])
         input_password = request.json['inputPassword']
-        print(input_password)
         account = api.db_query_fetchone(api.get_account(input_email))
 
         if account is not None: 
@@ -170,7 +167,7 @@ def user_login():
                 #send notification 
                 sendmail.sendnotif(input_email,1)
 
-                # Create the tokens we will be sending back to the user
+                # Create the tokens we will be sending back to the client
                 access_token = create_access_token(identity=user_id)
                 print(access_token)
 
