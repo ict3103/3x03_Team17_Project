@@ -146,18 +146,20 @@ def user_login():
         account = api.db_query_fetchone(api.get_account(input_email))
         if account is not None: 
             user_id = account[0]
+            verification_status = account[4]
             gethashedpassword_fromdb = account[3]
             result = security.verify_password(input_password,gethashedpassword_fromdb)
-            print("result = ", result)
-            if result == True: 
+            if result == True and verification_status==1: 
                 # Create the tokens we will be sending back to the user
                 access_token = create_access_token(identity=user_id)
                 print(access_token)
                 # set_refresh_cookies(response, refresh_token)
                 return jsonify(access_token=access_token)
+            elif result == True and verification_status ==0:
+                return jsonify({"error":"verification error"})
             else: 
-                return {"redirect":'false'}
-        return {"err":"error"}
+                return jsonify({"error":"something went wrong"})
+        return {"error":"no such account"}
 
 # #login with cookie (not yet done)
 # @app.route('/login',methods=['POST'])

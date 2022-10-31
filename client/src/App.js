@@ -51,17 +51,17 @@ function App() {
 
       <PrivateRoute path="/paymentComplete" IsValidJWT={IsValidJWT} component={PaymentComplete}></PrivateRoute>
 
-      <PrivateRoute path="/verification" IsValidJWT={IsValidJWT} component={VerificationPage}
-      ></PrivateRoute>
+      <PublicRoute path="/verification" IsValidJWT={IsValidJWT} component={VerificationPage}
+      ></PublicRoute>
 
-      <PrivateRoute path="/verifiedPage" IsValidJWT={IsValidJWT} component={VerifiedPage}
-      ></PrivateRoute>
+      <PublicRoute path="/verifiedPage" IsValidJWT={IsValidJWT} component={VerifiedPage}
+      ></PublicRoute>
 
-      <PrivateRoute path="/resetPassword/:token" IsValidJWT={IsValidJWT} component={ResetPasswordPage}
-      ></PrivateRoute>
+      <PublicRoute path="/resetPassword/:token"  component={ResetPasswordPage}
+      ></PublicRoute>
 
-      <PrivateRoute path="/resetPasswordSuccess" IsValidJWT={IsValidJWT} component={ResetSuccess}
-      > </PrivateRoute>
+      <PublicRoute path="/resetPasswordSuccess"  component={ResetSuccess}
+      > </PublicRoute>
           </div>
       </div>  
   );

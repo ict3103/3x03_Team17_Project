@@ -20,8 +20,14 @@ function Login(){
                     console.log(response.data.access_token)
                     window.localStorage.setItem('token',response.data.access_token)
                     window.location = "/collection"
-                }else{
-                    return alert("Error:!!");
+                }else if(response.data.error =="no such account"){
+                    return alert("no such account");
+                }
+                else if(response.data.error =="verification error"){
+                    window.location = "/verification"
+                }
+                else{
+                    return alert("something went wrong");
                 }
         }).catch((err)=>{
             return alert("Error: " + err);

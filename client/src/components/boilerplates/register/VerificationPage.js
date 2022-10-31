@@ -18,7 +18,6 @@ function VerificationPage(){
                 <Card.Text>
                 please verify your email to continue, if you dont received the verification email, please check your "spam" or "bulk" folder.
                 </Card.Text>
-                <Button variant="primary" style={{'width': 'fit-content'}} href="https://mailtrap.io/inboxes" target="_blank">go to mail</Button>
             </Card.Body>
         </Card>
         </Row>
