@@ -5,6 +5,23 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
+#forgotIcon{
+  width:50px;
+  margin-top:20px;
+  margin-left:auto;
+  margin-right:auto;
+  display:block
+}
+
+
+divbuttonGroup{
+ width:fit-content;
+}
+
+Button{
+  width:fit-content;
+}
 body{
   margin: 0;
   padding: 0;
@@ -19,6 +36,8 @@ body{
 div.center.form{
   background-color: rgba(212, 205, 205, 0.9);
 }
+
+
 
 li,a{
   font-size:18px;
@@ -53,7 +72,7 @@ div.center.form{
 .center h1{
   text-align: center;
   padding: 20px 0;
-  border-bottom: 1px solid rgb(36, 33, 33);
+  border-bottom: 1px solid rgb(31, 29, 29);
 }
 .center form{
   padding: 0 40px;
@@ -86,7 +105,7 @@ form .txt_field{
 .txt_field span::before{
   content: '';
   position: absolute;
-  top: 40px;
+  top:50px;
   left: 0;
   width: 0%;
   height: 2px;
@@ -125,6 +144,9 @@ input[type="submit"]{
 input[type="submit"]:hover{
   border-color: #d4d9dc;
   transition: .5s;
+}
+input:disabled{
+  background-color: gray;
 }
 .signup_link{
   margin: 30px 0;

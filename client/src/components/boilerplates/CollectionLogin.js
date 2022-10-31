@@ -1,7 +1,7 @@
 import '../../styles/collection.css'
-import axios from 'axios';
+import axios from 'axios'
 import { useState,useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 
 function CollectionLogin(){
@@ -12,12 +12,17 @@ function CollectionLogin(){
             setCollectionData(response.data.collection)
         })
     },[]);
+
+    useEffect(()=>{
+        axios.get("http://127.0.0.1:5000/collection").then((response)=>{
+            setCollectionData(response.data.collection)
+        })
+    },[]);
     function logout(){
     window.location.href="/"; 
     };
     function handleCartButton(){
-        // window.localStorage.getItem('login')==="true" ? 
-        // window.location.href="/cart":window.location.href="/login"
+        window.location.href="/cart"
     }
     
     
@@ -57,24 +62,19 @@ function CollectionLogin(){
                 {collectionData.map((val)=>{
                     return <div class="column" >
                         <div class="card" style={{"width": "18rem;"}}>
-                        <img src={require(`../../${val[1]}`)} style={{"height": "160px","width":"254px"}}  class="card-img-top" alt=".." />
+                        <img src={require(`../../${val[2]}`)} style={{"height": "160px","width":"254px"}}  class="card-img-top" alt=".." />
                         <div class="card-body">
-                            <h5 class="card-title"> {val[0]} </h5>
-                            <p id="laptopPrice">${val[2]}</p>
+                            <h5 class="card-title"> {val[1]} </h5>
+                            <p id="laptopPrice">${val[3]}</p>
                         </div>
                 <div class="row">
                     <div class="col" style={{"align-items":"center","display":"flex","flex-direction":"column"}}>
-                        <button id="productButton"  type="button" onClick={()=>{
-                            window.location.href=`/cart?laptopname=${val[0]}`;}} value={val[0]} class="btn btn-primary" >Purchase</button>
+                        <form action="/add_cartItem" method="POST">
+                        <button id="productButton"  type="submit" name="productId" value={val[0]} class="btn btn-primary" >Add to cart</button>
+                            </form>
                     </div>
                 </div>
-        
-                
-                
-                
-                
         </div>
-        
     </div>
     
      })

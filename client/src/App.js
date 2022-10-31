@@ -1,56 +1,69 @@
 import './App.css';
-import {React} from "react";
+import React, { useState, Suspense,useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Route} from 'react-router-dom';
+
 import './components/boilerplates/Main';
 import Main from './components/boilerplates/Main';
 import Login from './components/boilerplates/Login';
-import Register from './components/boilerplates/Register';
+import Register from './components/boilerplates/register/Register';
 import Collection from './components/boilerplates/Collection';
-import AdminDashboard from './components/boilerplates/AdminDashboard';
-import AddItem from './components/boilerplates/AddItem';
-import EditItem from './components/boilerplates/EditItem';
+import ShoppingCart from './components/boilerplates/cart/ShoppingCart';
+import VerificationPage from './components/boilerplates/register/VerificationPage';
+import VerifiedPage from './components/boilerplates/register/VerifiedPage';
+import ResetPasswordPage from './components/boilerplates/resetPassword/ResetPasswordPage';
+import ResetSuccess from './components/boilerplates/resetPassword/ResetSuccessPage';
+import Payment from './components/boilerplates/cart/Payment';
+import PaymentComplete from './components/boilerplates/cart/PaymentComplete';
 import CollectionLogin from './components/boilerplates/CollectionLogin';
-import ShoppingCart from './components/boilerplates/ShoppingCart';
-
+import ProductDetails from './components/boilerplates/ProductDetails';
+import PrivateRoute from './components/boilerplates/PrivateRoutes';
+import PublicRoute from './components/boilerplates/PublicRoutes';
+import { Route} from "react-router-dom"
+import {IsValidJWT} from './components/boilerplates/Token'
+import { setAuthenToken } from './components/boilerplates/Token';
 
 
 function App() {
-  return (
+    //check jwt token
+    const token = localStorage.getItem("token");
+    if (token) {
+      setAuthenToken(token);
+    }
+    return (
     <div>
-       <Route path="/addItem">
-        <AddItem >
-        </AddItem>  
-      </Route>
-      <Route path="/editItem">
-        <EditItem >
-        </EditItem>  
-      </Route>
-      <Route path="/adminDashboard">
-        <AdminDashboard >
-        </AdminDashboard>  
-      </Route>
-      <Route path="/cart">
-        <ShoppingCart></ShoppingCart>
-      </Route>
-       <Route path="/collection">
-        <Collection ></Collection>   
-      </Route>
-      <Route path="/collectionLogin">
-        <CollectionLogin ></CollectionLogin>   
-      </Route>
-      <Route exact path="/">
-        <Main></Main>
-      </Route>
-      <Route path="/login">
-      <Main></Main>
-        <Login></Login>
-      </Route>
-      <Route path="/register">
-      <Main></Main>
-        <Register></Register>
-      </Route>
-    </div>
+      <div>
+      
+      <Route Exact path="/" component={Main}></Route>
+      
+      <PublicRoute Exact path="/collection" component={Collection}></PublicRoute>
+
+      <PublicRoute Exact path="/register" component={Register}></PublicRoute>
+
+      <PublicRoute Exact path="/productdetails" component={ProductDetails} ></PublicRoute>
+
+    
+      
+      <PublicRoute Exact path="/login" component={Login}></PublicRoute>
+
+      <PrivateRoute path="/cart" IsValidJWT={IsValidJWT} component={ShoppingCart} ></PrivateRoute>
+
+      <PrivateRoute path="/payment" IsValidJWT={IsValidJWT} component={Payment}></PrivateRoute>
+
+      <PrivateRoute path="/paymentComplete" IsValidJWT={IsValidJWT} component={PaymentComplete}></PrivateRoute>
+
+      <PublicRoute path="/verification" IsValidJWT={IsValidJWT} component={VerificationPage}
+      ></PublicRoute>
+
+      <PublicRoute path="/verifiedPage" IsValidJWT={IsValidJWT} component={VerifiedPage}
+      ></PublicRoute>
+
+      <PublicRoute path="/resetPassword/:token"  component={ResetPasswordPage}
+      ></PublicRoute>
+
+      <PublicRoute path="/resetPasswordSuccess"  component={ResetSuccess}
+      > </PublicRoute>
+          </div>
+      </div>  
   );
 }
 

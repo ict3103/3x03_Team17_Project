@@ -1,0 +1,24 @@
+.card{
+    height: fit-content;
+}
+.title-page{
+    text-align: center;
+}
+.total-price-tag{
+    text-align: left;
+}
+.price-wrap{
+    text-align: center;
+    display: inline-block;
+}
+.quantity-dropdown{
+    text-align: center;
+}
+#cart-payment-btn{
+    margin-left: 80%;
+    background-color: black;
+    width: 10%;
+}
+#cart-delete-btn{
+    width: 60%;
+}
