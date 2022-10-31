@@ -8,11 +8,14 @@ from flask_mail import Mail
 from flask import Flask 
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from datetime import timedelta
+from datetime import timedelta, datetime
+from requests import get
+
 load_dotenv()
 import api
 import security
 import sendmail
+import geocoder, time 
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -78,8 +81,6 @@ def get_collection():
     collection = api.db_query_fetchall(api.get_all_laptop())
     return {'collection':collection}
 
-
-
 #-------------------------------------------------------------------------------------------
 # Register route
 #-------------------------------------------------------------------------------------------
@@ -120,6 +121,14 @@ def register_user():
                 get_userid = get_userid[0] 
                 api.db_query(api.insert_cartid_userid(get_userid))
 
+                #DB logging 
+                registered_date = datetime.now()
+                registered_timestamp = registered_date.strftime("%d-%b-%Y (%H:%M:%S.%f)")
+                user_ip = get('https://api.ipify.org').text
+                user_location = geocoder.ip(user_ip)
+                user_country = user_location.city
+                api.db_query(api.register_logging(get_userid, input_username, input_email, "0", registered_timestamp, "0", user_ip, user_country, "0", "0", "0"))
+
                 return redirect('http://localhost:3000/verification')
 
 @app.route('/confirm_email/<token>')
@@ -128,6 +137,10 @@ def confirm_email(token):
     try:
         email = sendmail.confirm_token(token)
         api.db_query(api.update_verification_status(email))
+
+        #DB logging 
+        api.db_query(api.register_updatestatus_logging(email))
+
         return redirect('http://localhost:3000/verifiedPage')
     except:
         return "Invalid/Expired token. Please Try Again."
@@ -135,6 +148,7 @@ def confirm_email(token):
 #-------------------------------------------------------------------------------------------
 # login route
 #-------------------------------------------------------------------------------------------
+
 # login with header
 @app.route('/login',methods=['POST'])
 # @jwt_required(optional=True)
@@ -144,20 +158,37 @@ def user_login():
         input_password = request.json['inputPassword']
         print(input_password)
         account = api.db_query_fetchone(api.get_account(input_email))
+
         if account is not None: 
             user_id = account[0]
             verification_status = account[4]
             gethashedpassword_fromdb = account[3]
             result = security.verify_password(input_password,gethashedpassword_fromdb)
+
             if result == True and verification_status==1: 
+
+                #send notification 
+                sendmail.sendnotif(input_email,1)
+
                 # Create the tokens we will be sending back to the user
                 access_token = create_access_token(identity=user_id)
                 print(access_token)
+
+                # DB logging - update last login 
+                registered_date = datetime.now()
+                registered_timestamp = registered_date.strftime("%d-%b-%Y (%H:%M:%S.%f)")
+                api.db_query(api.login_updatestatus_logging(input_email,registered_timestamp))
+
                 # set_refresh_cookies(response, refresh_token)
                 return jsonify(access_token=access_token)
+
             elif result == True and verification_status ==0:
                 return jsonify({"error":"verification error"})
+
             else: 
+                # DB logging - if there is an account BUT wrong password 
+                api.db_query(api.failed_logging(input_email))
+
                 return jsonify({"error":"something went wrong"})
         return {"error":"no such account"}
 
@@ -214,6 +245,9 @@ def forgotPassword():
         api.db_query_fetchall(api.get_account(email))
         email_type = 2
         sendmail.sendmail(email,'reset_password',2)
+
+        # DB logging - update attempt to password reset 
+        api.db_query(api.attempt_passwordreset_logging(email))
         return redirect('/verification')
 
 
@@ -236,6 +270,9 @@ def reset_success(token):
             newPwd = security.hashpassword(newPwd)
             api.db_query(api.update_password(newPwd,email))
             sendmail.sendnotif(email,2)
+
+            # DB logging - update successful password reset 
+            api.db_query(api.successful_passwordreset_logging(email))
             return redirect(f'http://localhost:3000/resetPasswordSuccess')
 
         else:
