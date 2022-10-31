@@ -9,14 +9,14 @@ function ShoppingCart() {
         { id: null, value: null }];
     const [collectionData,setCollectionData] = useState([])
     const [dropdownValue, setdropdownValue] = useState(initialValue)
-    // useEffect((e) => {
-    //     console.log("value: "+dropdownValue.value+" from id: "+dropdownValue.id);
-    //     axios.post("http://127.0.0.1:5000/update_cartItem", {"id":dropdownValue.id, "value":dropdownValue.value}).then((response)=>{
-    //         if(response.data.result == 1){
-    //             window.location.reload()
-    //         }
-    //     })
-    // }, [dropdownValue]);
+    useEffect((e) => {
+        console.log("value: "+dropdownValue.value+" from id: "+dropdownValue.id);
+        axios.post("http://127.0.0.1:5000/update_cartItem", {"id":dropdownValue.id, "value":dropdownValue.value}).then((response)=>{
+            if(response.data.result == 1){
+                window.location.reload()
+            }
+        })
+    }, [dropdownValue]);
 
     // useEffect(()=>{
     //     axios.get("http://127.0.0.1:5000/cart", {headers: {
