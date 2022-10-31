@@ -81,3 +81,25 @@ def get_account_id(email):
 
 def insert_cartid_userid (userId):
     return f"INSERT INTO Cart (cartId, userId) VALUES('{userId}','{userId}')"
+
+#-------------------------------------------------------------------------------------------
+# MYSQL logging section 
+#-------------------------------------------------------------------------------------------
+
+def register_logging (user_id, user_username, user_email, verification_status, registered_date, last_login, ip_address, country, failed_login_attempts, successful_password_reset, attempt_password_reset): 
+	return f"INSERT INTO logging (user_id, user_username, user_email, verification_status, registered_date, last_login, ip_address, country, failed_login_attempts, successful_password_reset, attempt_password_reset) VALUES ('{user_id}', '{user_username}', '{user_email}', '{verification_status}', '{registered_date}', '{last_login}', '{ip_address}', '{country}', '{failed_login_attempts}', '{successful_password_reset}', '{attempt_password_reset}')"
+
+def register_updatestatus_logging (user_email): 
+	return f"UPDATE logging SET verification_status = 1 WHERE user_email = '{user_email}'"
+
+def login_updatestatus_logging (user_email,timestamp): 
+	return f"UPDATE logging SET last_login = '{timestamp}' WHERE user_email = '{user_email}'"
+
+def failed_logging (user_email): 
+	return f"UPDATE logging SET failed_login_attempts = failed_login_attempts + 1 WHERE user_email = '{user_email}'"
+
+def successful_passwordreset_logging (user_email): 
+	return f"UPDATE logging SET successful_password_reset = successful_password_reset + 1 WHERE user_email = '{user_email}'"
+
+def attempt_passwordreset_logging (user_email): 
+	return f"UPDATE logging SET attempt_password_reset = attempt_password_reset + 1 WHERE user_email = '{user_email}'"
