@@ -23,8 +23,7 @@ function Collection(){
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           }}).then(response=>{
                 if(response.data){
-                    // window.location = "/cart"
-                    console.log("ok")
+                    window.location = "/cart"
                 }else{
                     return alert("Error:!!");
                 }

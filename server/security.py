@@ -27,6 +27,8 @@ def hashpassword(password):
 #-------------------------------------------------------------------------------------------
 
 def verify_password(input_password,gethashedpassword_fromdb):
+    print(input_password)
+    print(gethashedpassword_fromdb)
     return argon2.verify(input_password,gethashedpassword_fromdb)
 
 def username_pattern():

@@ -142,12 +142,13 @@ def user_login():
     if request.method == 'POST':
         input_email = security.sanitization(request.json['inputEmail'])
         input_password = request.json['inputPassword']
+        print(input_password)
         account = api.db_query_fetchone(api.get_account(input_email))
-        print(account)
         if account is not None: 
             user_id = account[0]
             gethashedpassword_fromdb = account[3]
             result = security.verify_password(input_password,gethashedpassword_fromdb)
+            print("result = ", result)
             if result == True: 
                 # Create the tokens we will be sending back to the user
                 access_token = create_access_token(identity=user_id)
@@ -256,8 +257,11 @@ def add_cartItem():
         # Access the identity of the current user with get_jwt_identity
         laptopId = request.json['laptopId']
         current_user = get_jwt_identity()
-        api.db_query(api.insert_cartItem(current_user,laptopId,1))
-        return {'redirect':'/cart'}
+        try:
+            api.db_query(api.insert_cartItem(current_user,laptopId,1))
+            return {'redirect':'/cart'}
+        except:
+            return {'error':"error"}
 
 @app.route('/delete_cartItem', methods = ['POST'])
 @limiter.exempt

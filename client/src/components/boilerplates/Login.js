@@ -16,7 +16,7 @@ function Login(){
     const sendForm  = (e) =>{
         e.preventDefault();
         axios.post("http://127.0.0.1:5000/login",{inputEmail,inputPassword}).then(response=>{
-                if(response.data){
+                if(response.data.access_token){
                     console.log(response.data.access_token)
                     window.localStorage.setItem('token',response.data.access_token)
                     window.location = "/collection"
