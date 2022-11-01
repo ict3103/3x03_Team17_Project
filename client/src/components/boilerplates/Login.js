@@ -16,17 +16,9 @@ function Login(){
     const sendForm  = (e) =>{
         e.preventDefault();
         axios.post("http://127.0.0.1:5000/login",{inputEmail,inputPassword}).then(response=>{
-                if(response.data.access_token){
-                    window.localStorage.setItem('token',response.data.access_token)
+                if(response.data){
+                    window.localStorage.setItem('token','true')
                     window.location = "/collection"
-                }else if(response.data.error =="no such account"){
-                    return alert("no such account");
-                }
-                else if(response.data.error =="verification error"){
-                    window.location = "/verification"
-                }
-                else{
-                    return alert("something went wrong");
                 }
         }).catch((err)=>{
             return alert("Error: " + err);

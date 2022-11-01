@@ -20,11 +20,11 @@ import geocoder, time
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 
 # for cookies and fresh cookies
-# from flask_jwt_extended import get_jwt
-# from flask_jwt_extended import set_access_cookies
-# from flask_jwt_extended import set_refresh_cookies
-# from flask_jwt_extended import unset_jwt_cookies
-# from flask_jwt_extended import create_refresh_token
+from flask_jwt_extended import get_jwt
+from flask_jwt_extended import set_access_cookies
+from flask_jwt_extended import set_refresh_cookies
+from flask_jwt_extended import unset_jwt_cookies
+from flask_jwt_extended import create_refresh_token
 
 
 app = Flask(__name__)
@@ -41,7 +41,7 @@ mail = Mail(app)
 # If cookie_secure = true,only allow JWTs to be sent over https. 
 # In production, this should always be set to True
 app.config["JWT_COOKIE_SECURE"] = False
-app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies", "json", "query_string"]
+app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies"]
 #jwt expiry
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=2)
 # app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
@@ -147,7 +147,7 @@ def confirm_email(token):
 # login route
 #-------------------------------------------------------------------------------------------
 
-# login with header
+# #login with cookie (not yet done)
 @app.route('/login',methods=['POST'])
 # @jwt_required(optional=True)
 def user_login():
@@ -155,68 +155,25 @@ def user_login():
         input_email = security.sanitization(request.json['inputEmail'])
         input_password = request.json['inputPassword']
         account = api.db_query_fetchone(api.get_account(input_email))
-
+        print(account)
         if account is not None: 
             user_id = account[0]
-            verification_status = account[4]
             gethashedpassword_fromdb = account[3]
             result = security.verify_password(input_password,gethashedpassword_fromdb)
-
-            if result == True and verification_status==1: 
-
-                #send notification 
-                sendmail.sendnotif(input_email,1)
-
-                # Create the tokens we will be sending back to the client
+            if result == True: 
+                #encode session credentials with JWT (include user id and session expiration timing)
+                resp = jsonify({"isValidUser": "true"})
+                # Create the tokens we will be sending back to the user
                 access_token = create_access_token(identity=user_id)
+                refresh_token = create_refresh_token(identity=user_id)
                 print(access_token)
-
-                # DB logging - update last login 
-                registered_date = datetime.now()
-                registered_timestamp = registered_date.strftime("%d-%b-%Y (%H:%M:%S.%f)")
-                api.db_query(api.login_updatestatus_logging(input_email,registered_timestamp))
-                return jsonify(access_token=access_token)
-
-            elif result == True and verification_status ==0:
-                return jsonify({"error":"verification error"})
-
+                # Set the JWT cookies in the response
+                set_access_cookies(resp, access_token)
+                set_refresh_cookies(resp, refresh_token)
+                return resp,200
             else: 
-                # DB logging - if there is an account BUT wrong password 
-                api.db_query(api.failed_logging(input_email))
-
-                return jsonify({"error":"something went wrong"})
-        return {"error":"no such account"}
-
-# #login with cookie (not yet done)
-# @app.route('/login',methods=['POST'])
-# # @jwt_required(optional=True)
-# def user_login():
-#     if request.method == 'POST':
-#         input_email = security.sanitization(request.json['inputEmail'])
-#         input_password = request.json['inputPassword']
-#         account = api.db_query_fetchone(api.get_account(input_email))
-#         print(account)
-#         if account is not None: 
-#             user_id = account[0]
-#             gethashedpassword_fromdb = account[3]
-#             result = security.verify_password(input_password,gethashedpassword_fromdb)
-#             if result == True: 
-#                 #encode session credentials with JWT (include user id and session expiration timing)
-#                 resp = jsonify({"isValidUser": "true"})
-#                 resp.headers.add('Access-Control-Allow-Origin', '*')
-#                 resp.headers.add('Access-Control-Allow-Header', '*')
-#                 resp.headers.add('Access-Control-Allow-Credentials', '*')
-#                 # Create the tokens we will be sending back to the user
-#                 access_token = create_access_token(identity=user_id)
-#                 refresh_token = create_refresh_token(identity=user_id)
-#                 print(access_token)
-#                 # Set the JWT cookies in the response
-#                 set_access_cookies(resp, access_token)
-#                 set_refresh_cookies(resp, refresh_token)
-#                 return resp,200
-#             else: 
-#                 return {"redirect":'false'}
-#         return {"err":"error"}
+                return {"redirect":'false'}
+        return {"err":"error"}
 
 # Because the JWTs are stored in an httponly cookie, 
 # we cannot log the user out by simply deleting the cookie in the frontend.
