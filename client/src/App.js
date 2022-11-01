@@ -72,7 +72,7 @@ function App() {
     return (
 
       <div>
-            {isIdle && localStorage.getItem("token") === null}
+            {isIdle && localStorage.getItem("token") !== "null"}
       <div>
 
       
