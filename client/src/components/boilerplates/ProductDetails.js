@@ -30,10 +30,10 @@ function ProductDetails(){
         window.location.href="/login"
       }
   
-    return (<div id="div1" style={{ "margin": "0" }}>
+    return (<div id="div1" style={{"margin": "0", "backgroundImage": "url('https://t3.ftcdn.net/jpg/01/72/90/92/360_F_172909278_plxmQjlUaw14rJv7qyHrrlc8UJMh0weg.jpg')", "background-repeat": "no-repeat", "background-size": "100%" }}>
  
     {collectionData.filter(laptopId => laptopId[0] ==window.localStorage.getItem("ProductDetails")).map((val)=>{
-        return <div style={{ "text-align": "center", "backgroundImage": "url('https://t3.ftcdn.net/jpg/01/72/90/92/360_F_172909278_plxmQjlUaw14rJv7qyHrrlc8UJMh0weg.jpg')", "background-repeat": "no-repeat", "background-size": "100%" }}>
+        return <div style={{ "text-align": "center"}}>
                     <br></br>
                     <h2 > {val[1]} </h2>
                     <br></br>
@@ -63,6 +63,5 @@ function ProductDetails(){
     
    )
 }
-
 
 export default ProductDetails;
