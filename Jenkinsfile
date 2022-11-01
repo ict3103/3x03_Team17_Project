@@ -1,23 +1,42 @@
-pipeline{
-    agent any
+pipeline {
+agent any
+stages {
+    stage('Test') {
+      steps {
+          echo 'Hello from Dev branch'
+            sh 'echo "Testing Phase"'
+            sh 'echo "Building the repository"'
+			sh 'echo "Installing Requirements.txt"'
+			sh 'pip install -r requirements.txt'
+			sh 'echo "Requirements met, thanks"'
+			echo 'Test completed, thanks'
+        
+      }
+  }
 
-    stages{
-        stage('build'){
-            steps{
-                echo "in build stage"
-            }
-        }
-
-        stage("test"){
-            steps{
-                echo "in test stage"
-            }
-        }
-
-        stage("deploy"){
-            steps{
-                echo "try to deploy application"
-            }
-        }
+    stage('Build') {
+    steps {
+        sh 'docker-compose -f containers/docker-compose.yml up --build'
+		sh 'echo "Building Docker container.."'
     }
+    }
+  }
+  }
+  stage('Deploy') {
+  steps {
+    echo "Deploying the application, please wait..."
+  }
+  post {
+    always {
+      echo 'The pipeline completed'
+      junit allowEmptyResults: true, testResults:'**/test_reports/*.xml'
+    }
+    success {
+      echo "Flask Application Up and running!!"
+    }
+    failure {
+      echo 'Build stage failed'
+      error('Stopping early…')
+    }
+  }   
 }
