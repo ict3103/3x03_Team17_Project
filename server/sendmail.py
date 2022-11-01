@@ -114,6 +114,57 @@ def generate_confirmation_token(email):
     return serializer.dumps(email, salt=app.config['register_securitypasswordsalt'])
 
 # this token will vaild for 3 minutes only 
-def confirm_token(token):
-	serializer = URLSafeTimedSerializer(app.config['register_secretkey'])
-	return serializer.loads(token, salt=app.config['register_securitypasswordsalt'],max_age=180)
+def confirm_token(token, timeout=180):
+    serializer = URLSafeTimedSerializer(app.config['register_secretkey'])
+    return serializer.loads(token, salt=app.config['register_securitypasswordsalt'], max_age=timeout)
+
+# -------------------------------------------------------------------------------------------
+# Sending Email + With OTP
+# -------------------------------------------------------------------------------------------
+
+
+def sendOTPmail(input_email, OTP):
+
+    subject = 'YourFirstComputer - Update Profile OTP - Requested on ' + \
+        datetime.now().strftime('%#d %b %Y %H:%M')
+    body = """
+	Dear Customer, 
+	You have request to update profile for YourFirstComputer account. 
+	Here is your OTP: """ + OTP + """
+
+	Note: 
+	- OTP will only be valid for 1 minutes.
+	"""
+
+    em = EmailMessage()
+    em['From'] = app.config['emailsender']
+    em['To'] = input_email
+    em['Bcc'] = app.config['emailsender']
+    em['Subject'] = subject
+    em.set_content(body)
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+        smtp.login(app.config['emailsender'], app.config['emailpass'])
+        smtp.sendmail(app.config['emailsender'], input_email, em.as_string())
+
+
+def sendUpdationConfirmationMail(input_email, updatedFields):
+
+    subject = "YourFirstComputer - Profile Updated"
+    body = f"""
+	Dear Customer, 
+	It's a confirmation email that {(", ").join(updatedFields)} for your account {input_email} has been updated
+	"""
+
+    em = EmailMessage()
+    em['From'] = app.config['emailsender']
+    em['To'] = input_email
+    em['Bcc'] = app.config['emailsender']
+    em['Subject'] = subject
+    em.set_content(body)
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+        smtp.login(app.config['emailsender'], app.config['emailpass'])
+        smtp.sendmail(app.config['emailsender'], input_email, em.as_string())

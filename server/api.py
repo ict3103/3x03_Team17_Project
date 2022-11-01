@@ -54,8 +54,9 @@ def get_all_laptop():
 def get_cartItemsInfo(userId):
     return f"SELECT l.laptopName, l.imageUrl, l.price, c.cartItemId, c.quantity, c.cartId FROM LaptopInfo as l join CartItems as c on c.laptopId = l.laptopId where c.cartId = '{userId}'"
 
-def get_account(email):
-    return f"SELECT * FROM UserInfo WHERE email = '{email}'"
+def get_account(email=None, pk=None):
+    get_account_parameter = pk if pk else email
+    return f"SELECT * FROM UserInfo WHERE {'userId' if pk else 'email'} = '{get_account_parameter}'"
 
 def insert_new_user(input_name,input_email,hashed_password):
     return f"INSERT INTO UserInfo (username, email, password) VALUES('{input_name}', '{input_email}', '{hashed_password}')"
@@ -70,6 +71,11 @@ def update_password(newPwd,email):
     print(email)
     return f"UPDATE UserInfo SET password = '{newPwd}' WHERE email = '{email}'"
 
+def update_username(newUsername, email):
+    return f'UPDATE UserInfo SET username = "{newUsername}" WHERE email = "{email}"'
+
+def update_email(newEmail, email):
+    return f'UPDATE UserInfo SET email = "{newEmail}" WHERE email = "{email}"'
 def update_cartItem_quantity(newQuantity,cartItemId):
     return f"UPDATE CartItems SET quantity = '{newQuantity}' WHERE cartItemId = '{cartItemId}'"
 
