@@ -57,8 +57,8 @@ function App() {
         }, 1000)
     }, [])
 
-    if (isIdle && localStorage.getItem("token") !== "null") {
-        localStorage.setItem("token", "null")
+    if (isIdle && localStorage.getItem("token") !== null) {
+        localStorage.removeItem("token")
         history.push("/login")
         alert("Your session has expired. Please Login again.")
     }
@@ -71,7 +71,7 @@ function App() {
     return (
 
       <div>
-            {isIdle && localStorage.getItem("token") !== "null"}
+            {isIdle && localStorage.getItem("token") !== null}
       <div>
 
       
