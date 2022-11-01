@@ -72,10 +72,10 @@ def update_password(newPwd,email):
     return f"UPDATE UserInfo SET password = '{newPwd}' WHERE email = '{email}'"
 
 def update_username(newUsername, email):
-    return f'UPDATE UserInfo SET username = "{newUsername}" WHERE email = "{email}"'
+    return f"UPDATE UserInfo SET username = '{newUsername}' WHERE email = '{email}'"
 
 def update_email(newEmail, email):
-    return f'UPDATE UserInfo SET email = "{newEmail}" WHERE email = "{email}"'
+    return f"UPDATE UserInfo SET email = '{newEmail}' WHERE email = '{email}'"
 def update_cartItem_quantity(newQuantity,cartItemId):
     return f"UPDATE CartItems SET quantity = '{newQuantity}' WHERE cartItemId = '{cartItemId}'"
 
