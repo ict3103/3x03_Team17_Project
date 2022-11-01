@@ -30,10 +30,10 @@ function ProductDetails(){
         window.location.href="/login"
       }
   
-    return(<div id="div1" >
+    return (<div id="div1" style={{ "margin": "0" }}>
  
     {collectionData.filter(laptopId => laptopId[0] ==window.localStorage.getItem("ProductDetails")).map((val)=>{
-        return  <div  style={{"text-align":"center"}}>
+        return <div style={{ "text-align": "center", "backgroundImage": "url('https://t3.ftcdn.net/jpg/01/72/90/92/360_F_172909278_plxmQjlUaw14rJv7qyHrrlc8UJMh0weg.jpg')", "background-repeat": "no-repeat", "background-size": "100%" }}>
                     <br></br>
                     <h2 > {val[1]} </h2>
                     <br></br>
@@ -41,8 +41,9 @@ function ProductDetails(){
                     <br></br>
                     <br></br>
                     <p id="laptopPrice">Price: ${val[3]}</p>
+                    <br></br>
                     <p id="laptopPrice">Description:</p>
-                    <p style={{"width":"70%","margin":"0 auto"}}>{val[4]}</p>
+            <p style={{ "width": "70%", "margin": "0 auto" }}><mark style={{ "background-color": "white" }}>{val[4]}</mark></p>
                     <br></br>
                     <div >
                         <div style={{ "text-align": "center","position": "relative","padding-right":"45%","padding-left":"45%"}}>
@@ -50,21 +51,17 @@ function ProductDetails(){
                         </div>
                     </div>
                     <br></br>
+                    <div id="backButton1">
+                        <Link to="/collection" class="btn btn-secondary btn-lg">Back</Link>
+                    </div>
+
                   </div>
      })
     }
-    <div id="backButton1">
-        <Link to="/collection" class="btn btn-secondary btn-lg">Back</Link>
-    </div>
-    
+
     </div>
     
    )
 }
-
-
-
-  
-
 
 export default ProductDetails;
