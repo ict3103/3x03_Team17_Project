@@ -23,4 +23,7 @@
     bottom: 5px;
     cursor: pointer;
   }
-  
+
+ .w-full {
+  width: 100% !important;
+  }

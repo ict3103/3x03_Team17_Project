@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './components/boilerplates/Main';
 import Main from './components/boilerplates/Main';
 import Login from './components/boilerplates/Login';
+import Profile from "./components/boilerplates/Profile/Profile";
 import Register from './components/boilerplates/register/Register';
 import Collection from './components/boilerplates/Collection';
 import ShoppingCart from './components/boilerplates/cart/ShoppingCart';
@@ -62,6 +63,7 @@ function App() {
 
       <PublicRoute path="/resetPasswordSuccess"  component={ResetSuccess}
       > </PublicRoute>
+	  <PrivateRoute path="/profile" IsValidJWT={IsValidJWT} component={Profile} ></PrivateRoute>
           </div>
       </div>  
   );

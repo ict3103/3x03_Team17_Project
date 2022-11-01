@@ -18,6 +18,7 @@ function Login(){
         axios.post("http://127.0.0.1:5000/login",{inputEmail,inputPassword}).then(response=>{
                 if(response.data.access_token){
                     window.localStorage.setItem('token',response.data.access_token)
+					localStorage.setItem("user", JSON.stringify(response.data.user))
                     window.location = "/collection"
                 }else if(response.data.error =="no such account"){
                     return alert("no such account");
