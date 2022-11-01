@@ -30,7 +30,7 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = '159.223.91.38'
 app.config['MYSQL_USER'] = 'yujing'
-app.config['MYSQL_PASSWORD'] = 'AVNS_tsp5nuC_MhlRP0_cIVV'
+app.config['MYSQL_PASSWORD'] = 'AVNS_FVskSUDS3lwJodYP7Ty'
 app.config['MYSQL_DB'] = 'ICT3x03'
 app.config['MYSQL_PORT'] = 25060
 limiter = Limiter(app,key_func=get_remote_address,default_limits=["100 per day", "50 per hour"]) 
@@ -175,8 +175,6 @@ def user_login():
                 registered_date = datetime.now()
                 registered_timestamp = registered_date.strftime("%d-%b-%Y (%H:%M:%S.%f)")
                 api.db_query(api.login_updatestatus_logging(input_email,registered_timestamp))
-
-                # set_refresh_cookies(response, refresh_token)
                 return jsonify(access_token=access_token)
 
             elif result == True and verification_status ==0:
