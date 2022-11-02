@@ -1,6 +1,6 @@
 import React from 'react'
-import '../../styles/loadingIcon.css'
-import logo from '../../images/loading_blue.gif'
+import '../../../styles/loadingIcon.css'
+import logo from '../../../images/loading_blue.gif'
 
 
 const LoadingIcon = ({loading}) =>{

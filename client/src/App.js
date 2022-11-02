@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, Suspense,useEffect } from "react";
+import React, { useState,useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useIdleTimer } from 'react-idle-timer'
 import { useHistory } from "react-router-dom";
@@ -16,13 +16,11 @@ import ResetPasswordPage from './components/boilerplates/resetPassword/ResetPass
 import ResetSuccess from './components/boilerplates/resetPassword/ResetSuccessPage';
 import Payment from './components/boilerplates/cart/Payment';
 import PaymentComplete from './components/boilerplates/cart/PaymentComplete';
-import CollectionLogin from './components/boilerplates/CollectionLogin';
-import ProductDetails from './components/boilerplates/ProductDetails';
-import PrivateRoute from './components/boilerplates/PrivateRoutes';
-import PublicRoute from './components/boilerplates/PublicRoutes';
+import ProductDetails from './components/boilerplates/ProductCollection/ProductDetails';
+import PrivateRoute from './components/boilerplates/routes/PrivateRoutes';
+import PublicRoute from './components/boilerplates/routes/PublicRoutes';
 import { Route} from "react-router-dom"
-import {IsValidJWT} from './components/boilerplates/Token'
-import { setAuthenToken } from './components/boilerplates/Token';
+import {IsValidJWT,setAuthenToken } from './components/boilerplates/utils/Token'
 
 
 function App() {

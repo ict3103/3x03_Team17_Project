@@ -1,15 +1,14 @@
-import {Link,useHistory} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import '../../styles/main.css'
 import { FaReact } from 'react-icons/fa';
-import { IsValidJWT} from './Token';
+import { IsValidJWT} from './utils/Token';
 import { Button } from 'react-bootstrap';
-import axios from 'axios';
-import { useState } from 'react';
+
 
 
 
 function Main() {
-  let history = useHistory();
+
   const logout = (e)=>{
       window.localStorage.removeItem('token')
       window.location.reload(false);

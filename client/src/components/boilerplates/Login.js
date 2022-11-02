@@ -4,7 +4,8 @@ import {React , useState} from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha'
-import LoadingIcon from './LoadingIcon';
+import LoadingIcon from './utils/LoadingIcon';
+
 
 
 
