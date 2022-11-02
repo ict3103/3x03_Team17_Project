@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../styles/collection.css'
 import { Link } from 'react-router-dom';
-import {IsValidJWT} from "./Token"
+import {IsValidJWT} from "./utils/Token"
 
 function ProductDetails(){
     const [collectionData,setCollectionData] = useState([])
