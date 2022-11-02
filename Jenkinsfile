@@ -10,7 +10,7 @@ stages {
   }
     stage('Build') {
     steps {
-        sh 'docker-compose -f containers/docker-compose.yml up --build'
+        sh 'docker-compose -f docker-compose.yml up --build'
 		sh 'echo "Building Docker container.."'
     }
     }
