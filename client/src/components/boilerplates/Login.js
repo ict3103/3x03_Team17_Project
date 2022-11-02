@@ -4,6 +4,7 @@ import {React , useState} from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha'
+import Cookies from 'js-cookie'
 
 
 
@@ -17,8 +18,16 @@ function Login(){
         e.preventDefault();
         axios.post("http://127.0.0.1:5000/login",{inputEmail,inputPassword}).then(response=>{
                 if(response.data){
+                    // Cookies.set(response.data)
                     window.localStorage.setItem('token','true')
-                    window.location = "/collection"
+                    console.log(Cookies.get('access_token'))
+                    console.log(Cookies.get('token'))
+                    console.log(Cookies.get('access_token_cookie'))
+                    console.log(Cookies.get('Set-Cookie'))
+                    console.log(Cookies.get('resp'))
+                    console.log(Cookies.get(response.data.resp))
+
+                    // window.location = "/collection"
                 }
         }).catch((err)=>{
             return alert("Error: " + err);

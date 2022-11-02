@@ -166,7 +166,6 @@ def user_login():
                 # Create the tokens we will be sending back to the user
                 access_token = create_access_token(identity=user_id)
                 refresh_token = create_refresh_token(identity=user_id)
-                print(access_token)
                 # Set the JWT cookies in the response
                 set_access_cookies(resp, access_token)
                 set_refresh_cookies(resp, refresh_token)

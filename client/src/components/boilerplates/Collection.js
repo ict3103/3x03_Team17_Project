@@ -12,19 +12,27 @@ function Collection(){
     const [collectionData,setCollectionData] = useState([])
     //axios get request to get laptop collections
     useEffect(()=>{
-        axios.get("http://127.0.0.1:5000/collection").then((response)=>{
+        axios.get("http://127.0.0.1:5000/collection",{ withCredentials: true }).then((response)=>{
             setCollectionData(response.data.collection)
         })
     },[])
 
     const addToCart  = (e) =>{
         e.preventDefault();
-        axios.post("http://127.0.0.1:5000/add_cartItem",{laptopId: e.target.value}).then(response=>{
+        axios.post("http://127.0.0.1:5000/add_cartItem",{laptopId: 1},{ withCredentials: true }).then(response=>{
                 if(response.data){
                     window.location = "/cart"
                 }else{
                     return alert("Error:!!");
                 }
+        }).catch((err)=>{
+            return alert("Error: " + err);
+        })
+    }
+
+    const test  = (e) =>{
+        e.preventDefault();
+        axios.get("http://127.0.0.1:5000/test",{ withCredentials: true }).then(response=>{
         }).catch((err)=>{
             return alert("Error: " + err);
         })
