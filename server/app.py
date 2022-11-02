@@ -172,10 +172,10 @@ def user_login():
                 access_token = create_access_token(identity=user_id)
                 print(access_token)
 
-                # DB logging - update last login 
-                # registered_date = datetime.now()
-                # registered_timestamp = registered_date.strftime("%d-%b-%Y (%H:%M:%S.%f)")
-                # api.db_query(api.login_updatestatus_logging(input_email,registered_timestamp))
+                #DB logging - update last login 
+                registered_date = datetime.now()
+                registered_timestamp = registered_date.strftime("%d-%b-%Y (%H:%M:%S.%f)")
+                api.db_query(api.login_updatestatus_logging(input_email,registered_timestamp))
 
                 # passing user info for functioning of profile
                 user = {
@@ -386,7 +386,10 @@ def updateProfile(pk):
     if request.json.get("email", None):
         input_email = security.sanitization(request.json['email'])
     if request.json.get("password", None):
-        input_password = security.sanitization(request.json['password'])
+        input_password = request.json['password']
+    
+    if not(security.username_pattern().match(input_name) and security.email_pattern().match(input_email) and security.password_pattern().match(input_password)) :
+            return {"status": 400, "result": "Error while adding user"}
 
     # if email is not None, check whether this email already taken
     if input_email is not None:
