@@ -4,6 +4,9 @@ import {React , useState} from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha'
+import LoadingIcon from './LoadingIcon';
+
+
 
 
 
@@ -11,14 +14,18 @@ function Login(){
     const [forgotPwd,setforgotPwd] = useState(false)
     const [inputEmail,setEmail] = useState(null)
     const [inputPassword,setPassword] = useState(null)
-
+    const [loading,setLoading] = useState(false)
+    
     //header implementation
     const sendForm  = (e) =>{
+        setLoading(true)
         e.preventDefault();
         axios.post("http://127.0.0.1:5000/login",{inputEmail,inputPassword}).then(response=>{
+                
                 if(response.data.access_token){
                     window.localStorage.setItem('token',response.data.access_token)
 					localStorage.setItem("user", JSON.stringify(response.data.user))
+                    setLoading(false)
                     window.location = "/collection"
                 }else if(response.data.error =="no such account"){
                     return alert("no such account");
@@ -29,10 +36,13 @@ function Login(){
                 else{
                     return alert("something went wrong");
                 }
-        }).catch((err)=>{
+        },[loading]).catch((err)=>{
             return alert("Error: " + err);
         })
+        
     }
+
+
 
     // cookie implementation 
     // const sendForm  = (e) =>{
@@ -70,7 +80,9 @@ function Login(){
         setForgotPwdCaptchaCheck(true);
     }
 
-    
+    const back = ()=>{
+        window.location='/'
+    }
 
 
     return (
@@ -92,6 +104,7 @@ function Login(){
                 <div class="pass" onClick={changeState} >Forgot Password?</div>
                 {/* <ReCAPTCHA sitekey="6Ldrj30iAAAAADyAiEnHJkcZOv4E2UsyYK2ZQpvC" onChange={LoginCaptchaOnChange}/> */}
                 <input type="submit"  style={{"border-radius": "30px;"}} onClick={sendForm}  value="Login"/>
+                <LoadingIcon loading={loading}></LoadingIcon>
                 <div class="signup_link">
                 Not a member? <Link to="register">Signup</Link></div>
                 </form>
@@ -111,7 +124,7 @@ function Login(){
                 </div>
                 <div> 
                     <Button type='submit' disabled={!ForgotPwdCaptchaCheck} variant="dark" style={{'width':'fit-content','margin-left':'50px'}}>Reset password</Button>
-                        <Button variant="dark" 
+                        <Button variant="dark"  onClick={back}
         style={{'width':'fit-content'}}>Back</Button>
                 </div>
             </form>
