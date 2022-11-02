@@ -16,7 +16,7 @@ import ResetPasswordPage from './components/boilerplates/resetPassword/ResetPass
 import ResetSuccess from './components/boilerplates/resetPassword/ResetSuccessPage';
 import Payment from './components/boilerplates/cart/Payment';
 import PaymentComplete from './components/boilerplates/cart/PaymentComplete';
-import ProductDetails from './components/boilerplates/ProductCollection/ProductDetails';
+import ProductDetails from './components/boilerplates/ProductDetails';
 import PrivateRoute from './components/boilerplates/routes/PrivateRoutes';
 import PublicRoute from './components/boilerplates/routes/PublicRoutes';
 import { Route} from "react-router-dom"

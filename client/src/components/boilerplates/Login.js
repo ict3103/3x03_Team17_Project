@@ -82,7 +82,7 @@ function Login(){
     }
 
     const back = ()=>{
-        window.location='/'
+        window.location='/login'
     }
 
 
@@ -112,7 +112,7 @@ function Login(){
             </div>
             :
         //--------forgot password form ---------
-        <div class="center form" style={{'height':'400px'}}>
+        <div class="center form" style={{'height':'450px'}}>
             <img src={require("../../images/forgot_password.png")} id='forgotIcon' alt=''></img>
             <h1>Reset password</h1>
             <form action="forgotPassword" method="post">
@@ -123,7 +123,7 @@ function Login(){
                 <div style={{'marginTop':'-30px'}}>
                 <ReCAPTCHA sitekey="6Ldrj30iAAAAADyAiEnHJkcZOv4E2UsyYK2ZQpvC" onChange={ForgotPwdCaptchaOnChange}/>
                 </div>
-                <div> 
+                <div style={{"margin-top":"20px"}}> 
                     <Button type='submit' disabled={!ForgotPwdCaptchaCheck} variant="dark" style={{'width':'fit-content','margin-left':'50px'}}>Reset password</Button>
                         <Button variant="dark"  onClick={back}
         style={{'width':'fit-content'}}>Back</Button>
