@@ -13,6 +13,7 @@ from requests import get
 
 load_dotenv()
 import api
+import utils            
 import security
 import sendmail
 import geocoder, time 
@@ -30,7 +31,7 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = '159.223.91.38'
 app.config['MYSQL_USER'] = 'yujing'
-app.config['MYSQL_PASSWORD'] = 'AVNS_tsp5nuC_MhlRP0_cIVV'
+app.config['MYSQL_PASSWORD'] = 'AVNS_FVskSUDS3lwJodYP7Ty'
 app.config['MYSQL_DB'] = 'ICT3x03'
 app.config['MYSQL_PORT'] = 25060
 limiter = Limiter(app,key_func=get_remote_address,default_limits=["100 per day", "50 per hour"]) 
@@ -171,13 +172,19 @@ def user_login():
                 access_token = create_access_token(identity=user_id)
                 print(access_token)
 
-                # DB logging - update last login 
+                #DB logging - update last login 
                 registered_date = datetime.now()
                 registered_timestamp = registered_date.strftime("%d-%b-%Y (%H:%M:%S.%f)")
                 api.db_query(api.login_updatestatus_logging(input_email,registered_timestamp))
 
+                # passing user info for functioning of profile
+                user = {
+                    "id":account[0],
+                    "email":input_email,
+                    "username":account[1]
+                }
                 # set_refresh_cookies(response, refresh_token)
-                return jsonify(access_token=access_token)
+                return jsonify(access_token=access_token, user=user)
 
             elif result == True and verification_status ==0:
                 return jsonify({"error":"verification error"})
@@ -323,6 +330,89 @@ def update_cartItem():
             return {'result':1}
         except Exception as e:
             return "error occur, pls try again"
+
+#-------------------------------------------------------------------------------------------
+# Update profile route (retrive all profile info)
+#-------------------------------------------------------------------------------------------
+
+@app.route('/getOTP', methods=["post"])
+def get_otp():
+    """when the verification button will be clicked, request will be forwarded to this route
+    1- generateOTP will genrate a 6 digit random number
+    2- generate token method is same being used for email to encrypt the otp and wil return the token
+    3- if everythng goes as expected, a json response with token will be sent
+    Note: token is generated because it's not secure to send otp directly
+    """
+    # Geting the email address to which mail is to be sent
+    reciver_email = request.json['email']
+    # Getting the generated OTP
+    otp = utils.generateOTP()
+    # Sending the OTP to user's email
+    sendmail.sendOTPmail(reciver_email, otp)
+    # Genrating a token for the otp which is sent
+    token = sendmail.generate_confirmation_token(otp)
+    # Returning the JSON response with success status and the token
+    return {"status": 200, "result": "OTP send successfully", "token": token}
+
+
+@app.route('/verifyOTP', methods=["POST"])
+def verifyOTP():
+    """Request will be forwarded to this route when the 6 digit otp will be entered by user in otp input field in profile update form
+    1- As this is post request, token and otp entered by user will be sent through POST request as json data
+    2- In the try block, if the token gets expired, an exception will be thrown due to token expiration, time is 60 second after which token will be expired
+    3- if token is not expired, then it will be decrypted and will be compared with the otp enetered by user according to which response will be generated
+    """
+    token = request.json["token"]
+    otp = request.json["otp"]
+    try:
+        decrypted_otp = sendmail.confirm_token(token, 60)
+    except:
+        return {
+            "status": 500,
+            "result": "OTP Expired"
+        }
+    return {
+        "status": 500,
+        "result": "OTP Invalid"
+    } if otp != decrypted_otp else {"status": 200, "result": "OTP Verified"}
+
+
+@app.route('/updateProfile/<pk>', methods=["PUT"])
+def updateProfile(pk):
+    # initial sanitization
+    input_name = input_email = input_password = account = None
+    if request.json.get("username", None):
+        input_name = security.sanitization(request.json['username'])
+    if request.json.get("email", None):
+        input_email = security.sanitization(request.json['email'])
+    if request.json.get("password", None):
+        input_password = request.json['password']
+    
+    if not(security.username_pattern().match(input_name) and security.email_pattern().match(input_email) and security.password_pattern().match(input_password)) :
+            return {"status": 400, "result": "Error while adding user"}
+
+    # if email is not None, check whether this email already taken
+    if input_email is not None:
+        account = api.db_query_fetchone(api.get_account(input_email))
+        # if account with this email alredy exists then check whether it's different from new email or not
+        print(account, account[2], input_email)
+        if account is not None and account[2].lower() != input_email.lower():
+            return {"status": 400, "result": "Email already taken"}
+
+    # getting previous account for updation
+    account = api.db_query_fetchone(api.get_account(pk=pk))
+    triggeredUpdates = utils.handleUpdates(account=account, **{
+        "email": input_email,
+        "username": input_name,
+        "password": input_password
+    })
+
+    updatedValues = utils.getUpdatedValues(triggeredUpdates)
+    if len(updatedValues) > 0:
+        sendmail.sendUpdationConfirmationMail(
+            account[2], utils.getUpdatedValues(triggeredUpdates))
+
+    return {"status": 200, "result": "Profile Updated"}
 #-------------------------------------------------------------------------------------------
 # main driver  
 #-------------------------------------------------------------------------------------------
