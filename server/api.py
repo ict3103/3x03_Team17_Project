@@ -48,6 +48,7 @@ def db_query_fetchone(sql,tupple):
 # MYSQL query statements
 #-------------------------------------------------------------------------------------------
 
+#completed 
 def get_all_laptop():
     return "SELECT * FROM LaptopInfo"
 
@@ -73,9 +74,9 @@ def insert_cartItem(userId, laptopId, quantity):
 def update_verification_status():
     return f"UPDATE UserInfo SET verification_status = 1 WHERE email = %s"
 
-def update_password(newPwd,email):
-    print(email)
-    return f"UPDATE UserInfo SET password = '{newPwd}' WHERE email = '{email}'"
+#completed 
+def update_password():
+    return f"UPDATE UserInfo SET password = %s WHERE email = %s"
 
 def update_username(newUsername, email):
     return f"UPDATE UserInfo SET username = '{newUsername}' WHERE email = '{email}'"
@@ -116,10 +117,10 @@ def login_updatestatus_logging ():
 def failed_logging (): 
 	return f"UPDATE logging SET failed_login_attempts = failed_login_attempts + 1 WHERE user_email = %s"
 
+#comepleted 
+def successful_passwordreset_logging (): 
+	return f"UPDATE logging SET successful_password_reset = successful_password_reset + 1 WHERE user_email = %s"
 
-def successful_passwordreset_logging (user_email): 
-	return f"UPDATE logging SET successful_password_reset = successful_password_reset + 1 WHERE user_email = '{user_email}'"
-
-
-def attempt_passwordreset_logging (user_email): 
-	return f"UPDATE logging SET attempt_password_reset = attempt_password_reset + 1 WHERE user_email = '{user_email}'"
+#compeleted 
+def attempt_passwordreset_logging (): 
+	return f"UPDATE logging SET attempt_password_reset = attempt_password_reset + 1 WHERE user_email = %s"

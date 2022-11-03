@@ -43,7 +43,8 @@ jwt = JWTManager(app)
 @app.route('/collection')
 @limiter.exempt
 def get_collection():
-    collection = api.db_query_fetchall(api.get_all_laptop())
+    sql_get_all_laptop = api.get_all_laptop()
+    collection = api.db_query_fetchall(sql_get_all_laptop)
     return {'collection':collection}
 
 #-------------------------------------------------------------------------------------------
@@ -240,16 +241,16 @@ def forgotPassword():
         sendmail.sendmail(email,'reset_password',2)
 
         # DB logging - update attempt to password reset 
-        api.db_query(api.attempt_passwordreset_logging(email))
+        sql_attempt_passwordreset_logging = api.attempt_passwordreset_logging()
+        tupple_sql_attempt_passwordreset_logging = (email,)
+        api.db_query(sql_attempt_passwordreset_logging, tupple_sql_attempt_passwordreset_logging)
         return redirect('/verification')
-
 
 # This will return the reset password page with the new password 
 @app.route('/reset_password/<token>')
 @limiter.limit("20 per day")
 def reset_password(token):
     return redirect(f'http://localhost:3000/resetPassword/{token}')
-
 
 @app.route('/resetSuccess/<token>',methods=['POST'])
 @limiter.limit("20 per day")
@@ -261,11 +262,15 @@ def reset_success(token):
     if(request.form['newPwd'] == request.form['newPwd2']):
         if(len(request.form['newPwd'])>=8 and len(request.form['newPwd'])<=20):
             newPwd = security.hashpassword(newPwd)
-            api.db_query(api.update_password(newPwd,email))
+            sql_update_password = api.update_password()
+            tupple_sql_update_password = (newPwd,email,)
+            api.db_query(sql_update_password,tupple_sql_update_password)
             sendmail.sendnotif(email,2)
 
             # DB logging - update successful password reset 
-            api.db_query(api.successful_passwordreset_logging(email))
+            sql_successful_passwordreset_logging = api.successful_passwordreset_logging() 
+            tupple_sql_successful_passwordreset_logging = (email,)
+            api.db_query(sql_successful_passwordreset_logging,tupple_sql_successful_passwordreset_logging)
             return redirect(f'http://localhost:3000/resetPasswordSuccess')
 
         else:
