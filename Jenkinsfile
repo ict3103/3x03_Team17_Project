@@ -3,7 +3,6 @@ pipeline {
 	{
 	stages {
 		stage ('Dependency Check') {
-		    steps {
 				echo'Testing..'
 		        dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'Default'
 		    }
