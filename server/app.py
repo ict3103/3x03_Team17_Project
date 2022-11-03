@@ -17,9 +17,7 @@ import utils
 import security
 import sendmail
 import geocoder, time 
-
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
-
 
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = '159.223.91.38'
@@ -45,7 +43,8 @@ jwt = JWTManager(app)
 @app.route('/collection')
 @limiter.exempt
 def get_collection():
-    collection = api.db_query_fetchall(api.get_all_laptop())
+    sql_get_all_laptop = api.get_all_laptop()
+    collection = api.db_query_fetchall(sql_get_all_laptop)
     return {'collection':collection}
 
 #-------------------------------------------------------------------------------------------
@@ -70,7 +69,9 @@ def register_user():
             return 'Password not match'
 
         else: #once all server validation is ok; proceed 
-            account = api.db_query_fetchone(api.get_account(input_email))
+            sql_getaccount = api.check_account() 
+            tupple_sql_getaccount = (input_email,)
+            account = api.db_query_fetchone(sql_getaccount, tupple_sql_getaccount)
 
             #if there there is such an account in db, user cannot register
             if account: 
@@ -81,20 +82,31 @@ def register_user():
                 hashed_password = security.hashpassword(input_password) 
                 email_type = 1 
                 sendmail.sendmail(input_email, "confirm_email", 1)
-                api.db_query(api.insert_new_user(input_username,input_email,hashed_password))
+                
+                #prepared mySQL statement 
+                sql_insertnewuser = api.insert_new_user() 
+                tupple_sql_insertnewuser = (input_username, input_email, hashed_password,)
+                api.db_query(sql_insertnewuser,tupple_sql_insertnewuser)
 
                 #create a link between userID and cartID 
-                get_userid = api.db_query_fetchone(api.get_account_id(input_email))
-                get_userid = get_userid[0] 
-                api.db_query(api.insert_cartid_userid(get_userid))
+                sql_getaccountid = api.get_account_id() 
+                tupple_sql_getaccountid = (input_email,) 
+                get_userid = api.db_query_fetchone(sql_getaccountid,tupple_sql_getaccountid)
+                get_userid = get_userid[0]
 
+                sql_insertcartid_userid = api.insert_cartid_userid()
+                tupple_sql_insertcartid_userid = (get_userid, get_userid,)
+                api.db_query(sql_insertcartid_userid, tupple_sql_insertcartid_userid)
+                
                 #DB logging 
                 registered_date = datetime.now()
                 registered_timestamp = registered_date.strftime("%d-%b-%Y (%H:%M:%S.%f)")
                 user_ip = get('https://api.ipify.org').text
                 user_location = geocoder.ip(user_ip)
                 user_country = user_location.city
-                api.db_query(api.register_logging(get_userid, input_username, input_email, "0", registered_timestamp, "0", user_ip, user_country, "0", "0", "0"))
+                sql_register_logging = api.register_logging()
+                tupple_sql_register_logging = (get_userid, input_username, input_email, "0", registered_timestamp, "0", user_ip, user_country, "0", "0", "0")
+                api.db_query(sql_register_logging,tupple_sql_register_logging)
 
                 return redirect('http://localhost:3000/verification')
 
@@ -103,10 +115,14 @@ def register_user():
 def confirm_email(token):
     try:
         email = sendmail.confirm_token(token)
-        api.db_query(api.update_verification_status(email))
+        sql_updateverificationstatus = api.update_verification_status()
+        tupple_sql_updateverificationstatus = (email,)
+        api.db_query(sql_updateverificationstatus, tupple_sql_updateverificationstatus) 
 
         #DB logging 
-        api.db_query(api.register_updatestatus_logging(email))
+        sql_registerupdatestatuslogging = api.register_updatestatus_logging() 
+        tupple_sql_registerupdatestatuslogging = (email,)
+        api.db_query(sql_registerupdatestatuslogging, tupple_sql_registerupdatestatuslogging)
 
         return redirect('http://localhost:3000/verifiedPage')
     except:
@@ -123,7 +139,11 @@ def user_login():
     if request.method == 'POST':
         input_email = security.sanitization(request.json['inputEmail'])
         input_password = request.json['inputPassword']
-        account = api.db_query_fetchone(api.get_account(input_email))
+
+        #account = api.db_query_fetchone(api.get_account(input_email))
+        sql_checkaccount = api.check_account() 
+        tupple_sql_checkaccount = (input_email,)
+        account = api.db_query_fetchone(sql_checkaccount, tupple_sql_checkaccount)
 
         if account is not None: 
             user_id = account[0]
@@ -136,33 +156,35 @@ def user_login():
                 #send notification 
                 sendmail.sendnotif(input_email,1)
 
-                # Create the tokens we will be sending back to the client
+                #Create the tokens we will be sending back to the client
                 access_token = create_access_token(identity=user_id)
                 print(access_token)
 
                 #DB logging - update last login 
                 registered_date = datetime.now()
                 registered_timestamp = registered_date.strftime("%d-%b-%Y (%H:%M:%S.%f)")
-                api.db_query(api.login_updatestatus_logging(input_email,registered_timestamp))
+                
+                sql_login_updatestatus_logging = api.login_updatestatus_logging() 
+                tupple_sql_login_updatestatus_logging = (registered_timestamp,input_email,)
+                api.db_query(sql_login_updatestatus_logging,tupple_sql_login_updatestatus_logging)
 
-                # passing user info for functioning of profile
-                user = {
-                    "id":account[0],
-                    "email":input_email,
-                    "username":account[1]
-                }
-                # set_refresh_cookies(response, refresh_token)
+                #passing user info for functioning of profile
+                user = {"id":account[0], "email":input_email, "username":account[1]}
+
+                #set_refresh_cookies(response, refresh_token)
                 return jsonify(access_token=access_token, user=user)
 
             elif result == True and verification_status ==0:
-                return jsonify({"error":"verification error"})
+                return jsonify({"error":"Email/Password is incorrect"})
 
             else: 
-                # DB logging - if there is an account BUT wrong password 
-                api.db_query(api.failed_logging(input_email))
+                #DB logging - if there is an account BUT wrong password 
+                sql_failed_logging = api.failed_logging() 
+                tupple_sql_failed_logging = (input_email,)
+                api.db_query(sql_failed_logging,tupple_sql_failed_logging)
+                return jsonify({"error":"Email/Password is incorrect"})
 
-                return jsonify({"error":"something went wrong"})
-        return {"error":"no such account"}
+        return {"error":"Email/Password is incorrect"}
 
 # #login with cookie (not yet done)
 # @app.route('/login',methods=['POST'])
@@ -219,16 +241,16 @@ def forgotPassword():
         sendmail.sendmail(email,'reset_password',2)
 
         # DB logging - update attempt to password reset 
-        api.db_query(api.attempt_passwordreset_logging(email))
+        sql_attempt_passwordreset_logging = api.attempt_passwordreset_logging()
+        tupple_sql_attempt_passwordreset_logging = (email,)
+        api.db_query(sql_attempt_passwordreset_logging, tupple_sql_attempt_passwordreset_logging)
         return redirect('/verification')
-
 
 # This will return the reset password page with the new password 
 @app.route('/reset_password/<token>')
 @limiter.limit("20 per day")
 def reset_password(token):
     return redirect(f'http://localhost:3000/resetPassword/{token}')
-
 
 @app.route('/resetSuccess/<token>',methods=['POST'])
 @limiter.limit("20 per day")
@@ -240,11 +262,15 @@ def reset_success(token):
     if(request.form['newPwd'] == request.form['newPwd2']):
         if(len(request.form['newPwd'])>=8 and len(request.form['newPwd'])<=20):
             newPwd = security.hashpassword(newPwd)
-            api.db_query(api.update_password(newPwd,email))
+            sql_update_password = api.update_password()
+            tupple_sql_update_password = (newPwd,email,)
+            api.db_query(sql_update_password,tupple_sql_update_password)
             sendmail.sendnotif(email,2)
 
             # DB logging - update successful password reset 
-            api.db_query(api.successful_passwordreset_logging(email))
+            sql_successful_passwordreset_logging = api.successful_passwordreset_logging() 
+            tupple_sql_successful_passwordreset_logging = (email,)
+            api.db_query(sql_successful_passwordreset_logging,tupple_sql_successful_passwordreset_logging)
             return redirect(f'http://localhost:3000/resetPasswordSuccess')
 
         else:
