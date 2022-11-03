@@ -1,5 +1,9 @@
 pipeline{
-    agent { docker-compose.yml } {
+    agent { 
+	docker { 
+		image 'react'
+				args '-v "$HOME:/home"'
+			args '-p 3000:3000;
 	stages {
 		stage ('Build') {
 			steps {
@@ -11,7 +15,20 @@ pipeline{
 				}
 			}
 		}
+		stage ('Dependency Check') {
+		    steps {
+				echo 'Testing..'
+		        //dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'Default'
+		    }
+			post {
+            	success {
+				echo 'Generating the report..'
+        		//dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+    			}
+			}
 		
+		}
 	}
 }
-}
+
+
