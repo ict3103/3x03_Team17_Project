@@ -5,9 +5,6 @@ pipeline {
     stages {
         stage('OWASP Dependency-Check') {
             steps {
-				echo 'Hello from Dev branch'
-				sh 'echo "Testing Phase"'
-				sh 'echo "Building the repository"'    
                 echo 'Testing...'
                 dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'Default'
             }
@@ -18,9 +15,9 @@ pipeline {
                 echo 'Building...'
                 
                 sh """
-					docker-compose up --build
+                // 
+				'ok'
                 """
-				echo 'Docker container built'
             }
         }
 
@@ -29,10 +26,10 @@ pipeline {
                 echo 'Deploying...'
 
                 sh """
-
-
-                    
-                   
+                 //   
+                 //   
+                    'ok'
+                 //   
                 """
             }
         }
@@ -42,8 +39,8 @@ pipeline {
                 echo 'Copy...'
 
                 sh """
-                   
-				   
+                    // 
+                    'ok'
                 """
             }
         }
@@ -51,14 +48,9 @@ pipeline {
 
     post {
         success {
-            //dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+            dependencyCheckPublisher pattern: 'dependency-check-report.xml'
 
-            //junit '**/result.xml'
+            junit '**/result.xml'
         }
-		failure {
-		
-			echo 'Build stage failed'
-			error('Stopping early…')
     }
-}
 }
