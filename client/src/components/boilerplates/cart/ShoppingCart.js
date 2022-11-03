@@ -51,7 +51,7 @@ function ShoppingCart() {
             </thead>
             <tbody>
             {collectionData.map((val)=>{
-                {totalAmount += (val[2]*val[4]*100)/100}
+                {totalAmount += (val[2]*val[4])}
                 return <tr>
                     <td>
                         <img src={require(`../../../${val[1]}`)} alt='' style={{"height": "80px","width":"120px"}}/>
@@ -87,7 +87,7 @@ function ShoppingCart() {
             <row>
                 <h2 className='total-price-tag'>Total:</h2>
                 <h3>${totalAmount.toFixed(2)}</h3>
-                <Link to='/payment'><button class='btn btn-primary' id='cart-payment-btn'>Pay</button></Link>
+                <form action="/payment" method="POST"><button class='btn btn-primary' id='cart-payment-btn' name='totalAmount' value={totalAmount.toFixed(2)}>Pay</button></form>
             </row>
             <row>
                     

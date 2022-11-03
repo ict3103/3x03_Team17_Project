@@ -10,7 +10,7 @@ import "react-credit-cards-2/es/styles-compiled.css";
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-export default class App extends React.Component {
+export default class Payment extends React.Component {
 
   state = {
     number: "",
