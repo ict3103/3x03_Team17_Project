@@ -107,18 +107,26 @@ img{
 #cartButton{
   width:3rem;
   height:3rem;
-  margin:-5px 10px;
+  margin:-3px 5px;
   color: white;
   background-color: rgb(46, 44, 44);
 }
 
+#profileButton{
+  width:3rem;
+  height:3rem;
+  margin:-8px 10px;
+  color: rgb(228, 226, 226);
+
+} 
+/* 
 #cartButton:hover{
   width:3.5rem;
   height:3.5rem;
   margin:-5px 10px;
   transition: 1s;
 
-}
+} */
 
 .card-title{
   font-weight:lighter;
