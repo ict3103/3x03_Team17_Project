@@ -299,6 +299,23 @@ def update_cartItem():
         except Exception as e:
             return "error occur, pls try again"
 
+@app.route('/payment', methods = ['POST'])
+def payment():
+    if request.method == "POST" :
+            totalAmount = request.form['totalAmount']
+            if(float(totalAmount)>0):
+                return redirect('/payment')
+            else:
+                return redirect('/cart')
+    else:
+        return redirect('/cart')
+
+@app.route('/paymentComplete', methods = ['POST'])
+def paymentComplete():
+    if request.method == "POST" :
+        return redirect('/paymentComplete')
+    else:
+        return redirect('/cart')
 #-------------------------------------------------------------------------------------------
 # Update profile route (retrive all profile info)
 #-------------------------------------------------------------------------------------------
