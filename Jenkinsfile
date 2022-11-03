@@ -12,13 +12,7 @@ pipeline {
         			dependencyCheckPublisher pattern: 'dependency-check-report.xml'
     			}
 			}
-
-
-	options {
-			// running job to be aborted automatically if a new run is started.
-			disableConcurrentBuilds(abortPrevious: true)
-  	}
-
+			
 	stages {
 		stage ('Build') {
 			steps {
