@@ -96,6 +96,7 @@ export default class App extends React.Component {
                 name="name"
                 className="form-control"
                 placeholder="Name"
+                pattern="[a-zA-Z\s\.]+"
                 required
                 onChange={this.handleInputChange}
                 onFocus={this.handleInputFocus}
