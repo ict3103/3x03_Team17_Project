@@ -65,7 +65,7 @@ export default class App extends React.Component {
     const { name, number, expiry, cvc, focused, issuer, formData } = this.state;
 
     return (
-      <div key="Payment" id="div1">
+      <div key="Payment" id="div1" style={{"padding-top":"200px"}}>
         <div className="payment-form">
         <h3>Enter your card details below</h3>
           <Card
