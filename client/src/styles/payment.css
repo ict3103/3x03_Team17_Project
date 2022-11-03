@@ -1,5 +1,5 @@
 .payment-form{
-    margin: 5% 20% 10%;
+    margin: -5% 20% 10%;
 }
 h3{
     text-align: center;
@@ -14,7 +14,4 @@ input{
 .row{
     margin-left: -12px;
 
-}
-.back-video{
-    display: none;
 }
