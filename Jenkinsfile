@@ -12,21 +12,8 @@ pipeline {
         			dependencyCheckPublisher pattern: 'dependency-check-report.xml'
     			}
 			}
-			
-	stage {
-		('Build') {
-			steps {
-				dir("/var/jenkins_home/workspace/3x03_Team17_Project/client"){
-					sh 'npm install'
-				}
-				dir ("/var/jenkins_home/workspace/3x03_Team17_Project/server"){
-					sh 'python app.py'
-				}
-			}
-		}
 		
 		}
 	}
 }
 
-}
