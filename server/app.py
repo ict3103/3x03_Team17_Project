@@ -44,7 +44,7 @@ jwt = JWTManager(app)
 @limiter.exempt
 def get_collection():
     sql_get_all_laptop = api.get_all_laptop()
-    collection = api.db_query_fetchall(sql_get_all_laptop)
+    collection = api.db_query_fetchall(sql_get_all_laptop,"")
     return {'collection':collection}
 
 #-------------------------------------------------------------------------------------------
@@ -236,7 +236,10 @@ def user_login():
 def forgotPassword():
     if request.method == 'POST':
         email = request.form['email']
-        api.db_query_fetchall(api.get_account(email))
+        sql_getaccount = api.check_account()
+        tupple_sql_getaccount = (email,) 
+        api.db_query_fetchone(sql_getaccount, tupple_sql_getaccount)
+
         email_type = 2
         sendmail.sendmail(email,'reset_password',2)
 
@@ -284,7 +287,9 @@ def reset_success(token):
 @jwt_required()
 def get_cartItems():
     current_user = get_jwt_identity()
-    collection = api.db_query_fetchall(api.get_cartItemsInfo(current_user))
+    sql_get_cartItemsInfo = api.get_cartItemsInfo()
+    tupple_sql_get_cartItemsInfo = (current_user,)
+    collection = api.db_query_fetchall(sql_get_cartItemsInfo,tupple_sql_get_cartItemsInfo)
     return {'collection':collection}
 
 @app.route('/add_cartItem', methods = ['POST'])
@@ -294,11 +299,15 @@ def add_cartItem():
         # Access the identity of the current user with get_jwt_identity
         laptopId = request.json['laptopId']
         current_user = get_jwt_identity()
+
         try:
-            api.db_query(api.insert_cartItem(current_user,laptopId,1))
+            sql_insert_cartItem = api.insert_cartItem() 
+            tupple_sql_insert_cartItem = (current_user, laptopId, 1,)
+            api.db_query(sql_insert_cartItem,tupple_sql_insert_cartItem)
             return {'redirect':'/cart'}
+
         except:
-            return {'error':"error"}
+            return {'error':"An error has occured. Please try again."}
 
 @app.route('/delete_cartItem', methods = ['POST'])
 @limiter.exempt
@@ -306,10 +315,13 @@ def delete_cartItem():
     if request.method == 'POST':
         try:
             cartItemId = request.form['cartItemId']
-            api.db_query(api.delete_cartItem(cartItemId))
+            sql_delete_cartItem = api.delete_cartItem() 
+            tupple_sql_delete_cartItem = (cartItemId,)
+            api.db_query(sql_delete_cartItem, tupple_sql_delete_cartItem)
             return redirect('/cart')
+        
         except Exception as e:
-            return "error occur, pls try again"
+            return "An error has occured. Please try again."
 
 @app.route('/update_cartItem', methods = ['POST'])
 @limiter.exempt
@@ -319,12 +331,15 @@ def update_cartItem():
             new_quantity= request.json['value']
             cartItemId = request.json['id']
             print("new quantity: "+new_quantity+", cartItemId: "+cartItemId)
-            api.db_query(api.update_cartItem_quantity(new_quantity, cartItemId))
-            #api.db_query(api.delete_cartItem(cartItemId))
+            
+            sql_update_cartItem_quantity = api.update_cartItem_quantity() 
+            tupple_sql_update_cartItem_quantity = (new_quantity, cartItemId,)
+            api.db_query(sql_update_cartItem_quantity, tupple_sql_update_cartItem_quantity)
             return {'result':1}
-        except Exception as e:
-            return "error occur, pls try again"
 
+        except Exception as e:
+            return "An error has occured. Please try again."
+    
 @app.route('/payment', methods = ['POST'])
 def payment():
     if request.method == "POST" :

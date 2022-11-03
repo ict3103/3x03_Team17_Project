@@ -27,9 +27,9 @@ def db_query(sql,tupple):
     cursor.close()
 
 #fetch all
-def db_query_fetchall(sql):
+def db_query_fetchall(sql,string):
     cursor = mysql.connection.cursor()
-    cursor.execute(sql)
+    cursor.execute(sql,string)
     data = cursor.fetchall()
     mysql.connection.commit()
     cursor.close()
@@ -52,12 +52,14 @@ def db_query_fetchone(sql,tupple):
 def get_all_laptop():
     return "SELECT * FROM LaptopInfo"
 
-def get_cartItemsInfo(userId):
-    return f"SELECT l.laptopName, l.imageUrl, l.price, c.cartItemId, c.quantity, c.cartId FROM LaptopInfo as l join CartItems as c on c.laptopId = l.laptopId where c.cartId = '{userId}'"
+#completed
+def get_cartItemsInfo():
+    return f"SELECT l.laptopName, l.imageUrl, l.price, c.cartItemId, c.quantity, c.cartId FROM LaptopInfo as l join CartItems as c on c.laptopId = l.laptopId where c.cartId = %s"
 
 #completed
 def check_account():
     return f"SELECT * FROM UserInfo WHERE email = %s"
+
 
 def get_account(email=None, pk=None):
     get_account_parameter = pk if pk else email
@@ -67,8 +69,9 @@ def get_account(email=None, pk=None):
 def insert_new_user():
     return f"INSERT INTO UserInfo (username, email, password) VALUES(%s, %s, %s)"
 
-def insert_cartItem(userId, laptopId, quantity):
-    return f"INSERT INTO CartItems (cartId, laptopId, quantity) VALUES('{userId}', '{laptopId}', '{quantity}')"
+#completed 
+def insert_cartItem():
+    return f"INSERT INTO CartItems (cartId, laptopId, quantity) VALUES (%s, %s, %s)"
 
 #completed
 def update_verification_status():
@@ -83,11 +86,14 @@ def update_username(newUsername, email):
 
 def update_email(newEmail, email):
     return f"UPDATE UserInfo SET email = '{newEmail}' WHERE email = '{email}'"
-def update_cartItem_quantity(newQuantity,cartItemId):
-    return f"UPDATE CartItems SET quantity = '{newQuantity}' WHERE cartItemId = '{cartItemId}'"
 
-def delete_cartItem(cartItemId):
-    return f"DELETE from CartItems where cartItemId = '{cartItemId}'"
+#completed 
+def update_cartItem_quantity():
+    return f"UPDATE CartItems SET quantity = %s WHERE cartItemId = %s"
+
+#completed 
+def delete_cartItem():
+    return f"DELETE from CartItems where cartItemId = %s"
 
 #completed
 def get_account_id():
