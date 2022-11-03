@@ -5,7 +5,7 @@ pipeline {
 	stages {
 		stage ('Build') {
 			steps {
-				git 'var/jenkins_home/JenkinsDependencyCheckTest'
+				git 'var/jenkins_homehome/JenkinsDependencyCheckTest'
 				}
 			}
 		}
@@ -21,6 +21,5 @@ pipeline {
 		
 		}
 	}
-}
 
 
