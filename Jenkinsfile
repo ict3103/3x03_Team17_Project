@@ -1,14 +1,11 @@
 pipeline {
 
+
     agent any
 	stages {
 		stage ('Build') {
 			steps {
-				dir("/var/jenkins_home/workspace/3x03_Team17_Project/client"){
-					sh 'docker build Dockerfile'
-				}
-				dir ("/var/jenkins_home/workspace/3x03_Team17_Project/server"){
-					sh 'docker build Dockerfile'
+				git 'var/jenkins_home/JenkinsDependencyCheckTest'
 				}
 			}
 		}
