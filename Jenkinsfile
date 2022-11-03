@@ -3,20 +3,26 @@ pipeline {
 	stages {
 		stage ('Build') {
 			steps {
-				git 'var/jenkins_homehome/JenkinsDependencyCheckTest'
+				dir("/var/jenkins_home/workspace/ICT3x03/client"){
+					sh 'docker build Dockerfile'
+				}
+				dir ("/var/jenkins_home/workspace/ICT3x03/server"){
+					sh 'docker build Dockerfile'
 				}
 			}
-		stage ('Dependency Check') {
+		}
+	stage ('Dependency Check') {
 		    steps {
-		        dependencyCheck additionalArguments: 'scan="/var/jenkins_home/workspace/3x03_Team17_Project" --format HTML --format XML --disableYarnAudit --disableAssembly', odcInstallation: 'Default'
+		        dependencyCheck additionalArguments: 'scan="/var/jenkins_home/workspace/ICT3x03" --format HTML --format XML --disableYarnAudit --disableAssembly', odcInstallation: 'Default'
 		    }
 			post {
             	success {
         			dependencyCheckPublisher pattern: 'dependency-check-report.xml'
     			}
 			}
+		
 		}
-	}	
+	}
 }
 
 
