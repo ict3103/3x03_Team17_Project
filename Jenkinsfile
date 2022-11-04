@@ -1,23 +1,15 @@
 pipeline{
     agent  { 
-	docker { 
-		image 'react'
-				args '-v "$HOME:/home"'
-			args '-p 3000:3000'
-		}
-	}
-	
 	stages {
 		stage ('Build') {
 			steps {
-				dir("/var/jenkins_home/workspace/ICT3x03/server"){
-					sh 'pip3 install -r requirements'
+					sh 'docker compose build -pull'
 				}
-				dir ("/var/jenkins_home/workspace/ICT3x03/client"){
-					sh 'npm install'
+
 				}
 			}
 		}
+			
 		stage ('Dependency Check') {
 		    steps {
 				echo 'Testing..'
@@ -32,7 +24,6 @@ pipeline{
 		
 		}
 	}
-}
 
 
 
