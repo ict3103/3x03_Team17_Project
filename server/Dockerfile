@@ -1,3 +1,4 @@
+WORKDIR ../server
 # start by pulling the python image
 FROM python:latest
 ADD . /server_side
