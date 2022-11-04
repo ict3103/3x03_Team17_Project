@@ -6,13 +6,13 @@ services:
   react:
     image: react
     build:  
-	dockerfile: ./client/Dockerfile
+        dockerfile: ./client/Dockerfile
     ports:
      - "3000:3000"
   flask:
     image: flask
     build:
-	dockerfile: ./server/Dockerfile
+        dockerfile: ./server/Dockerfile
     ports:
       - "5000:80"
 
