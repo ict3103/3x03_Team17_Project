@@ -10,7 +10,7 @@ services:
     ports:
      - "3000:80"
   flask:
-    image: flask6
+    image: flask
     build:
         dockerfile: ./server/Dockerfile
     ports:
