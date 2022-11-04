@@ -1,8 +1,8 @@
 # start by pulling the python image
 FROM python
 
-# copy the requirements file into the image
-COPY ./requirements.txt /server/requirements.txt
+//# copy the requirements file into the image
+//COPY ./requirements.txt /server/requirements.txt
 
 # switch working directory
 WORKDIR /server
