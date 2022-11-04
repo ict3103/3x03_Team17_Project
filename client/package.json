@@ -2,7 +2,6 @@
   "name": "client",
   "proxy": "http://172.18.0.3:5000/",
   "secure": "false",
-  "DANGEROUSLY_DISABLE_HOST_CHECK":true,
   "version": "0.1.0",
   "private": true,
   "dependencies": {
