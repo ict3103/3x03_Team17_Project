@@ -1,6 +1,7 @@
 version: "3.9" 
 
 name: "3x03-Team17-debug"
+network: 3x03-team17-debug_default
 
 services:
   react:
