@@ -1,19 +1,6 @@
 # start by pulling the python image
 FROM python:latest
-
-# switch working directory
-WORKDIR /server
-
-
-
-
-# install the dependencies and packages in the requirements file
-RUN pip3 install -r requirements.txt
-
-EXPOSE 5000
-
-# configure the container to run in an executed manner
-# ENTRYPOINT [ "python3" ]
-
-# CMD ["app.py" ]
-CMD ["flask", "run", "--host", "0.0.0.0"]
+ADD ./server_side
+WORKDIR /server_side
+RUN pip install -r requirements.txt
+CMD python3 app.py
