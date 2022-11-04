@@ -74,22 +74,20 @@ const Profile = () => {
     if (name === "password") {
       setCredentials({ ...credentials, [name]: value });
       return;
+
     } else if (name === "confirmPassword") {
       setCredentials({ ...credentials, [name]: value });
       handlePasswordChange(value);
+
     } else if (name === "username") {
       setCredentials({ ...credentials, [name]: value });
-      setDisabledFields({
-        ...disbaledFields,
-        updateBtn: prevCredentials.username === value,
-      });
+      setDisabledFields({...disbaledFields, updateBtn: prevCredentials.username === value,});
+
     } else if (name === "email") {
       setCredentials({ ...credentials, [name]: value });
       setShowEmail(value);
-      setDisabledFields({
-        ...disbaledFields,
-        updateBtn: prevCredentials.email === value,
-      });
+      setDisabledFields({...disbaledFields,updateBtn: prevCredentials.email === value,});
+      
     } else {
       setCredentials({ ...credentials, [name]: value });
     }
@@ -102,6 +100,7 @@ const Profile = () => {
 
     // disbaling confirm button till previous request is handled
     setUpdatingProfile(true);
+
     // Restricting requests till previous one is handled
     !updatingProfile &&
       axios
@@ -147,11 +146,7 @@ const Profile = () => {
       .then((response) => {
         if (response.data?.status === 200) {
           localStorage.setItem("OTPToken", JSON.stringify(response.data.token));
-          setAlert({
-            showAlert: true,
-            variant: "success",
-            text: "OTP Sent",
-          });
+          setAlert({showAlert: true,variant: "success",text: "OTP Sent",});
           setOtpInfo({
             sendingOTP: false,
             otpSent: true,
@@ -174,21 +169,15 @@ const Profile = () => {
       .then((response) => {
         if (response.data.status === 200) {
           localStorage.removeItem("OTPToken");
-          setAlert({
-            showAlert: true,
-            variant: "success",
-            text: "OTP Verified",
+          setAlert({showAlert: true, variant: "success", text: "OTP Verified",
           });
           setOtpInfo({ ...otpInfo, startTimer: false });
           setDisabledFields({ ...disbaledFields, otpInput: true });
           setFormSubmission({ startFormSubmission: true });
           handleSubmit();
         } else {
-          setAlert({
-            showAlert: true,
-            variant: "danger",
-            text: response.data.result,
-          });
+          setAlert({showAlert: true, variant: "danger", text: response.data.result,
+});
         }
       });
   };
