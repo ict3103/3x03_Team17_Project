@@ -44,6 +44,15 @@ def db_query_fetchone(sql,tupple):
     cursor.close()
     return data
 
+#fetch one
+def db_query_fetchone_profile(sql):
+    cursor = mysql.connection.cursor()
+    cursor.execute(sql)
+    data = cursor.fetchone()
+    mysql.connection.commit()
+    cursor.close()
+    return data
+
 #-------------------------------------------------------------------------------------------
 # MYSQL query statements
 #-------------------------------------------------------------------------------------------
@@ -59,7 +68,6 @@ def get_cartItemsInfo():
 #completed
 def check_account():
     return f"SELECT * FROM UserInfo WHERE email = %s"
-
 
 def get_account(email=None, pk=None):
     get_account_parameter = pk if pk else email
@@ -77,15 +85,17 @@ def insert_cartItem():
 def update_verification_status():
     return f"UPDATE UserInfo SET verification_status = 1 WHERE email = %s"
 
-#completed 
+#completed
 def update_password():
     return f"UPDATE UserInfo SET password = %s WHERE email = %s"
 
-def update_username(newUsername, email):
-    return f"UPDATE UserInfo SET username = '{newUsername}' WHERE email = '{email}'"
+#completed
+def update_username():
+    return f"UPDATE UserInfo SET username = %s WHERE email = %s"
 
-def update_email(newEmail, email):
-    return f"UPDATE UserInfo SET email = '{newEmail}' WHERE email = '{email}'"
+#completed
+def update_email():
+    return f"UPDATE UserInfo SET email = %s WHERE email = %s"
 
 #completed 
 def update_cartItem_quantity():

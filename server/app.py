@@ -158,7 +158,7 @@ def user_login():
 
                 #Create the tokens we will be sending back to the client
                 access_token = create_access_token(identity=user_id)
-                print(access_token)
+                #print(access_token)
 
                 #DB logging - update last login 
                 registered_date = datetime.now()
@@ -335,11 +335,11 @@ def update_cartItem():
             sql_update_cartItem_quantity = api.update_cartItem_quantity() 
             tupple_sql_update_cartItem_quantity = (new_quantity, cartItemId,)
             api.db_query(sql_update_cartItem_quantity, tupple_sql_update_cartItem_quantity)
-            return {'result':1}
 
+            return {'result':1}
         except Exception as e:
             return "An error has occured. Please try again."
-    
+
 @app.route('/payment', methods = ['POST'])
 def payment():
     if request.method == "POST" :
@@ -357,6 +357,7 @@ def paymentComplete():
         return redirect('/paymentComplete')
     else:
         return redirect('/cart')
+
 #-------------------------------------------------------------------------------------------
 # Update profile route (retrive all profile info)
 #-------------------------------------------------------------------------------------------
@@ -371,15 +372,18 @@ def get_otp():
     """
     # Geting the email address to which mail is to be sent
     reciver_email = request.json['email']
+
     # Getting the generated OTP
     otp = utils.generateOTP()
+
     # Sending the OTP to user's email
     sendmail.sendOTPmail(reciver_email, otp)
+
     # Genrating a token for the otp which is sent
     token = sendmail.generate_confirmation_token(otp)
+
     # Returning the JSON response with success status and the token
     return {"status": 200, "result": "OTP send successfully", "token": token}
-
 
 @app.route('/verifyOTP', methods=["POST"])
 def verifyOTP():
@@ -393,15 +397,8 @@ def verifyOTP():
     try:
         decrypted_otp = sendmail.confirm_token(token, 60)
     except:
-        return {
-            "status": 500,
-            "result": "OTP Expired"
-        }
-    return {
-        "status": 500,
-        "result": "OTP Invalid"
-    } if otp != decrypted_otp else {"status": 200, "result": "OTP Verified"}
-
+        return {"status": 500, "result": "OTP Expired"}
+    return {"status": 500, "result": "OTP Invalid"} if otp != decrypted_otp else {"status": 200, "result": "OTP Verified"}
 
 @app.route('/updateProfile/<pk>', methods=["PUT"])
 def updateProfile(pk):
@@ -409,36 +406,40 @@ def updateProfile(pk):
     input_name = input_email = input_password = account = None
     if request.json.get("username", None):
         input_name = security.sanitization(request.json['username'])
+
     if request.json.get("email", None):
         input_email = security.sanitization(request.json['email'])
+
     if request.json.get("password", None):
         input_password = request.json['password']
     
-    if not(security.username_pattern().match(input_name) and security.email_pattern().match(input_email) and security.password_pattern().match(input_password)) :
+    print("input_name: " + str(input_name))
+    print("input_email: " + str(input_email))
+    print("input_password: " + str(input_password))
+
+    if not(security.username_pattern().match(str(input_name)) and security.email_pattern().match(str(input_email))) :
+            return {"status": 400, "result": "Error while adding user"}
+
+    if not(security.password_pattern().match(str(input_password)) or input_password == None) :
             return {"status": 400, "result": "Error while adding user"}
 
     # if email is not None, check whether this email already taken
     if input_email is not None:
-        account = api.db_query_fetchone(api.get_account(input_email))
+        account = api.db_query_fetchone_profile(api.get_account(input_email))
+        
         # if account with this email alredy exists then check whether it's different from new email or not
-        print(account, account[2], input_email)
         if account is not None and account[2].lower() != input_email.lower():
             return {"status": 400, "result": "Email already taken"}
 
     # getting previous account for updation
-    account = api.db_query_fetchone(api.get_account(pk=pk))
-    triggeredUpdates = utils.handleUpdates(account=account, **{
-        "email": input_email,
-        "username": input_name,
-        "password": input_password
-    })
-
+    account = api.db_query_fetchone_profile(api.get_account(pk=pk))
+    triggeredUpdates = utils.handleUpdates(account=account, **{"email": input_email,"username": input_name,"password": input_password})
     updatedValues = utils.getUpdatedValues(triggeredUpdates)
-    if len(updatedValues) > 0:
-        sendmail.sendUpdationConfirmationMail(
-            account[2], utils.getUpdatedValues(triggeredUpdates))
 
+    if len(updatedValues) > 0:
+        sendmail.sendUpdationConfirmationMail(account[2], utils.getUpdatedValues(triggeredUpdates))
     return {"status": 200, "result": "Profile Updated"}
+
 #-------------------------------------------------------------------------------------------
 # main driver  
 #-------------------------------------------------------------------------------------------
