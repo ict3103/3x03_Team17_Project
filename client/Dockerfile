@@ -1,5 +1,6 @@
 FROM node:alpine
-WORKDIR /client
+ADD . /client_side
+WORKDIR /client_side
 COPY package.json
 COPY package-lock.json 
 RUN npm install
