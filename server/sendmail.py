@@ -154,7 +154,10 @@ def sendUpdationConfirmationMail(input_email, updatedFields):
     subject = "YourFirstComputer - Profile Updated"
     body = f"""
 	Dear Customer, 
-	It's a confirmation email that {(", ").join(updatedFields)} for your account {input_email} has been updated
+	It's a confirmation email that {(", ").join(updatedFields)} for your account {input_email} has been updated.
+
+	Note: 
+	- Please do not reply to this automated message.
 	"""
 
     em = EmailMessage()
