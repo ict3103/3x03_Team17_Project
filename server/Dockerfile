@@ -1,5 +1,5 @@
 # start by pulling the python image
-FROM python:latest
+FROM python:3.9-buster
 ADD ./server /server_side
 WORKDIR /server_side
 RUN ls
