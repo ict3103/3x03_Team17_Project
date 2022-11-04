@@ -1,7 +1,6 @@
 version: "3.9" 
 
 name: "3x03-Team17-debug"
-network: 3x03-team17-debug_default
 
 services:
   react:
@@ -12,6 +11,7 @@ services:
      - "3000:3000"
   flask:
     image: flask
+    network: 3x03-team17-debug_default
     build:
         dockerfile: ./server/Dockerfile
     ports:
