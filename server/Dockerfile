@@ -1,5 +1,5 @@
 # start by pulling the python image
-FROM python
+FROM python:latest
 
 # copy the requirements file into the image
 COPY ./requirements.txt ./server/requirements.txt
