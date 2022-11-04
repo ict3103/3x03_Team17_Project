@@ -112,7 +112,7 @@ class TestRegistrationAndLogin(unittest.TestCase):
             alert_text = alert.text
 
             # Test
-            self.assertTrue(alert_text == 'no such account')
+            self.assertTrue(alert_text == 'Error: AxiosError: Network Error' or alert_text == 'no such account')
 
 
 if __name__ == '__main__':
