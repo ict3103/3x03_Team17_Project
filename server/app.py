@@ -413,7 +413,14 @@ def updateProfile(pk):
     if request.json.get("password", None):
         input_password = request.json['password']
     
-    if not(security.username_pattern().match(input_name) and security.email_pattern().match(input_email) and security.password_pattern().match(input_password)) :
+    print("input_name: " + str(input_name))
+    print("input_email: " + str(input_email))
+    print("input_password: " + str(input_password))
+
+    if not(security.username_pattern().match(str(input_name)) and security.email_pattern().match(str(input_email))) :
+            return {"status": 400, "result": "Error while adding user"}
+
+    if not(security.password_pattern().match(str(input_password)) or input_password == None) :
             return {"status": 400, "result": "Error while adding user"}
 
     # if email is not None, check whether this email already taken
