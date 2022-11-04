@@ -1,5 +1,5 @@
 FROM node:alpine
-WORKDIR /client
+WORKDIR /
 COPY package.json ./
 COPY package-lock.json ./
 COPY ./ ./
