@@ -1,5 +1,5 @@
 FROM node:alpine
 ADD ./client /client_side
 WORKDIR /client_side
-RUN  npm install --save gh-pages
-RUN npm run deploy
+RUN  npm install
+CMD ["npm","start"]
