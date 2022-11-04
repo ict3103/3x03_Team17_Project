@@ -5,16 +5,16 @@ name: "3x03-Team17-debug"
 services:
   react:
     image: react
-    network: 3x03-team17-debug_default
     build:  
         dockerfile: ./client/Dockerfile
+        network: 3x03-team17-debug_default
     ports:
      - "3000:3000"
   flask:
     image: flask
-    network: 3x03-team17-debug_default
     build:
         dockerfile: ./server/Dockerfile
+        network: 3x03-team17-debug_default
     ports:
       - "5000:80"
 
