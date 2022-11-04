@@ -8,7 +8,7 @@ pipeline{
 
 				}
 			}
-		}
+		
 			
 		stage ('Dependency Check') {
 		    steps {
@@ -23,7 +23,8 @@ pipeline{
 			}
 		
 		}
+		
 
-
+}
 
 
