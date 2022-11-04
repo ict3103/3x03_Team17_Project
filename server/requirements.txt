@@ -14,7 +14,6 @@ exceptiongroup==1.0.0
 Flask==2.2.2
 Flask-Bcrypt==1.0.1
 Flask-Cors==3.0.10
-Flask-JWT
 Flask-JWT-Extended==3.7.0
 Flask-Limiter==2.7.0
 Flask-Mail==0.9.1
