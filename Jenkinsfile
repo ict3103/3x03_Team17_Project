@@ -7,9 +7,6 @@ pipeline{
 				}
 
 				}
-			}
-		
-			
 		stage ('Dependency Check') {
 		    steps {
 				echo 'Testing..'
@@ -24,7 +21,7 @@ pipeline{
 		
 		}
 		
-
+}
 }
 
 
