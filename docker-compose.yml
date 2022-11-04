@@ -4,13 +4,13 @@ name: "3x03-Team17-debug"
 
 services:
   react:
-    image: react-FR
+    image: react5
     build:  
         dockerfile: ./client/Dockerfile
     ports:
      - "3000:3000"
   flask:
-    image: flask-FR
+    image: flask5
     build:
         dockerfile: ./server/Dockerfile
     ports:
