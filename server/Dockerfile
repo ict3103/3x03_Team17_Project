@@ -5,8 +5,7 @@ FROM python
 WORKDIR /server
 
 
-# copy every content from the local file to the image
-COPY . ./
+
 
 # install the dependencies and packages in the requirements file
 RUN pip3 install -r requirements.txt
