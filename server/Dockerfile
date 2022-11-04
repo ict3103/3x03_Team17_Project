@@ -2,7 +2,7 @@
 FROM python
 
 # copy the requirements file into the image
-COPY ./requirements.txt /server/requirements.txt
+COPY ./requirements.txt ./server/requirements.txt
 
 # switch working directory
 WORKDIR /server
