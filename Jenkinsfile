@@ -1,10 +1,11 @@
 pipeline{
-    agent { 
+    agent  { 
 	docker { 
 		image 'react'
 				args '-v "$HOME:/home"'
 			args '-p 3000:3000'
 		}
+	}
 	
 	stages {
 		stage ('Build') {
