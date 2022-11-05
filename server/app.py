@@ -447,7 +447,7 @@ def updateProfile(pk):
 # main driver function
 if __name__ == '__main__':
     app.config['SECRET_KEY'] = 'G$upli2St8RZxMtNeJU90'
-    app.run(debug=True, host="127.0.0.1", port="5000")
+    app.run(debug=True, port=5000)
 
     
     
