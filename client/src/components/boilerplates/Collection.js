@@ -86,7 +86,12 @@ function Collection(){
 }
 
 
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 
+fetch('http://flask:5000', {
+    // ...
+    referrerPolicy: "unsafe_url" 
+});
   
 
 
