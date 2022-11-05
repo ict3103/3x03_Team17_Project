@@ -12,7 +12,7 @@ services:
   flask:
     image: flask
     build:
-        command: python app.py run -h 0.0.0.0
+    command: python app.py run -h 0.0.0.0
         dockerfile: ./server/Dockerfile
     ports:
       - "5000:5000"
