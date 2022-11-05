@@ -79,7 +79,7 @@ function Main() {
       
     </div>
   </nav>
-  {(window.location.href==="http://localhost:3000/")? <div id="exploreButton">
+  {(window.location.href==="https://172.18.0.3:3000/")? <div id="exploreButton">
   <Link to="collection" id="exploreButton1">Explore</Link>
   </div>:<div/>
   }
