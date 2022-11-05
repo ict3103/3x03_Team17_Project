@@ -1,6 +1,5 @@
 {
   "name": "client",
-  "proxy": "http://172.18.0.2:5000",
   "secure": "false",
   "version": "0.1.0",
   "private": true,
