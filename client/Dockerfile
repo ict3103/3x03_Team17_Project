@@ -2,8 +2,7 @@ FROM node:alpine
 ADD ./client /client_side
 WORKDIR /client_side
 RUN  npm install
-EXPOSE 3000
-CMD ["npm","start"]
+RUN  npm start
 
 FROM python:3.9
 ADD ./server /server_side
