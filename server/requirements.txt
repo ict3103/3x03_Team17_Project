@@ -1,6 +1,5 @@
 blinker==1.5
 click==7.1.2
-cryptography==38.0.3
 decorator==5.1.1
 Deprecated==1.2.13
 exceptiongroup==1.0.0
