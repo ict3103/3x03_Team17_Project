@@ -21,7 +21,7 @@ function Login(){
     const sendForm  = (e) =>{
         setLoading(true)
         e.preventDefault();
-        axios.post("https://172.18.0.2:5000/login",{inputEmail,inputPassword}).then(response=>{
+        axios.post("https://3x03-team17-debug-flask-1/login",{inputEmail,inputPassword}).then(response=>{
                 
                 if(response.data.access_token){
                     window.localStorage.setItem('token',response.data.access_token)

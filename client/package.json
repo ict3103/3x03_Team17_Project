@@ -1,6 +1,5 @@
 {
   "name": "client",
-  "proxy": "http://3x03-Team17-flask-1:5000",
   "secure": "false",
   "version": "0.1.0",
   "private": true,
