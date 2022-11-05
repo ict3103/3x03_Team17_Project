@@ -1,6 +1,5 @@
 FROM node:alpine
-ADD ./client ./
-WORKDIR ./
-RUN npx create-react-app client --use-npm
-RUN npm install
+ADD ./client /client_side
+WORKDIR /client_side
+RUN  npm install
 CMD ["npm","start"]
