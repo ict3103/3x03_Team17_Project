@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:alpine as build-step
 ADD ./client /client_side
 WORKDIR /client_side
 RUN  npm install
