@@ -21,7 +21,7 @@ function Login(){
     const sendForm  = (e) =>{
         setLoading(true)
         e.preventDefault();
-        axios.post("http://172.18.0.2:5000/login",{inputEmail,inputPassword}).then(response=>{
+        axios.post("http://127.0.0.1:5000/login",{inputEmail,inputPassword}).then(response=>{
                 
                 if(response.data.access_token){
                     window.localStorage.setItem('token',response.data.access_token)

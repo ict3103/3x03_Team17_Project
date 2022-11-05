@@ -12,14 +12,14 @@ function Collection(){
     const [collectionData,setCollectionData] = useState([])
     //axios get request to get laptop collections
     useEffect(()=>{
-        axios.get("http://172.18.0.2:5000/collection").then((response)=>{
+        axios.get("http://127.0.0.1/collection").then((response)=>{
             setCollectionData(response.data.collection)
         })
     },[])
 
     const addToCart  = (e) =>{
         e.preventDefault();
-        axios.post("https://127.0.0.1:5000/add_cartItem",{laptopId: e.target.value,headers: {
+        axios.post("http://127.0.0.1:5000/add_cartItem",{laptopId: e.target.value,headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           }}).then(response=>{
                 if(response.data){
