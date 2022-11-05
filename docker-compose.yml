@@ -8,10 +8,11 @@ services:
     build:  
         dockerfile: ./client/Dockerfile
     ports:
-     - "3000:3000"
+     - "3001:3000"
   flask:
     image: flask
     build:
+        command: python app.py run -h 0.0.0.0
         dockerfile: ./server/Dockerfile
     ports:
       - "5000:5000"
