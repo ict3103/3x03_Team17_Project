@@ -47,7 +47,7 @@ class TestRegistrationAndLogin(unittest.TestCase):
             email = driver.find_element(By.XPATH, "//input[@id='email']")
             password = driver.find_element(By.XPATH, "//input[@id='password']")
             checkpassword = driver.find_element(By.XPATH, "//input[@id='checkpassword']")
-            username.send_keys('hihi')
+            username.send_keys('hihihihi')
             email.send_keys('hi@hi')
             password.send_keys('hihihi')
             checkpassword.send_keys('hihihi')
