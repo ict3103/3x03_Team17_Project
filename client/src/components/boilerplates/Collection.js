@@ -12,7 +12,7 @@ function Collection(){
     const [collectionData,setCollectionData] = useState([])
     //axios get request to get laptop collections
     useEffect(()=>{
-        axios.get("https://172.18.0.2:5000/collection").then((response)=>{
+        axios.get("http://localhost:5000/collection").then((response)=>{
             setCollectionData(response.data.collection)
         })
     },[])
