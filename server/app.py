@@ -20,6 +20,7 @@ import sendmail
 import geocoder, time 
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 
+
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = os.getenv("HOST")
 app.config['MYSQL_USER'] = os.getenv("DB_USER")
