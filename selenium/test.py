@@ -17,7 +17,7 @@ class TestRegistrationAndLogin(unittest.TestCase):
             driver = webdriver.Chrome(options=options)
 
             # Get the registration page
-            driver.get("http://localhost:3000/register")
+            driver.get("https://sitict.yourfirstcomputer.ga/register")
 
             # Finds button using its xpath
             registerBtn = driver.find_element(By.XPATH, "//input[@value='Register']")
@@ -40,7 +40,7 @@ class TestRegistrationAndLogin(unittest.TestCase):
             driver = webdriver.Chrome(options=options)
 
             # Get the registration page
-            driver.get("http://localhost:3000/register")
+            driver.get("https://sitict.yourfirstcomputer.ga/register")
 
             # Get the form element inputs
             username = driver.find_element(By.XPATH, "//input[@id='username']")
@@ -74,7 +74,7 @@ class TestRegistrationAndLogin(unittest.TestCase):
             driver = webdriver.Chrome(options=options)
 
             # Get the registration page
-            driver.get("http://localhost:3000/login")
+            driver.get("https://sitict.yourfirstcomputer.ga:3000/login")
 
             # Finds button using its xpath
             loginBtn = driver.find_element(By.XPATH, "//input[@type='submit']")
@@ -96,7 +96,7 @@ class TestRegistrationAndLogin(unittest.TestCase):
             driver = webdriver.Chrome(options=options)
 
             # Get the registration page
-            driver.get("http://localhost:3000/login")
+            driver.get("https://sitict.yourfirstcomputer.ga:3000/login")
 
             email = driver.find_element(By.XPATH, "//input[@id='email']")
             password = driver.find_element(By.XPATH, "//input[@id='inputPwd']")
