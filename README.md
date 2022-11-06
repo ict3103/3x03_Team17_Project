@@ -15,7 +15,7 @@ SAFARAZ BIN SARAZLI, 1902176
 
 2. Open the project folder in your preferred IDE
 3. Open up 2 seperate terminals 
-4. Terminal #1: 
+4. Terminal #1 (To run Server - Flask): 
     ```
     cd server 
     ```
@@ -24,4 +24,14 @@ SAFARAZ BIN SARAZLI, 1902176
     ```
     ```
     python app.py
+    ```
+5. Terminal #2 (To run Client - React): 
+    ```
+    cd client 
+    ```
+    ```
+    npm install  
+    ```
+    ```
+    npm start 
     ```
