@@ -35,3 +35,7 @@ SAFARAZ BIN SARAZLI, 1902176
     ```
     npm start 
     ```
+6. Final output when both are Server & Client are running
+![My Image](../3x03_Team17_Project/client/src/images/final.jpg)
+
+
