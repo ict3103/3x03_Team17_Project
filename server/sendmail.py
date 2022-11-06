@@ -8,14 +8,14 @@ from dotenv import load_dotenv
 from datetime import datetime
 import smtplib
 import ssl
+import os
 load_dotenv()
 
-
 app = Flask(__name__)
-app.config['emailsender'] = 'ict3x03team17@gmail.com'
-app.config['emailpass'] = 'dcrrnilphtpotspi'
-app.config['register_secretkey'] = 'T17-regkeysecret@'
-app.config['register_securitypasswordsalt'] = 'salt4T17-regkeysecret'
+app.config['emailsender'] = os.getenv("EMAIL_SENDER")
+app.config['emailpass'] = os.getenv("EMAIL_PASS")
+app.config['register_secretkey'] = os.getenv("MAIL_SECRET_KEY")
+app.config['register_securitypasswordsalt'] = os.getenv("MAIL_PASS_SALT")
 
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
