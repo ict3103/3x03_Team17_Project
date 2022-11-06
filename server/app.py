@@ -23,8 +23,8 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = os.getenv("HOST")
 app.config['MYSQL_USER'] = os.getenv("DB_USER")
-app.config['MYSQL_PASSWORD'] = os.getenv("AVNS_FVskSUDS3lwJodYP7Ty")
-app.config['MYSQL_DB'] = os.getenv("ICT3x03")
+app.config['MYSQL_PASSWORD'] = os.getenv("DB_PASSWORD")
+app.config['MYSQL_DB'] = os.getenv("DATABASE")
 app.config['MYSQL_PORT'] = 25060
 limiter = Limiter(app,key_func=get_remote_address,default_limits=["100 per day", "50 per hour"]) 
 mysql = MySQL(app)
