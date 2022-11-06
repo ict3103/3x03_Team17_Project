@@ -1,5 +1,6 @@
 {
   "name": "client",
+  "proxy": "http://flasks:5000/",
   "secure": "false",
   "version": "0.1.0",
   "private": true,

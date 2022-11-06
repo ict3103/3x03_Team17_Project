@@ -16,7 +16,7 @@ services:
     build:
         dockerfile: ./server/Dockerfile
     ports:
-      - "8888:5000"
+      - "5000:5000"
 
 
 
