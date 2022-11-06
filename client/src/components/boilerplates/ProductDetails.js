@@ -31,7 +31,7 @@ function ProductDetails(){
       }
   
 
-    return (<div id="div1" style={{"margin": "0", "backgroundImage": "url('https://t3.ftcdn.net/jpg/01/72/90/92/360_F_172909278_plxmQjlUaw14rJv7qyHrrlc8UJMh0weg.jpg')", "background-repeat": "no-repeat", "background-size": "100%" }}>
+    return (<div id="div1" style={{"margin": "0", "background": "url('https://t3.ftcdn.net/jpg/01/72/90/92/360_F_172909278_plxmQjlUaw14rJv7qyHrrlc8UJMh0weg.jpg')", "background-repeat": "no-repeat", "background-size": "100%" }}>
  
     {collectionData.filter(laptopId => laptopId[0] ==window.localStorage.getItem("ProductDetails")).map((val)=>{
         return <div style={{ "text-align": "center"}}>
@@ -39,7 +39,7 @@ function ProductDetails(){
                     <br></br>
                     <h2 > {val[1]} </h2>
                     <br></br>
-                    <img src={require(`../../${val[2]}`)} style={{"height": "160px","width":"254px"}}  class="card-img-top" alt=".." />
+                    <img src={require(`../../${val[2]}`)} style={{"height": "300px","width":"500px"}}  class="card-img-top" alt=".." />
                     <br></br>
                     <br></br>
                     <p id="laptopPrice">Price: ${val[3]}</p>

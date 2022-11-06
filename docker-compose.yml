@@ -1,14 +1,21 @@
 version: "3.9" 
 
+name: "3x03-Team17-debug"
+
 services:
   react:
     image: react
-    build: ./client #build the docker file inside the client directory
+    build:  
+        dockerfile: ./client/Dockerfile
     ports:
      - "3000:3000"
   flask:
     image: flask
-    build: ./server #build the docker file inside the  server directory
+    build:
+        dockerfile: ./server/Dockerfile
     ports:
       - "5000:5000"
+
+
+
 

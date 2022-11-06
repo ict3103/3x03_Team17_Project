@@ -103,7 +103,7 @@ function Register(){
           </Form.Group>
 
           <ReCAPTCHA sitekey="6Ldrj30iAAAAADyAiEnHJkcZOv4E2UsyYK2ZQpvC" onChange={onChange}/>
-          <input type="submit" disabled={!CaptchaCheck} value="Register"/>
+          <input type="submit" value="Register"/>
     </Form>
       </div> 
     )     

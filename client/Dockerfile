@@ -1,7 +1,6 @@
 FROM node:alpine
-WORKDIR /app
-COPY package.json ./
-COPY package-lock.json ./
-COPY ./ ./
-RUN npm install
-CMD ["npm", "run", "start"]
+ADD ./client /client_side
+WORKDIR /client_side
+RUN  npm install
+EXPOSE 3000
+CMD ["npm","start"]
