@@ -38,7 +38,7 @@ const ProfileFieldsForm = ({
         </span>
       </FormGroup>{" "}
       <FormGroup className="my-2">
-        <FormLabel>Password</FormLabel>
+        <FormLabel>New Password</FormLabel>
         <FormControl
           type="password"
           onChange={handleChange}
@@ -47,7 +47,7 @@ const ProfileFieldsForm = ({
         />
       </FormGroup>{" "}
       <FormGroup className="my-2">
-        <FormLabel>Confirm Password</FormLabel>
+        <FormLabel>Confirm New Password</FormLabel>
         <FormControl
           type="password"
           onChange={handleChange}
