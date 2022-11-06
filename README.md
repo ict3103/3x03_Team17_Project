@@ -1,24 +1,27 @@
 # 3x03_Team17_Project
 ## Lab Group P2 Team 17
-Group Members:  
-SAFARAZ BIN SARAZLI, 1902176                                                                                                                                             
+Group Members:                                                                                                                                            
 YAO YUJING, 2001452   
 CHEN XINXIN, 2002169  
 TOH XIAN YONG, 2000636  
-MUHAMMAD FA-AIZ BIN MOHAMMAD FAMMI, 2002784 
+MUHAMMAD FA-AIZ BIN MOHAMMAD FAMMI, 2002784
+SAFARAZ BIN SARAZLI, 1902176 
 
 # Getting Started
-1. Clone the repo to anywhere you want.
-2. Open up terminal.
-3. To install the required packages of the project:
+1. Clone this repo to Desktop.
     ```
-    pip install -r requirements.txt
+    git clone https://github.com/ict3103/3x03_Team17_Project.git
     ```
-4. To start frontend, cd to 'client' folder and enter:
+
+2. Open the project folder in your preferred IDE
+3. Open up 2 seperate terminals 
+4. Terminal #1: 
     ```
-    npm start
+    cd server 
     ```
-5. To start Flask, cd to 'server' folder and enter:
     ```
-    python App.py
+    pip install -r requirements.txt 
+    ```
+    ```
+    python app.py
     ```
