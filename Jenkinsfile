@@ -16,7 +16,7 @@ pipeline{
 			post {
             	success {
 				echo 'Generating the report..'
-//         		dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+        		dependencyCheckPublisher pattern: 'dependency-check-report.xml'
     			}
 		stage ('Automation Testing') {
 			steps{
