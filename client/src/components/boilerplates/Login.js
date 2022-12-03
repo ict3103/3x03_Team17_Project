@@ -35,7 +35,7 @@ function Login(){
                     window.location = "/verification"
                 }
                 else{
-                    return alert("something went wrong");
+                    return alert("wrong username or password");
                 }
         },[loading]).catch((err)=>{
             return alert("Error: " + err);

@@ -9,13 +9,9 @@ import { FaReact} from 'react-icons/fa';
 function VerifiedPage(){
     return (
       <div >
-        <video autoPlay loop muted className="back-video">
-        <source src={require("../../../images/laptop_video.mp4")} type="video/mp4"/>
-      </video>
-    
-      <nav className="navbar navbar-expand-lg navbar-dark" style={{backgroundColor: "#060707"}}>
+
       <div className="container-fluid">    
-        <FaReact className="App-logo" />
+
   
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
@@ -41,7 +37,6 @@ function VerifiedPage(){
           </form>
         </div>
       </div>
-    </nav>
     <Container fluid>
         <Row>
         <Card className="align-middle" style={{ 'width': '40rem', 'margin': '0 auto','float':'none','margin-top':'100px','backgroundColor':'rgba(212, 205, 205, 0.97'}}>

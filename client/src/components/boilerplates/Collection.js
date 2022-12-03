@@ -8,7 +8,7 @@ import { IsValidJWT } from './utils/Token';
 // console.log(decoded);
 
 function Collection(){
-    console.log(IsValidJWT())
+    // console.log(IsValidJWT())
     const [collectionData,setCollectionData] = useState([])
     //axios get request to get laptop collections
     useEffect(()=>{
