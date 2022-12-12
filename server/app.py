@@ -26,7 +26,7 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'nomekop1oo'
 app.config['MYSQL_DB'] = 'ICT3X03'
-app.config['MYSQL_PORT'] = 25060
+app.config['MYSQL_PORT'] = 3306
 limiter = Limiter(app,key_func=get_remote_address,default_limits=["100 per day", "50 per hour"]) 
 mysql = MySQL(app)
 cors = CORS(app)
@@ -108,7 +108,7 @@ def register_user():
                 user_country = user_location.city
                 sql_register_logging = api.register_logging()
                 tupple_sql_register_logging = (get_userid, input_username, input_email, "0", registered_timestamp, "0", user_ip, user_country, "0", "0", "0")
-                api.db_query(sql_register_logging,tupple_sql_register_logging)
+                # api.db_query(sql_register_logging,tupple_sql_register_logging)
 
                 return redirect('http://localhost:3000/verification')
 
@@ -168,7 +168,7 @@ def user_login():
                 
                 sql_login_updatestatus_logging = api.login_updatestatus_logging() 
                 tupple_sql_login_updatestatus_logging = (registered_timestamp,input_email,)
-                api.db_query(sql_login_updatestatus_logging,tupple_sql_login_updatestatus_logging)
+                # api.db_query(sql_login_updatestatus_logging,tupple_sql_login_updatestatus_logging)
 
                 #passing user info for functioning of profile
                 user = {"id":account[0], "email":input_email, "username":account[1]}
@@ -183,7 +183,7 @@ def user_login():
                 #DB logging - if there is an account BUT wrong password 
                 sql_failed_logging = api.failed_logging() 
                 tupple_sql_failed_logging = (input_email,)
-                api.db_query(sql_failed_logging,tupple_sql_failed_logging)
+                # api.db_query(sql_failed_logging,tupple_sql_failed_logging)
                 return jsonify({"error":"Email/Password is incorrect"})
 
         return {"error":"Email/Password is incorrect"}
